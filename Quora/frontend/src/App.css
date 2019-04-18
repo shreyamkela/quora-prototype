@@ -1,0 +1,165 @@
+body{
+  overflow: hidden;
+}
+.form-heading { color:#fff; font-size:23px;}
+.panel h2{ color:#444444; font-size:18px; margin:0 0 8px 0;}
+.panel p { color:#777777; font-size:14px; margin-bottom:30px; line-height:24px;}
+.login-form .form-control {
+  background: #f7f7f7 none repeat scroll 0 0;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px;
+  font-size: 14px;
+  height: 50px;
+  line-height: 50px;
+}
+.main-div {
+  background: #ffffff none repeat scroll 0 0;
+  border-radius: 2px;
+  margin: 10px auto 30px;
+  max-width: 38%;
+  padding: 50px 70px 70px 71px;
+  border: 2px solid black;
+}
+
+.login-form .form-group {
+  margin-bottom:10px;
+}
+.login-form{ text-align:center;}
+.forgot a {
+  color: #777777;
+  font-size: 14px;
+  text-decoration: underline;
+}
+.login-form  .btn.btn-primary {
+  background: #f0ad4e none repeat scroll 0 0;
+  border-color: #f0ad4e;
+  color: #ffffff;
+  font-size: 14px;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  padding: 0;
+}
+.forgot {
+  text-align: left; margin-bottom:30px;
+}
+.botto-text {
+  color: #ffffff;
+  font-size: 14px;
+  margin: auto;
+}
+.back { text-align: left; margin-top:10px;}
+.back a {color: #444444; font-size: 13px;text-decoration: none;}
+
+.sidenav {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  overflow-x: hidden;
+  width: 120px;
+  background-color:rgb(209, 209, 221);
+  padding-top: 20px;
+}
+.main{
+  position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
+  left: 120px;
+  width: 89%;
+  height: 100%;
+  margin:10px;
+}
+
+.card {
+  /* Add shadows to create the "card" effect */
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width:230px;
+  height:230px;
+  display: inline-block;
+  color:#337ab7
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* Add some padding inside the card container */
+.cardbottom {
+  padding: 2px 16px;
+  width:100%;
+  height:80px;
+}
+
+.cardtop{
+  width:100%;
+  height:150px;
+  background-color:rgb(177, 204, 161)
+}
+
+table, th, td {
+  margin:20px;
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+}
+
+
+.searchbox{
+  padding-left: 30%;
+}
+
+.search-container{
+  margin:5px;
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.results-container{
+  margin:5px;
+  border: 1px solid black;
+}
+
+	p     { display: table-row;  }
+	label { display: table-cell; text-align: right}
+  input,textarea{ display: table-cell; }
+  
+  .coursenav {
+    position: fixed;
+    z-index: 1;
+    left: 120px;
+    overflow-x: hidden;
+    width: 120px;
+    margin:20px;
+    padding-top: 50px;
+  }
+  .coursemain {
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: hidden;
+    left: 260px;
+    width: 75%;
+    height: 100%;
+    margin:20px;
+    padding: 50px;
+  }
+ 
+  .wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 20px;
+    grid-auto-rows: 250px;
+  }
+
+  .resultcontainer{
+    display: block;
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 400px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+  }
+
+  .result:hover {background-color: #ddd;}
