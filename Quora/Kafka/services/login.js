@@ -7,13 +7,13 @@ var config = require('../../backend/config/settings');
 function handle_request(msg, callback) {
     console.log(msg)
     db.findUser({
-        user_id: msg.user_id
+        email_id: msg.email_id
     }, function (res) {
             var user = {
-                user_id:res.User_id
+                email_id:res.email_id
             }
         // Check if password matches
-        crypt.compareHash(msg.password, res.password, function (isMatch) {
+        crypt.compareHash(msg.password, res.Password, function (isMatch) {
             if (isMatch) {
                 var token = jwt.sign(user, config.secret, {
                     expiresIn: 900000 // in seconds

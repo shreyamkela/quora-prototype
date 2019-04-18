@@ -13,6 +13,7 @@
     "jsonwebtoken": "^7.1.9",
     "kafka-node": "^2.5.0",
     "mongoose": "^5.4.22",
-    "mongoose-sequence": "^5.0.1"
+    "mongoose-sequence": "^5.0.1",
+    "mysql": "^2.16.0"
   }
 }

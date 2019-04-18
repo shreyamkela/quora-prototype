@@ -28,6 +28,7 @@ crypt.compareHash = function (data, encrypted, successCallback, failureCallback)
     bcrypt.compare(data, encrypted, function (err, isMatch) {
         if (err) {
             console.log("Error in compare")
+            console.log(err)
             failureCallback(err);
             return;
         }

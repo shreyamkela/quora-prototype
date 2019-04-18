@@ -5,11 +5,11 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
-var kafka = require('./kafka/client');
 app.set('view engine', 'ejs');
 const fileUpload = require('express-fileupload');
 
-
+var Login = require('./routes/Login')
+var Signup = require('./routes/Signup')
 
 var passport = require('passport')
 // Set up middleware
@@ -48,7 +48,9 @@ app.use(function(req, res, next) {
     next();
 });
 
-
+//define routes
+app.use('/login', Login);
+app.use('/signup', Signup);
 
 
 

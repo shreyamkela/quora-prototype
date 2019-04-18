@@ -19,7 +19,7 @@ module.exports = function (passport) {
         secretOrKey: config.secret
     };
     passport.use(new JwtStrategy(opts, function (jwt_payload, callback) {
-        db.findUser({user_id: jwt_payload.user_id}, function (res) {
+        db.findUser({email_id: jwt_payload.email_id}, function (res) {
             var user = res;
             delete user.password;
             callback(null, user);
