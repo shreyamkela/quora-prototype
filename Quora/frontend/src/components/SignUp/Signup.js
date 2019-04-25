@@ -29,7 +29,7 @@ class Signup extends Component{
         console.log(values);
         this.props.signUp(values, () => {
             if(cookie.load('cookie_user')){
-                this.props.history.push("/main/home");
+                this.props.history.push("/login");
           }
         });
       }
@@ -37,7 +37,7 @@ class Signup extends Component{
     render() {
         const { handleSubmit } = this.props;
         if(this.props.authFlag){
-            this.props.history.push("/main/home");
+            this.props.history.push("/login");
         }
          return(
              <div>
@@ -51,8 +51,13 @@ class Signup extends Component{
                              </div>
                              <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
                              <Field
-                            label="Username"
-                            name="username"  
+                            label="First Name"
+                            name="firstname"  
+                            type="text"         
+                            component={this.renderField}/>
+                            <Field
+                            label="Last Name"
+                            name="lastname"  
                             type="text"         
                             component={this.renderField}/>
                             <Field

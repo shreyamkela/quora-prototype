@@ -13,6 +13,7 @@ var Signup = require('./routes/Signup')
 var Answer = require('./routes/Answer')
 var Bookmark = require('./routes/Bookmark')
 var Vote = require('./routes/Vote')
+var Profile = require('./routes/Profile')
 
 var passport = require('passport')
 // Set up middleware
@@ -57,6 +58,7 @@ app.use('/signup', Signup);
 app.use('/answer', Answer);
 app.use('/bookmark', Bookmark);
 app.use('/vote', Vote);
+app.use('/profile', Profile);
 
 
 

@@ -33,6 +33,7 @@ class Navbar extends Component {
         }
         const homeClass = window.location.pathname.includes("/main/home") ? "active" : "";
         const accountClass = window.location.pathname.includes("/main/profile") ? "active" : "";
+        const settingsClass = window.location.pathname.includes("/main/settings") ? "active" : "";
 
         return (
             
@@ -40,8 +41,9 @@ class Navbar extends Component {
                 <div className='sidenav'>
                     <h3>SJSU</h3>
                     <ul className="nav nav-pills nav-stacked">
-                        <li className={accountClass}><a href="/main/profile">Account</a></li>
+                        <li className={accountClass}><Link to="/main/profile" ><i className="fa fa-circle-o"></i> Profile</Link></li>
                         <li className={homeClass}><a href="/main/home">Home</a></li>
+                        <li className={settingsClass}><a href="/main/settings">Settings</a></li>
                     {navLogin}    
                     </ul>
                 </div>

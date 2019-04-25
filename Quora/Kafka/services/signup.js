@@ -6,6 +6,25 @@ var config = require('../../backend/config/settings');
 function handle_request(msg, callback) {
         // Attempt to save the user
     db.createUser(msg, function (res) {
+        const newUser = new Profile({
+            //    _id: new mongoose.Types.ObjectId(),
+                firstname: msg.firstname,
+                lastname: msg.lastname,
+                email: msg.email_id
+            })
+            
+            console.log("mongo update")
+            newUser
+            .save()
+            .then(result => {
+                console.log("result of query" + result)
+                })
+            .catch(err => {
+                console.log("first error" + err);
+   
+            callback(err,'Problem in creating profile in mongodb.');
+      
+            })
         var token = jwt.sign({email_id:msg.email_id}, config.secret, {
             expiresIn: 900000 // in seconds
         });
