@@ -10,6 +10,9 @@ const fileUpload = require('express-fileupload');
 
 var Login = require('./routes/Login')
 var Signup = require('./routes/Signup')
+var Answer = require('./routes/Answer')
+var Bookmark = require('./routes/Bookmark')
+var Vote = require('./routes/Vote')
 
 var passport = require('passport')
 // Set up middleware
@@ -51,6 +54,9 @@ app.use(function(req, res, next) {
 //define routes
 app.use('/login', Login);
 app.use('/signup', Signup);
+app.use('/answer', Answer);
+app.use('/bookmark', Bookmark);
+app.use('/vote', Vote);
 
 
 
