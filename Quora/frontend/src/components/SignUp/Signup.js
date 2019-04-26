@@ -28,17 +28,13 @@ class Signup extends Component{
       onSubmit(values) {
         console.log(values);
         this.props.signUp(values, () => {
-            if(cookie.load('cookie_user')){
                 this.props.history.push("/login");
-          }
         });
       }
 
     render() {
         const { handleSubmit } = this.props;
-        if(this.props.authFlag){
-            this.props.history.push("/login");
-        }
+       
          return(
              <div>
             <div className="container">
