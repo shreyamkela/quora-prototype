@@ -28,7 +28,7 @@ class Profile extends Component {
       onSubmit (e) {
         e.preventDefault()
         console.log("in onsubmit profile")
-        this.props.history.push('/updateProfile')
+        this.props.history.push('/main/profile/updateProfile')
     }
     onSubmit1 (e) {
         e.preventDefault()
@@ -93,8 +93,8 @@ class Profile extends Component {
             let redirectVar = null;
             if(!cookie.load('cookie_user'))
                 redirectVar = <Redirect to= "/login"/>
-        return (
-            <div>
+      return (
+        <div>
            
           <List
           itemLayout="horizontal"
@@ -112,7 +112,7 @@ class Profile extends Component {
         
         <Button  id="btn_space"   onClick={this.onSubmit} className="add-button" type="primary"  style={{"margin-left":"223px"}} >Update Profile</Button>
         <Button onClick={this.onSubmit1} className="add-button" type="primary"   >Upload Photo</Button>
-        </div>
+          </div>
         )
         }
 }

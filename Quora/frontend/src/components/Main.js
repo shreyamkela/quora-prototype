@@ -4,7 +4,9 @@ import Login from './Login/Login';
 import Signup from './SignUp/Signup';
 import Navbar from './LandingPage/Navbar';
 import Sidebar from './LandingPage/Sidebar';
-
+import Questions from './Question/Questions';
+import Profile from './Profile/Profile';
+import UpdateProfile from './Profile/UpdateProfile';
 //Create a Main Component
 class Main extends Component {
     render() {
@@ -17,10 +19,9 @@ class Main extends Component {
                 {/*Render Different Component based on Route*/}
 
                 <Route exact path="/" component={Login} />
-                <Route  path="/main" component={Sidebar} />
+                <Route path="/main" component={Sidebar} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup}/>
-     
             </div>
         )
     }
