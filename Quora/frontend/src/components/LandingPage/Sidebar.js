@@ -7,8 +7,9 @@ import {Router, Route} from 'react-router-dom';
 import Questions from '../Question/Questions';
 import Profile from '../Profile/Profile';
 import UpdateProfile from '../Profile/UpdateProfile';
-import Login from "../Login/Login";
-
+import { connect } from "react-redux";
+import { logout } from "../../actions";
+import cookie from 'react-cookies';
 
 const {SubMenu} = Menu;
 const {
@@ -27,8 +28,15 @@ class Sidebar extends Component {
         this.setState({collapsed});
     }
 
+    //handle logout to destroy the cookie
+    handleLogout = () => {
+        this.props.logout()
+    }
 
     render() {
+        if(!cookie.load('cookie_user')){
+            this.props.history.push("/login");
+        }
         return (
             <div>
                 <Layout>
@@ -42,7 +50,7 @@ class Sidebar extends Component {
                         >
                             <Menu.Item key="1"> <Link to='/main/profile'> Profile</Link></Menu.Item>
                             <Menu.Item key="2"> <Link to='/main/home'>Home</Link></Menu.Item>
-                            <Menu.Item key="3"> <Link to='/logouts'>Logout</Link></Menu.Item>
+                            <Menu.Item key="3"> <Link to='/login' onClick={this.handleLogout}>Logout</Link></Menu.Item>
                         </Menu>
                     </Header>
                     {/*<div className='sidenav'>*/}
@@ -104,5 +112,10 @@ class Sidebar extends Component {
     }
 }
 
-
-export default Sidebar;
+//This method is provided by redux and it gives access to centeral store
+function mapStateToProps(state) {
+    return {
+        authFlag: state.authFlag
+    };
+  }
+export default connect(mapStateToProps,{ logout })(Sidebar);
