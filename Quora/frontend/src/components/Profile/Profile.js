@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import { fetchProfile } from "../../actions";
 import {Redirect} from 'react-router';
 import cookie from 'react-cookies';
+import { List, Button} from 'antd';
 import _ from "lodash";
+
 
 class Profile extends Component {
     
     constructor() {
         super()
+       
         this.onSubmit = this.onSubmit.bind(this)
         this.onSubmit1 = this.onSubmit1.bind(this)
     }
@@ -25,12 +28,12 @@ class Profile extends Component {
       onSubmit (e) {
         e.preventDefault()
         console.log("in onsubmit profile")
-        this.props.history.push('/main/updateProfile')
+        this.props.history.push('/updateProfile')
     }
     onSubmit1 (e) {
         e.preventDefault()
         console.log("in onsubmit photo")
-        this.props.history.push('/main/updatePhoto')
+        this.props.history.push('/updatePhoto')
     }
 
     render () { 
@@ -45,6 +48,45 @@ class Profile extends Component {
         let career =  _.map(this.props.profile, prof => {  return  prof.career})    
         let credentials =  _.map(this.props.profile, prof => {  return  prof.credentials})         
                          
+        const datavalue = [{
+          title:  'First Name',
+          value: firstname
+        }, {
+          title:  'Last Name',
+          value: lastname
+        }, {
+          title:  'Email',
+          value: email
+        },
+        {
+          title:  'City',
+          value: city
+        },
+        {
+          title:  'State',
+          value: state
+        },
+        {
+          title:  'Zipcode',
+          value: zipcode
+        },
+        {
+          title:  'Education',
+          value: education
+        },
+        {
+          title:  'Career',
+          value: career
+        },
+        {
+          title:  'About Me',
+          value: aboutme
+        },
+        {
+          title:  'Credentials',
+          value: credentials
+        }
+      ]; 
                  
         console.log("profile :" + JSON.stringify((this.props.profile)))
     
@@ -52,72 +94,25 @@ class Profile extends Component {
             if(!cookie.load('cookie_user'))
                 redirectVar = <Redirect to= "/login"/>
         return (
-            
             <div>
-            {redirectVar}
-            <div class="content-wrapper">
-            <section className="content-header">
-            <div className="container">
-                <div className="row">
-                    <div className="col-md-6 mt-5 mx-auto">
-                   
-            <button   onClick={this.onSubmit} class="btn btn-primary" style={{"margin-left":"223px"}} type="submit">Update Profile</button>
-            <button onClick={this.onSubmit1} class="btn btn-primary" style={{"margin-left":"363px","margin-top":"-54px"}} type="submit">Upload Photo</button>
-            <div  className="container">
+           
+          <List
+          itemLayout="horizontal"
+          dataSource={datavalue}
+          renderItem={item => (
+            <List.Item>
+              <List.Item.Meta
+                
+                title={item.title}
+                description={item.value}
+              />
+            </List.Item>
+          )}
+        />
         
-        <table style={{"margin-left":"210px","padding":"5em","width":"500px"}}>
-  <tr>
-    <th>First Name</th>
-    <td>{firstname}</td>
-  </tr>
-  <tr>
-    <th>Last Name</th>
-    <td>{lastname}</td>
-  </tr>
-  <tr>
-    <th>Email</th>
-    <td>{email}</td>
-  </tr>
-  <tr>
-  <th>City</th>
-  <td>{city}</td>
-</tr>
-<tr>
-<th>State</th>
-<td>{state}</td>
-</tr>
-<tr>
-<th>Zipcode</th>
-<td>{zipcode}</td>
-</tr>
-<tr>
-<th>Education</th>
-<td>{education}</td>
-</tr>
-<tr>
-<th>Career</th>
-<td>{career}</td>
-</tr>
-<tr>
-<th>About Me</th>
-<td>{aboutme}</td>
-</tr>
-<tr>
-<th>Credentials</th>
-<td>{credentials}</td>
-</tr>
-
-
-</table>
-            
-            </div>
-            </div>
-                    </div>
-                    </div>
-                    </section>
-                    </div>
-            
-            </div>
+        <Button  id="btn_space"   onClick={this.onSubmit} className="add-button" type="primary"  style={{"margin-left":"223px"}} >Update Profile</Button>
+        <Button onClick={this.onSubmit1} className="add-button" type="primary"   >Upload Photo</Button>
+        </div>
         )
         }
 }

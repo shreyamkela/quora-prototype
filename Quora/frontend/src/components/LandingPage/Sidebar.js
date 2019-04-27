@@ -5,6 +5,8 @@ import {
 import {Link} from 'react-router-dom';
 import {Router, Route} from 'react-router-dom';
 import Questions from '../Question/Questions';
+import Profile from '../Profile/Profile';
+import UpdateProfile from '../Profile/UpdateProfile';
 import Login from "../Login/Login";
 
 
@@ -38,7 +40,7 @@ class Sidebar extends Component {
                             defaultSelectedKeys={['2']}
                             style={{lineHeight: '64px'}}
                         >
-                            <Menu.Item key="1"> <Link to='/main/profile'> Profile</Link></Menu.Item>
+                            <Menu.Item key="1"> <Link to='/profile'> Profile</Link></Menu.Item>
                             <Menu.Item key="2"> <Link to='/main/home'>Home</Link></Menu.Item>
                             <Menu.Item key="3"> <Link to='/logout'>Logout</Link></Menu.Item>
                         </Menu>
@@ -88,7 +90,8 @@ class Sidebar extends Component {
                                     {/*TEAM ----define your routes here routes that will be shown
                                     when a tab is clicked*/}
                                     <Route exact path='/questions' component={Questions}/>
-
+                                    <Route exact path='/profile' component={Profile}/>
+                                    <Route path="/updateProfile" component={UpdateProfile}/>
                                 </div>
                             </Content>
                         </Layout>

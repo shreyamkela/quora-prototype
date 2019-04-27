@@ -4,7 +4,6 @@ import {Redirect} from 'react-router';
 import cookie from 'react-cookies';
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
-import axios from 'axios';
 
 
 class UpdateProfile extends Component {
@@ -35,7 +34,7 @@ class UpdateProfile extends Component {
     onSubmit (values) {
 
     this.props.updateProfile(values,() => {
-        this.props.history.push('/main/profile')
+        this.props.history.push('/profile')
       });
       }
           
@@ -49,10 +48,10 @@ class UpdateProfile extends Component {
         }
         return ( 
           <div >
-          <div className="container">
+          <div>
               {redirectVar}
-              <div className="login-form">
-                  <div className="main-div">
+              <div  className="login-form">
+                  <div style={{ "max-width": "60%"}} className="main-div">
                       <div className="panel">
                       <h1 className="h3 mb-3 font-weight-normal">Profile Update Form</h1>
                       </div>
@@ -106,7 +105,7 @@ class UpdateProfile extends Component {
 />  
                    
  <div style={{"padding":"10px"}}>
- <button type="submit" className="btn btn-primary">Submit</button>    
+ <button type="submit" className="add-button" >Submit</button>    
 </div>
                         </form>
                     </div>
