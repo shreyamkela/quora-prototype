@@ -12,8 +12,10 @@
     "bcrypt-nodejs": "0.0.3",
     "jsonwebtoken": "^7.1.9",
     "kafka-node": "^2.5.0",
+    "lodash": "^4.17.11",
     "mongoose": "^5.4.22",
     "mongoose-sequence": "^5.0.1",
-    "mysql": "^2.16.0"
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.11"
   }
 }

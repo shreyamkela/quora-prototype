@@ -6,6 +6,8 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware, compose } from "redux";
 import { BrowserRouter} from "react-router-dom";
 import promise from "redux-promise";
+import './index.css';
+import 'antd/dist/antd.css'
 
 import RootReducer from "./reducers";
 

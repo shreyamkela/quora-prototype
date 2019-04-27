@@ -47,6 +47,10 @@ var AnswerSchema = new mongoose.Schema({
 
 var QuestionSchema = new mongoose.Schema({
     ID: { type: Number, unique: true },
+    // followers: [UserSchema],
+    topic: {type: String},
+    timestamp: { type: Date, default: Date.now },
+    // author: {User},
     answers: [AnswerSchema]
 })
 

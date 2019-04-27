@@ -163,3 +163,7 @@ table, th, td {
   }
 
   .result:hover {background-color: #ddd;}
+
+  .heading{
+    text-align: center;
+  }

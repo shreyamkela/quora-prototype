@@ -5,13 +5,19 @@ import Signup from './SignUp/Signup';
 import UpdateProfile from './Profile/UpdateProfile';
 import Profile from './Profile/Profile';
 import Navbar from './LandingPage/Navbar';
+import Sidebar from './LandingPage/Sidebar';
 
 //Create a Main Component
 class Main extends Component {
     render() {
         return(
             <div>
+                <Sidebar/>
+
+
+
                 {/*Render Different Component based on Route*/}
+
                 <Route exact path="/" component={Login} />
                 <Route  path="/main" component={Navbar} />
                 <Route path="/login" component={Login} />
