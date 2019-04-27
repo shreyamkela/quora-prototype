@@ -42,7 +42,7 @@ class Sidebar extends Component {
                         >
                             <Menu.Item key="1"> <Link to='/profile'> Profile</Link></Menu.Item>
                             <Menu.Item key="2"> <Link to='/main/home'>Home</Link></Menu.Item>
-                            <Menu.Item key="3"> <Link to='/logout'>Logout</Link></Menu.Item>
+                            <Menu.Item key="3"> <Link to='/logouts'>Logout</Link></Menu.Item>
                         </Menu>
                     </Header>
                     {/*<div className='sidenav'>*/}

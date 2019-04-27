@@ -10,14 +10,14 @@ class Main extends Component {
     render() {
         return(
             <div>
-                <Sidebar/>
+                {/*<Sidebar/>*/}
 
 
 
                 {/*Render Different Component based on Route*/}
 
                 <Route exact path="/" component={Login} />
-                <Route  path="/main" component={Navbar} />
+                <Route  path="/main" component={Sidebar} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup}/>
      
