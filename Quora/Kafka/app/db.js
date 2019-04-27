@@ -50,6 +50,7 @@ var QuestionSchema = new mongoose.Schema({
     // followers: [UserSchema],
     topic: {type: String},
     timestamp: { type: Date, default: Date.now },
+    question: {type: String},
     // author: {User},
     answers: [AnswerSchema]
 })
@@ -97,7 +98,7 @@ db.findUser = function (user, successCallback, failureCallback) {
 }
 
 //add an answer to a question
-db.addAnswer = function (values, successCallback, failureCallback) {
+    db.addAnswer = function (values, successCallback, failureCallback) {
     Questions.findOneAndUpdate({
         ID: Number(values.q_id)
     }, {
