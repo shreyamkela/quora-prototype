@@ -31,6 +31,9 @@ aboutme: {
 },
 credentials: {
     type: String
+},
+photo: {
+    type: String
 }
 });
 
