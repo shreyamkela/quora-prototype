@@ -2,13 +2,20 @@
 var crypt = require('./crypt');
 var db = {};
 let mysql = require('mysql')
+// let con = mysql.createPool({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'mysql',
+//     database: 'Quora_Db',
+//     multipleStatements:true
+// })
 let con = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'mysql',
-    database: 'Quora_Db',
-    multipleStatements:true
-})
+  host: "cmpe273-quora-group3.cjw2lhsmorrx.us-east-1.rds.amazonaws.com",
+  user: "admin",
+  password: "ErFgksugsMV0fj0OQjKx",
+  database: "Quora_Db",
+  multipleStatements: true
+});
 const mongoose = require('mongoose');
 //"mongodb://localhost:27017/CanvasApp"
 let uri = "mongodb+srv://canvas_user:canvas@canvas-upy4d.mongodb.net/CanvasApp?retryWrites=true"
