@@ -11,7 +11,7 @@ const file_storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         console.log("in cb file Body : ",file.originalname);
-      cb(null, new Date().toISOString() + file.originalname)
+      cb(null, new Date().toISOString().replace(/\:/g,'_') + file.originalname)
     }
   })
 
