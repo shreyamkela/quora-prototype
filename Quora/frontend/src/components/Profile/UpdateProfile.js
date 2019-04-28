@@ -34,7 +34,7 @@ class UpdateProfile extends Component {
     onSubmit (values) {
 
     this.props.updateProfile(values,() => {
-        this.props.history.push('/profile')
+        this.props.history.push('/main/profile')
       });
       }
           
