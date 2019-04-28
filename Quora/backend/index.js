@@ -11,9 +11,12 @@ app.set('view engine', 'ejs');
 var Login = require('./routes/Login')
 var Signup = require('./routes/Signup')
 var Answer = require('./routes/Answer')
+var updateAnswer = require('./routes/updateAnswer')
 var Bookmark = require('./routes/Bookmark')
 var Vote = require('./routes/Vote')
+var TopUpAnswers = require('./routes/TopUpAnswers')
 var Profile = require('./routes/Profile')
+
 
 var passport = require('passport')
 // Set up middleware
@@ -60,6 +63,8 @@ app.use('/answer', Answer);
 app.use('/bookmark', Bookmark);
 app.use('/vote', Vote);
 app.use('/profile', Profile);
+app.use('/updateanswer', updateAnswer);
+app.use('/topupanswers', TopUpAnswers);
 
 
 

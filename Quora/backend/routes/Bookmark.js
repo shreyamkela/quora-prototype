@@ -23,7 +23,7 @@ router.get('/', function (req, res) {
         })
         res.end(JSON.stringify(results))
     }, function (err) {
-        response.status(400).json({ success: false, message: "Unable to fetch bookmarks" });
+        res.status(400).json({ success: false, message: "Unable to fetch bookmarks" });
     });
 })
 

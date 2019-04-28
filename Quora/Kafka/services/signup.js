@@ -10,7 +10,8 @@ function handle_request(msg, callback) {
             //    _id: new mongoose.Types.ObjectId(),
                 firstname: msg.firstname,
                 lastname: msg.lastname,
-                email: msg.email_id
+                email: msg.email_id,
+                photo:'http://localhost:3001/profile_uploads/default_profile.png'
             })
             
             console.log("mongo update")
