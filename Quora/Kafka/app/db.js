@@ -98,11 +98,25 @@ db.findUser = function (user, successCallback, failureCallback) {
 }
 
 //add an answer to a question
-    db.addAnswer = function (values, successCallback, failureCallback) {
+db.addAnswer = function (values, successCallback, failureCallback) {
     Questions.findOneAndUpdate({
         ID: Number(values.q_id)
     }, {
-            $push: { answers: {content:values.answer} } 
+            $push: { answers: {content:values.answer,author:values.email_id} } 
+        }
+    ).then(() => { successCallback() })
+        .catch((error) => {
+            failureCallback(error)
+            return
+        })
+}
+
+//update  an answer
+db.updateAnswer = function (values, successCallback, failureCallback) {
+    Questions.findOneAndUpdate({
+        "answers._id": mongoose.Types.ObjectId(values.a_id)
+    }, {
+            $set: { "answers.$.content": values.answer } 
         }
     ).then(() => { successCallback() })
         .catch((error) => {
@@ -124,7 +138,7 @@ db.vote = function (values, successCallback, failureCallback) {
             "answers._id": mongoose.Types.ObjectId(values.a_id),
             "answers.votes.user": values.email_id 
         }, {
-                $set: { "answers.$.votes.$[].flag": values.flag } 
+                $set: { "answers.$.votes.$$.flag": values.flag } 
             }
         ).then(() => { successCallback() })
             .catch((error) => {
@@ -136,8 +150,6 @@ db.vote = function (values, successCallback, failureCallback) {
             failureCallback(error)
             return
     })
-    
-        
 }
 
 
@@ -155,7 +167,7 @@ db.comment = function (values, successCallback, failureCallback) {
         })
 }
 
-//comment on an answer
+//bookmark an answer
 db.bookmark = function (values, successCallback, failureCallback) {
     Questions.findOneAndUpdate({
         "answers._id": mongoose.Types.ObjectId(values.a_id)
@@ -177,12 +189,82 @@ db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
     }).catch((err)=>{failureCallback(err)})
 }
 
+/*
 db.getBookmarks = function (email_id, successCallback, failureCallback) {
     Questions.find({
         "answers.bookmarks.":email_id
     },'answers').then(async (docs)=>{
        successCallback(docs) 
     }).catch((err)=>{failureCallback(err)})
+}*/
+db.getBookmarks = function (email_id, successCallback, failureCallback) {
+    Questions.aggregate(
+        [{ $match: { "answers.bookmarks.": email_id } }, {
+            $project: {
+                "answers": {
+                    $filter: {
+                        input: '$answers',
+                        as: 'answer',
+                        cond: {
+                            $in: [email_id,'$$answer.bookmarks'] 
+                        }
+                    }
+                }
+            }
+        }]
+    ).then(async (docs) => {
+      console.log(docs)
+       successCallback(docs) 
+    }).catch((err) => {
+        console.log(err)
+        failureCallback(err)
+    })
 }
 
+
+db.getTopAnswers = function (email_id, successCallback, failureCallback) {
+    /*Questions.find({
+        "answers.author": email_id
+    },'answers.$')*/
+    Questions.aggregate(
+        [{ $match: { "answers.author": email_id } }, {
+            $project: {
+                "answers": {
+                    $filter: {
+                        input: '$answers',
+                        as: 'answer',
+                        cond: {
+                            $eq: ['$$answer.author',email_id] 
+                        }
+                    }
+                }
+            }
+        }]
+    ).then(async (docs) => {
+        console.log(docs)
+        console.log(email_id)
+        countvotes = (a) => {
+            console.log(a)
+            if(a.votes !== undefined)
+                return a.votes.filter(v => v.flag === 1).length
+            else return 0
+        }
+        answers = docs.map(d => {
+           return d.answers.map((a) => {
+                   return{
+                       content: a.content,
+                       upvotes: countvotes(a),
+                       ques_id:d._id
+                   }
+               })
+               
+        })
+        console.log(answers)
+        new_docs = answers.sort(function(a,b){return b.upvotes-a.upvotes})
+        successCallback(new_docs.slice(0,10))
+    }).catch((err) => {
+        console.log(err)
+        failureCallback(err)
+    })
+}
 module.exports = db;
