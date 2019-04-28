@@ -11,6 +11,7 @@ const fileUpload = require('express-fileupload');
 var Login = require('./routes/Login')
 var Signup = require('./routes/Signup')
 var Answer = require('./routes/Answer')
+var updateAnswer = require('./routes/updateAnswer')
 var Bookmark = require('./routes/Bookmark')
 var Vote = require('./routes/Vote')
 var Profile = require('./routes/Profile')
@@ -59,6 +60,7 @@ app.use('/answer', Answer);
 app.use('/bookmark', Bookmark);
 app.use('/vote', Vote);
 app.use('/profile', Profile);
+app.use('/updateanswer', updateAnswer);
 
 
 
