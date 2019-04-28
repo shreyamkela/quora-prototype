@@ -14,7 +14,9 @@ var Answer = require('./routes/Answer')
 var updateAnswer = require('./routes/updateAnswer')
 var Bookmark = require('./routes/Bookmark')
 var Vote = require('./routes/Vote')
+var TopUpAnswers = require('./routes/TopUpAnswers')
 var Profile = require('./routes/Profile')
+
 
 var passport = require('passport')
 // Set up middleware
@@ -62,6 +64,7 @@ app.use('/bookmark', Bookmark);
 app.use('/vote', Vote);
 app.use('/profile', Profile);
 app.use('/updateanswer', updateAnswer);
+app.use('/topupanswers', TopUpAnswers);
 
 
 
