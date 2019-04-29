@@ -5,6 +5,7 @@ var Signup = require('./services/signup.js');
 var Profile = require('./services/profile.js');
 var UpdateProfile = require('./services/update_profile.js');
 var ProfilePic = require('./services/profilepic.js');
+var Question = require('./services/question');
 
 function handleTopicRequest(topic_name,fname){
     var consumer = connection.getConsumer(topic_name);
@@ -46,5 +47,6 @@ handleTopicRequest("user_signup", Signup)
 handleTopicRequest("profile", Profile)
 handleTopicRequest("update_profile", UpdateProfile)
 handleTopicRequest("profilepic", ProfilePic)
+handleTopicRequest("add_question", Question)
 //first argument is topic name
 //second argument is a function that will handle this topic request

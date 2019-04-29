@@ -19,7 +19,7 @@ let con = mysql.createPool({
 const mongoose = require('mongoose');
 //"mongodb://localhost:27017/CanvasApp"
 let uri = "mongodb+srv://canvas_user:canvas@canvas-upy4d.mongodb.net/CanvasApp?retryWrites=true"
-mongoose.connect("mongodb://localhost:27017/QuoraApp", { useNewUrlParser: true ,poolSize:5});
+// mongoose.connect("mongodb://localhost:27017/QuoraApp", { useNewUrlParser: true ,poolSize:5});
 let con1 = mongoose.connection
 con1.on('error', console.error.bind(console, 'connection error:'));
 con1.once('open', function() {
@@ -58,7 +58,7 @@ var QuestionSchema = new mongoose.Schema({
     topic: {type: String},
     timestamp: { type: Date, default: Date.now },
     question: {type: String},
-    // author: {User},
+    // author: [UserSchema],
     answers: [AnswerSchema]
 })
 
@@ -318,4 +318,36 @@ db.getTopDownAnswers = function (email_id, successCallback, failureCallback) {
         failureCallback(err)
     })
 }
+
+// db.addQuestion = function (questionInfo,  successCallback, failureCallback ) {
+//     let questions = new Questions(questionInfo);
+//     let result = {};
+//
+//     questions.save()
+//         .then(() => {successCallback})
+//         .catch((error) => {
+//             failureCallback(error)
+//             return
+//         })
+// }
+
+db.addQuestion = function(questionInfo,successCallback, failureCallback){
+    let questions = new Questions(questionInfo);
+    let result = {};
+
+    questions.save()
+        .then((questions) => {
+            // questions posted successfully.
+            console.log('Saved questions details: ', questions._id);
+            result.code = 200;
+            callback(null, result);
+        }, (err) => {
+            if (err) {
+                console.log(err);
+            }
+            result.code = 500;
+            callback(null, result);
+        });
+}
+
 module.exports = db;
