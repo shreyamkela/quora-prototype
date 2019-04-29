@@ -54,11 +54,11 @@ var AnswerSchema = new mongoose.Schema({
 
 var QuestionSchema = new mongoose.Schema({
     ID: { type: Number, unique: true },
-    followers: [UserSchema],
+    // followers: [UserSchema],
     topic: {type: String},
     timestamp: { type: Date, default: Date.now },
     question: {type: String},
-    author: [UserSchema],
+    // author: [UserSchema],
     answers: [AnswerSchema]
 })
 
