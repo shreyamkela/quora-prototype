@@ -268,4 +268,80 @@ db.getTopAnswers = function (email_id, successCallback, failureCallback) {
     failureCallback(err)
   })
 }
+
+db.getTopDownAnswers = function (email_id, successCallback, failureCallback) {
+  Questions.aggregate(
+    [{ $match: { "answers.author": email_id } }, {
+      $project: {
+        "answers": {
+          $filter: {
+            input: '$answers',
+            as: 'answer',
+            cond: {
+              $eq: ['$$answer.author', email_id]
+            }
+          }
+        }
+      }
+    }]
+  ).then((docs) => {
+    console.log(docs)
+    console.log(email_id)
+    countvotes = (a) => {
+      console.log(a)
+      if (a.votes !== undefined)
+        return a.votes.filter(v => v.flag === 0).length
+      else return 0
+    }
+    answers = []
+    docs.map(d => {
+      d.answers.map((a) => {
+        answers.push({
+          content: a.content,
+          downvotes: countvotes(a),
+          ques_id: d._id
+        })
+      })
+
+    })
+    new_docs = answers.sort(function (a, b) { return b.downvotes - a.downvotes })
+    console.log(new_docs)
+    successCallback(new_docs.slice(0, 5))
+  }).catch((err) => {
+    console.log(err)
+    failureCallback(err)
+  })
+}
+
+// db.addQuestion = function (questionInfo,  successCallback, failureCallback ) {
+//     let questions = new Questions(questionInfo);
+//     let result = {};
+//
+//     questions.save()
+//         .then(() => {successCallback})
+//         .catch((error) => {
+//             failureCallback(error)
+//             return
+//         })
+// }
+
+db.addQuestion = function (questionInfo, successCallback, failureCallback) {
+  let questions = new Questions(questionInfo);
+  let result = {};
+
+  questions.save()
+    .then((questions) => {
+      // questions posted successfully.
+      console.log('Saved questions details: ', questions._id);
+      result.code = 200;
+      callback(null, result);
+    }, (err) => {
+      if (err) {
+        console.log(err);
+      }
+      result.code = 500;
+      callback(null, result);
+    });
+}
+
 module.exports = db;
