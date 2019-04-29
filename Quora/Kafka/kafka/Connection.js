@@ -2,9 +2,20 @@ var kafka = require('kafka-node');
 
 function ConnectionProvider() {
     this.getConsumer = function(topic_name) {
-        
+        var options = {
+            // connect directly to kafka broker (instantiates a KafkaClient)
+            kafkaHost: '127.0.0.1:9092',
+            groupId: 'Quora',
+            autoCommit: true,
+            autoCommitIntervalMs: 5000,
+            sessionTimeout: 15000,
+            fetchMaxBytes: 10 * 1024 * 1024, // 10 MB
+            protocol: ['roundrobin'],
+            fromOffset: 'latest',
+            outOfRangeOffset: 'earliest'
+          };
             this.client = new kafka.Client("localhost:2181");
-            this.kafkaConsumerConnection = new kafka.Consumer(this.client,[ { topic: topic_name, partition: 0 }]);
+            this.kafkaConsumerConnection = new kafka.ConsumerGroup(options, topic_name);
             this.client.on('ready', function () { console.log('client ready!') })
         
         return this.kafkaConsumerConnection;
