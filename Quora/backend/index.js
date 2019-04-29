@@ -6,7 +6,7 @@ var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
 app.set('view engine', 'ejs');
-//const fileUpload = require('express-fileupload');
+const fileUpload = require('express-fileupload');
 
 var Login = require('./routes/Login')
 var Signup = require('./routes/Signup')
@@ -15,6 +15,7 @@ var updateAnswer = require('./routes/updateAnswer')
 var Bookmark = require('./routes/Bookmark')
 var Vote = require('./routes/Vote')
 var TopUpAnswers = require('./routes/TopUpAnswers')
+var TopDownAnswers = require('./routes/TopDownAnswers')
 var Profile = require('./routes/Profile')
 
 
@@ -25,7 +26,7 @@ app.use(passport.initialize());
 
 
 //use to upload files
-//app.use(fileUpload())
+app.use(fileUpload())
 //cookie parser
 app.use(cookieParser())
 //static directory
@@ -54,7 +55,6 @@ app.use(function(req, res, next) {
     res.setHeader('Cache-Control', 'no-cache');
     next();
 });
-app.use('/profile_uploads',express.static('profile_uploads'));
 
 //define routes
 app.use('/login', Login);
@@ -65,6 +65,7 @@ app.use('/vote', Vote);
 app.use('/profile', Profile);
 app.use('/updateanswer', updateAnswer);
 app.use('/topupanswers', TopUpAnswers);
+app.use('/topdownanswers', TopDownAnswers);
 
 
 

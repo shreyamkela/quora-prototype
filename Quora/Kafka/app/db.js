@@ -229,7 +229,7 @@ db.getBookmarks = function (email_id, successCallback, failureCallback) {
 }
 
 
-db.getTopAnswers = function (email_id, successCallback, failureCallback) {
+db.getTopUpAnswers = function (email_id, successCallback, failureCallback) {
     /*Questions.find({
         "answers.author": email_id
     },'answers.$')*/
@@ -256,19 +256,63 @@ db.getTopAnswers = function (email_id, successCallback, failureCallback) {
                 return a.votes.filter(v => v.flag === 1).length
             else return 0
         }
-        answers = docs.map(d => {
-           return d.answers.map((a) => {
-                   return{
-                       content: a.content,
-                       upvotes: countvotes(a),
-                       ques_id:d._id
-                   }
-               })
-               
+        answers=[]
+        docs.map(d => {
+            d.answers.map((a) => {
+                answers.push({
+                    content: a.content,
+                    upvotes: countvotes(a),
+                    ques_id: d._id
+                })
+            })   
         })
         console.log(answers)
         new_docs = answers.sort(function(a,b){return b.upvotes-a.upvotes})
         successCallback(new_docs.slice(0,10))
+    }).catch((err) => {
+        console.log(err)
+        failureCallback(err)
+    })
+}
+
+db.getTopDownAnswers = function (email_id, successCallback, failureCallback) {
+    Questions.aggregate(
+        [{ $match: { "answers.author": email_id } }, {
+            $project: {
+                "answers": {
+                    $filter: {
+                        input: '$answers',
+                        as: 'answer',
+                        cond: {
+                            $eq: ['$$answer.author',email_id] 
+                        }
+                    }
+                }
+            }
+        }]
+    ).then((docs) => {
+        console.log(docs)
+        console.log(email_id)
+        countvotes = (a) => {
+            console.log(a)
+            if(a.votes !== undefined)
+                return a.votes.filter(v => v.flag === 0).length
+            else return 0
+        }
+        answers=[]
+        docs.map(d => {
+            d.answers.map((a) => {
+                answers.push({
+                    content: a.content,
+                    downvotes: countvotes(a),
+                    ques_id:d._id
+                })
+        })
+               
+        })
+        new_docs = answers.sort(function (a, b) {return b.downvotes - a.downvotes})
+        console.log(new_docs)
+        successCallback(new_docs.slice(0,5))
     }).catch((err) => {
         console.log(err)
         failureCallback(err)
