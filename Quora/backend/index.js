@@ -68,7 +68,7 @@ app.use('/profile', Profile);
 app.use('/updateanswer', updateAnswer);
 app.use('/topupanswers', TopUpAnswers);
 app.use('/topdownanswers', TopDownAnswers);
-app.use('/Questions',Question)
+app.use('/questions', Question);
 
 
 

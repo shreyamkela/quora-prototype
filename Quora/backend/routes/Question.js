@@ -23,3 +23,4 @@ router.post('/',function(req,response){
 
 //more routes over here
 
+module.exports = router
