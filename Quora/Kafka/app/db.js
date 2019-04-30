@@ -24,7 +24,8 @@ con1.on('error', console.error.bind(console, 'connection error:'));
 con1.once('open', function() {
   console.log("Connected")
 });
-
+var redis = require("redis"),
+client = redis.createClient();
 var AutoIncrement = require('mongoose-sequence')(mongoose);
 
 var CommentSchema = new mongoose.Schema({
@@ -188,11 +189,23 @@ db.bookmark = function (values, successCallback, failureCallback) {
 }
 
 db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
+    client.get(q_id, function (err, reply) {
+        if (err) failureCallback(err);
+        else if (reply) {//Answers exists in cache
+        console.log('got answer from redis cache');
+        successCallback(JSON.parse(reply));
+        } else {
     Questions.find({
         _id:mongoose.Types.ObjectId(q_id)
     }).then(async (docs)=>{
-       successCallback(docs) 
+        client.set(q_id, JSON.stringify(docs), function () {
+                        console.log('setting answer in redis cache');
+                        successCallback(docs);
+                    });
+       //successCallback(docs) 
     }).catch((err)=>{failureCallback(err)})
+  }
+  })
 }
 
 /*
