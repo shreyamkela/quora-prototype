@@ -12,13 +12,15 @@ function ConnectionProvider() {
             fetchMaxBytes: 10 * 1024 * 1024, // 10 MB
             protocol: ['roundrobin'],
             fromOffset: 'latest',
-            outOfRangeOffset: 'earliest'
+            outOfRangeOffset: 'earliest',
+            id:'c'
+
           };
-            this.client = new kafka.Client("localhost:2181");
-            this.kafkaConsumerConnection = new kafka.ConsumerGroup(options, topic_name);
-            this.client.on('ready', function () { console.log('client ready!') })
+            //this.client = new kafka.Client("localhost:2181");
+        this.kafkaConsumerConnection = new kafka.ConsumerGroup(options, topic_name);
+        this.kafkaConsumerConnection.on('ready', function () { console.log('client ready!') })
         
-        return this.kafkaConsumerConnection;
+        return this.kafkaConsumerConnection
     };
 
     //Code will be executed when we start Producer
