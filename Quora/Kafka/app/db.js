@@ -106,7 +106,7 @@ db.findUser = function (user, successCallback, failureCallback) {
 //add an answer to a question
 db.addAnswer = function (values, successCallback, failureCallback) {
     Questions.findOneAndUpdate({
-        _id:mongoose.Types.ObjectId(q_id)
+        _id:mongoose.Types.ObjectId(values.q_id)
     }, {
             $push: { answers: {content:values.answer,author:values.email_id} } 
         }
