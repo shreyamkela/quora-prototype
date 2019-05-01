@@ -1,16 +1,11 @@
 import React, {Component} from 'react'
 import {Modal, Button, Icon, Card, Comment, Avatar, Form, List, Input,} from 'antd';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {fetchProfile} from "../../actions";
+import {fetchAnswersByQID} from "../../actions";
 import cookie from 'react-cookies';
 import _ from "lodash";
 
-const gridStyle = {
-    width: '90%',
-    textAlign: 'center',
-}
 const {Meta} = Card;
 
 const TextArea = Input.TextArea;
@@ -50,13 +45,92 @@ class Answers extends Component {
     state = {
         visible: false,
         topic: '',
-        question: '',
         comments: [],
         submitting: false,
         value: '',
 
     }
 
+    //get the announcements data from backend  
+    componentDidMount() {
+        console.log("Mounting")
+        this.props.fetchAnswersByQID('5cc79f545ed54a2898599b7b')
+    }
+
+    renderQuestion = () => {
+        if(this.props.ques_answers.question !== undefined)
+        return(
+                <Card
+                type="inner"
+                title={<div>
+                    <Meta
+            avatar={<Avatar
+            src={this.props.ques_answers.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+            title={this.props.ques_answers.profile.firstname}//"User's name goes here"
+            description={this.props.ques_answers.profile.credentials}//"User credentials goes here"
+
+                />
+                    {this.props.ques_answers.question}
+                </div>}
+                >
+                {this.renderAnswers()}
+                
+                </Card>
+        )
+        else return null
+    }
+
+    renderAnswers=()=> {
+       
+        return _.map(this.props.ques_answers.answers, answer => {
+            let d = new Date(answer.answered_on)
+            return (
+                <Card>
+                            
+                <br/>
+
+                    <div>
+                    <Meta
+            avatar={<Avatar
+            src={answer.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+            title={answer.profile.firstname}//"User's name goes here"
+                            description={<div>{answer.profile.credentials}
+                                <div>
+                            {d.toLocaleDateString()}&nbsp;&nbsp;
+                            {d.toLocaleTimeString()}
+                        </div>
+                            </div>}//"User credentials goes here"
+
+                        />
+                <br></br>
+                        <div>
+                        
+                            {answer.content}
+                        </div>                        
+                </div>
+                <div>
+                    {this.state.comments.length > 0 && <CommentList comments={this.state.comments}/>}
+                    <Comment
+                        avatar={(
+                            <Avatar
+                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                                alt="Han Solo"
+                            />
+                        )}
+                        content={(
+                            <Editor
+                                onChange={this.handleChange}
+                                onSubmit={this.handleSubmit}
+                                submitting={this.state.submitting}
+                                value={this.state.value}
+                            />
+                        )}
+                    />
+                </div>
+            </Card>
+            )
+        })
+    }
     handleSubmit = () => {
         if (!this.state.value) {
             return;
@@ -96,49 +170,14 @@ class Answers extends Component {
         if(!cookie.load('cookie_user')){
             this.props.history.push("/login");
         }
-        const {comments, submitting, value} = this.state;
         return (
             <div>
                 
                 <div>
                     <div>
-                        <Card
-                            type="inner"
-                            title="Question 1" /*Display question here*/
-                            extra={<a href="#">Bookmark</a>}
-                        >
-                            <Meta
-                                avatar={<Avatar
-                                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                                title="User's name goes here"
-                                description="User credentials goes here"
-
-                            />
-                            <br/>
-
-                            <div>
-                                Answer for Q1{/*Display the answer here*/}
-                            </div>
-                            <div>
-                                {comments.length > 0 && <CommentList comments={comments}/>}
-                                <Comment
-                                    avatar={(
-                                        <Avatar
-                                            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                            alt="Han Solo"
-                                        />
-                                    )}
-                                    content={(
-                                        <Editor
-                                            onChange={this.handleChange}
-                                            onSubmit={this.handleSubmit}
-                                            submitting={submitting}
-                                            value={value}
-                                        />
-                                    )}
-                                />
-                            </div>
-                        </Card></div>
+                        
+                        {this.renderQuestion()}
+                    </div>
 
 
                 </div>
@@ -150,7 +189,8 @@ class Answers extends Component {
 //This method is provided by redux and it gives access to centeral store
 function mapStateToProps(state) {
     return {
-        authFlag: state.authFlag
+        authFlag: state.authFlag,
+        ques_answers:state.ques_answers
     };
   }
-export default connect(mapStateToProps,{ fetchProfile })(Answers);
+export default connect(mapStateToProps,{ fetchAnswersByQID })(Answers);

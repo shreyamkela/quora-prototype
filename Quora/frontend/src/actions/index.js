@@ -6,7 +6,7 @@ export const CHECK_SIGNUP = "check_signup";
 export const LOGOUT = "logout";
 export const UPDATE_PROFILE = "update_profile"
 export const FETCH_PROFILE = "fetch_profile"
-
+export const FETCH_ANSWERS = "fetch_answers"
 const ROOT_URL = "http://localhost:3001";
 
 var accessToken = localStorage.getItem('auth_token')
@@ -93,6 +93,23 @@ export function logout() {
     type: FETCH_PROFILE,
     payload: response
   };
-}
+ }
+
+ export function fetchAnswersByQID(q_id) {
+  axios.defaults.withCredentials = true;
+  //make a post request with the user data
+  console.log(q_id)
+  const response = axios.get(`${ROOT_URL}/answer?question_id=`+q_id)
+    .then(response =>{
+      return response
+    })
+  .catch(error => { return error.response })
+
+  return {
+    type: FETCH_ANSWERS,
+    payload: response
+  };
+ }
+ 
        
     
