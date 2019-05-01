@@ -103,6 +103,40 @@ db.findUser = function (user, successCallback, failureCallback) {
     })
 }
 
+//add new follower user (my_email) to target user (target_email) 
+//to be clear: (my_email is gonna follow target_email)
+//2 step update
+//Step1: Add my_email to followers array of target_email
+//Step2: Add target_email to following array of my_email
+db.addFollower = function (values, successCallback, failureCallback) {
+    //step1:
+    Profile.findOneAndUpdate({
+        email : values.target_email
+    }, {
+            $push: { followers : values.my_email } 
+        }
+    ).then(() => { 
+        //step2:
+        Profile.findOneAndUpdate({
+            email : values.my_email
+        }, {
+                $push: { following : values.target_email } 
+            }
+        ).then(() => { successCallback() })
+            .catch((error) => {
+                failureCallback(error)
+                return
+        })
+    
+    })
+        .catch((error) => {
+            failureCallback(error)
+            return
+        })
+}
+
+
+
 //add an answer to a question
 db.addAnswer = function (values, successCallback, failureCallback) {
     Questions.findOneAndUpdate({
