@@ -223,7 +223,7 @@ db.bookmark = function (values, successCallback, failureCallback) {
 
 let fetchProfileById = function (email_id) {
     return Profile.findOne({
-        email_id: email_id
+        email: email_id
     }, 'firstname lastname credentials photo').then((docs) => {
         if (docs == null)
         {
