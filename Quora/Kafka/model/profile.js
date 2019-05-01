@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 const db = require("../app/dbconn")
 
+
 var profileSchema = mongoose.Schema({
 firstname: {
     type: String
@@ -34,7 +35,9 @@ credentials: {
 },
 photo: {
     type: String
-}
+},
+followers : [String],
+following : [String]
 });
 
 Profile = module.exports = mongoose.model('profile',profileSchema);

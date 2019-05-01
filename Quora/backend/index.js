@@ -14,6 +14,7 @@ var Answer = require('./routes/Answer')
 var updateAnswer = require('./routes/updateAnswer')
 var Bookmark = require('./routes/Bookmark')
 var Vote = require('./routes/Vote')
+var Follow = require('./routes/Follow')
 var TopUpAnswers = require('./routes/TopUpAnswers')
 var TopDownAnswers = require('./routes/TopDownAnswers')
 var Profile = require('./routes/Profile')
@@ -64,6 +65,7 @@ app.use('/signup', Signup);
 app.use('/answer', Answer);
 app.use('/bookmark', Bookmark);
 app.use('/vote', Vote);
+app.use('/follow', Follow);
 app.use('/profile', Profile);
 app.use('/updateanswer', updateAnswer);
 app.use('/topupanswers', TopUpAnswers);
