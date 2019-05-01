@@ -1,16 +1,11 @@
 import React, {Component} from 'react'
 import {Modal, Button, Icon, Card, Comment, Avatar, Form, List, Input,} from 'antd';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {fetchAnswersByQID} from "../../actions";
 import cookie from 'react-cookies';
 import _ from "lodash";
 
-const gridStyle = {
-    width: '90%',
-    textAlign: 'center',
-}
 const {Meta} = Card;
 
 const TextArea = Input.TextArea;
@@ -50,7 +45,6 @@ class Answers extends Component {
     state = {
         visible: false,
         topic: '',
-        question: '',
         comments: [],
         submitting: false,
         value: '',
@@ -89,7 +83,7 @@ class Answers extends Component {
     renderAnswers=()=> {
        
         return _.map(this.props.ques_answers.answers, answer => {
-            let d = new Date(answer.answerred_on)
+            let d = new Date(answer.answered_on)
             return (
                 <Card>
                             
@@ -100,11 +94,19 @@ class Answers extends Component {
             avatar={<Avatar
             src={answer.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
             title={answer.profile.firstname}//"User's name goes here"
-            description={answer.profile.credentials}//"User credentials goes here"
+                            description={<div>{answer.profile.credentials}
+                                <div>
+                            {d.toLocaleDateString()}&nbsp;&nbsp;
+                            {d.toLocaleTimeString()}
+                        </div>
+                            </div>}//"User credentials goes here"
 
                         />
                 <br></br>
-                <div>{answer.content}</div>                        
+                        <div>
+                        
+                            {answer.content}
+                        </div>                        
                 </div>
                 <div>
                     {this.state.comments.length > 0 && <CommentList comments={this.state.comments}/>}
