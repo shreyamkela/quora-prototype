@@ -3,7 +3,7 @@ import {
     Layout, Menu
 } from 'antd';
 import {Link} from 'react-router-dom';
-import {Router, Route} from 'react-router-dom';
+import {Router, Route,Switch} from 'react-router-dom';
 import Questions from '../Question/Questions';
 import Profile from '../Profile/Profile';
 import UpdateProfile from '../Profile/UpdateProfile';
@@ -97,11 +97,13 @@ class Sidebar extends Component {
                                 </div>
                                 <div className="larger">
                                     {/*TEAM ----define your routes here routes that will be shown
-                                    when a tab is clicked*/}
+                                    when a tab 2is clicked*/}
+                                    <Switch>
                                     <Route exact path='/main/home' component={Questions}/>
                                     <Route exact path='/main/profile' component={Profile}/>
                                     <Route path="/main/profile/updateProfile" component={UpdateProfile} />
                                     <Route exact path="/main/:question_id" component={Answers} />
+                                    </Switch>
                                 </div>
                             </Content>
                         </Layout>
