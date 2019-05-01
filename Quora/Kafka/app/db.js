@@ -64,6 +64,7 @@ QuestionSchema.plugin(AutoIncrement, { id: 'ques_seq', inc_field: 'ID' })
 AnswerSchema.plugin(AutoIncrement, { id: 'ans_seq', inc_field: 'ID' })
 
 var Questions = mongoose.model('Questions', QuestionSchema, 'Questions');
+var Profile = require("../model/profile");
 
 // Creating a new User and creating profile for the user
 db.createUser = function (user, successCallback, failureCallback) {
@@ -346,6 +347,26 @@ db.addQuestion = function(questionInfo,successCallback, failureCallback){
             result.code = 500;
             callback(null, result);
         });
+}
+
+
+db.fetchProfileById = function (email_id, successCallback, failureCallback) {
+    Profile.findOne({
+        email_id: email_id
+    }, 'firstname lastname credentials photo').then((docs) => {
+        if (docs.length == 0)
+        {
+            docs = docs.toJSON()
+            docs.firstname = "Quora"
+            docs.lastname = "User"
+            docs.credentials = ""
+            docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
+        }
+        successCallback(docs)
+    }).catch((err) => {
+        failureCallback(err)
+        return
+    })
 }
 
 module.exports = db;

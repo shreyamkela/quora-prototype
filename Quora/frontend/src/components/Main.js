@@ -7,6 +7,7 @@ import Sidebar from './LandingPage/Sidebar';
 import Questions from './Question/Questions';
 import Profile from './Profile/Profile';
 import UpdateProfile from './Profile/UpdateProfile';
+import Answers from './Answers/Answers';
 //Create a Main Component
 class Main extends Component {
     render() {
@@ -21,7 +22,8 @@ class Main extends Component {
                 <Route exact path="/" component={Login} />
                 <Route path="/main" component={Sidebar} />
                 <Route path="/login" component={Login} />
-                <Route path="/signup" component={Signup}/>
+                <Route path="/signup" component={Signup} />
+                
             </div>
         )
     }

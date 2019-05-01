@@ -10,6 +10,7 @@ import UpdateProfile from '../Profile/UpdateProfile';
 import { connect } from "react-redux";
 import { logout } from "../../actions";
 import cookie from 'react-cookies';
+import Answers from '../Answers/Answers';
 
 const {SubMenu} = Menu;
 const {
@@ -97,9 +98,10 @@ class Sidebar extends Component {
                                 <div className="larger">
                                     {/*TEAM ----define your routes here routes that will be shown
                                     when a tab is clicked*/}
-                                    <Route exact path='/questions' component={Questions}/>
+                                    <Route exact path='/main/home' component={Questions}/>
                                     <Route exact path='/main/profile' component={Profile}/>
-                                    <Route path="/main/profile/updateProfile" component={UpdateProfile}/>
+                                    <Route path="/main/profile/updateProfile" component={UpdateProfile} />
+                                    <Route exact path="/main/:question_id" component={Answers} />
                                 </div>
                             </Content>
                         </Layout>
