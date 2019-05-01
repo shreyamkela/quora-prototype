@@ -187,12 +187,47 @@ db.bookmark = function (values, successCallback, failureCallback) {
         })
 }
 
+let fetchProfileById = function (email_id) {
+    return Profile.findOne({
+        email_id: email_id
+    }, 'firstname lastname credentials photo').then((docs) => {
+        if (docs == null)
+        {
+            docs = {}
+            docs.firstname = "Quora"
+            docs.lastname = "User"
+            docs.credentials = ""
+            docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
+        }
+        return docs
+    }).catch((err) => {
+        console.log(err)
+        return {}
+    })
+}
+
 db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
-    Questions.find({
+    Questions.findOne({
         _id:mongoose.Types.ObjectId(q_id)
-    }).then(async (docs)=>{
-       successCallback(docs) 
-    }).catch((err)=>{failureCallback(err)})
+    }).then(async (doc) => {
+        let final_doc =await {
+            ques_id: doc._id,
+            question: doc.question,
+            posted_on: doc.timestamp,
+            profile: await fetchProfileById(''),
+            answers:await Promise.all(doc.answers.map(async (ans) => {
+                console.log(ans)
+                ans = ans.toJSON()
+                ans.profile = await fetchProfileById(ans.author)
+                return await ans
+            }))
+            
+        }
+       successCallback(final_doc)
+    }).catch((err) => {
+        console.log(err)
+        failureCallback(err)
+    })
 }
 
 /*
@@ -350,23 +385,6 @@ db.addQuestion = function(questionInfo,successCallback, failureCallback){
 }
 
 
-db.fetchProfileById = function (email_id, successCallback, failureCallback) {
-    Profile.findOne({
-        email_id: email_id
-    }, 'firstname lastname credentials photo').then((docs) => {
-        if (docs.length == 0)
-        {
-            docs = docs.toJSON()
-            docs.firstname = "Quora"
-            docs.lastname = "User"
-            docs.credentials = ""
-            docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
-        }
-        successCallback(docs)
-    }).catch((err) => {
-        failureCallback(err)
-        return
-    })
-}
+
 
 module.exports = db;
