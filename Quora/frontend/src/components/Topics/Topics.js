@@ -14,6 +14,7 @@ class Topics extends Component {
     let cookies = cookie.load("cookie_user");
     try {
       let response = await API.get("topicsFollowed", { params: cookies });
+      message.success("SUCCESS");
       this.setState({ topicsFollowed: response.data });
     } catch (error) {
       console.log(error.response);
@@ -22,10 +23,11 @@ class Topics extends Component {
   }
 
   render() {
+    console.log("Topics followed:", this.state.topicsFollowed);
     return (
       <div>
         <Layout>
-          <Content>Followed Topics</Content>
+          <Content style={{ background: "#fff" }}>Followed Topics</Content>
         </Layout>
       </div>
     );
