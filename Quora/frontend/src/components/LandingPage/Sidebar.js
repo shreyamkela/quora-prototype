@@ -33,19 +33,26 @@ class Sidebar extends Component {
     this.props.logout();
   };
 
-  handleSearch = async value => {
-    // console.log(value);
+  handleSearch = async searchTerm => {
+    // console.log(searchTerm);
+    if (searchTerm === "") {
+      message.warning("Please enter a search term.");
+      return;
+    }
+
     // TODO - Handle special character/scripts entered in the search bar at the backend so that the server doesnt crash when the entered term is unusual. Check how quora handles special characters or unusual search terms
-    let data = { searchTerm: value, searchType: this.state.searchType };
     try {
       // Query backend api respective to the search type
       let response = null;
       if (this.state.searchType === "Q") {
-        response = await API.get("searchQuestions");
+        response = await API.get("searchQuestions", { params: searchTerm });
+        message.success(response.data);
       } else if (this.state.searchType === "T") {
-        response = await API.get("searchTopics");
+        response = await API.get("searchTopics", { params: searchTerm });
+        message.success(response.data);
       } else if (this.state.searchType === "P") {
-        response = await API.get("searchPeople");
+        response = await API.get("searchPeople", { params: searchTerm });
+        message.success(response.data);
       }
     } catch (error) {
       console.log(error);

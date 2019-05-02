@@ -5,6 +5,7 @@ var router = express.Router();
 router.get("/", function(req, res) {
   console.log("GET /searchPeople");
   console.log("Req: ", req.query);
+  res.status(200).send("SUCCESS - Search people");
 });
 
 module.exports = router;

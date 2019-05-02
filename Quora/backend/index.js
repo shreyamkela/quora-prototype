@@ -19,7 +19,7 @@ var TopUpAnswers = require("./routes/TopUpAnswers");
 var TopDownAnswers = require("./routes/TopDownAnswers");
 var Profile = require("./routes/Profile");
 var Question = require("./routes/Question");
-var SearchQuestions = require("./routes/SearchTopics");
+var SearchQuestions = require("./routes/searchQuestions");
 var SearchTopics = require("./routes/SearchTopics");
 var SearchPeople = require("./routes/SearchPeople");
 
