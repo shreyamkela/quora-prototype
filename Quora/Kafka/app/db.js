@@ -2,6 +2,7 @@
 var crypt = require("./crypt");
 var db = {};
 let mysql = require("mysql");
+let profileSchema = require("../model/profile");
 let con = mysql.createPool({
   host: "cmpe273-quora-group3.cjw2lhsmorrx.us-east-1.rds.amazonaws.com",
   user: "admin",

@@ -42,7 +42,7 @@ class Signup extends Component{
                 <div className="login-form">
                     <div className="main-div">
                         <div className="panel">
-                     <h2>Canvas App</h2>
+                     <h2>Quora</h2>
                      <p id='msg'>{this.props.signup_msg}</p>
                              </div>
                              <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
