@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Layout, Menu, Select } from "antd";
+import { Input, Layout, Menu, Select, message } from "antd";
 import { Link } from "react-router-dom";
 import { Router, Route, Switch } from "react-router-dom";
 import Questions from "../Question/Questions";
@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { logout } from "../../actions";
 import cookie from "react-cookies";
 import Answers from "../Answers/Answers";
+import API from "../../utils/API";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -17,7 +18,9 @@ const Option = Select.Option;
 
 class Sidebar extends Component {
   state = {
-    collapsed: false
+    collapsed: false,
+    // NOTE - searchType is for the dropdown of the search bar - "Q" is for questions, "T" is for topics, and "P" is for people. Default is "Q"
+    searchType: "Q"
   };
 
   onCollapse = collapsed => {
@@ -30,19 +33,50 @@ class Sidebar extends Component {
     this.props.logout();
   };
 
+  handleSearch = async value => {
+    // console.log(value);
+    // TODO - Handle special character/scripts entered in the search bar at the backend so that the server doesnt crash when the entered term is unusual. Check how quora handles special characters or unusual search terms
+    let data = { searchTerm: value, searchType: this.state.searchType };
+    try {
+      // Query backend api respective to the search type
+      let response = null;
+      if (this.state.searchType === "Q") {
+        response = await API.get("searchQuestions");
+      } else if (this.state.searchType === "T") {
+        response = await API.get("searchTopics");
+      } else if (this.state.searchType === "P") {
+        response = await API.get("searchPeople");
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Unable to search at the moment. Please refresh the page and try again.");
+    }
+  };
+
+  handleSearchTypeChange = value => {
+    this.setState({ searchType: value });
+  };
+
   render() {
     if (!cookie.load("cookie_user")) {
       this.props.history.push("/login");
     }
 
-    // Menu for the dropdown in the search bar
+    // Dropdown in the search bar to select SearchType
     const selectBefore = (
-      <Select defaultValue="Questions" style={{ width: 120 }}>
-        <Option value="Questions">Questions</Option>
-        <Option value="Topics">Topics</Option>
-        <Option value="People">People</Option>
+      <Select
+        defaultValue="Questions"
+        onSelect={value => {
+          this.handleSearchTypeChange(value);
+        }}
+        style={{ width: 120 }}
+      >
+        <Option value="Q">Questions</Option>
+        <Option value="T">Topics</Option>
+        <Option value="P">People</Option>
       </Select>
     );
+
     return (
       <div>
         <Layout>
@@ -59,7 +93,9 @@ class Sidebar extends Component {
                   placeholder="Search for questions, topics, or people"
                   enterButton="Search"
                   size="medium"
-                  onSearch={value => console.log(value)}
+                  onSearch={value => {
+                    this.handleSearch(value);
+                  }}
                   addonBefore={selectBefore}
                 />
               </Menu.Item>
