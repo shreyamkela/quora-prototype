@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, Button, Icon, Card, Comment, Avatar, Form, List, Input,} from 'antd';
+import {Button, Card, Comment, Avatar, Form, List, Input,} from 'antd';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import {fetchAnswersByQID} from "../../actions";
@@ -22,11 +22,12 @@ const CommentList = ({comments}) => (
 const Editor = ({
                     onChange, onSubmit, submitting, value,
                 }) => (
-    <div>
+        <div>
+            <Form layout='inline'>
         <Form.Item>
-            <TextArea rows={4} onChange={onChange} value={value}/>
+                    <TextArea rows={1} cols={68} onChange={onChange} value={value}/>
         </Form.Item>
-        <Form.Item>
+        <Form.Item> 
             <Button
                 htmlType="submit"
                 loading={submitting}
@@ -35,7 +36,8 @@ const Editor = ({
             >
                 Add Comment
             </Button>
-        </Form.Item>
+                </Form.Item>
+                </Form>
     </div>
 );
 
