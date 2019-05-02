@@ -75,9 +75,11 @@ class Profile extends Component {
     }
 
     render () { 
+      
       let pic =  this.state.user_data.map(data => {
         return  data.photo
          })
+
   console.log("pic path" + pic)
         let firstname =  _.map(this.props.profile, prof => {  return  prof.firstname  })
         let lastname =  _.map(this.props.profile, prof => { return  prof.lastname    })  

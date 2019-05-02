@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { updateProfile } from "../../actions";
+import { updateProfile, fetchProfile } from "../../actions";
 import {Redirect} from 'react-router';
 import cookie from 'react-cookies';
 import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
+import _ from "lodash";
 
 
 class UpdateProfile extends Component {
@@ -14,6 +15,41 @@ class UpdateProfile extends Component {
       user_photo: null
     }
 
+  }
+  componentDidMount() {
+    //call to action
+    this.handleInitialize();
+   // this.props.fetchProfile();
+    
+  }
+
+  handleInitialize() {
+
+let firstname = _.map(this.props.profile, prof => {  return  prof.firstname  }) 
+let lastname = _.map(this.props.profile, prof => {  return  prof.lastname  }) 
+let email = _.map(this.props.profile, prof => {  return  prof.email  }) 
+let city = _.map(this.props.profile, prof => {  return  prof.city  }) 
+let state = _.map(this.props.profile, prof => {  return  prof.state  }) 
+let zipcode = _.map(this.props.profile, prof => {  return  prof.zipcode  }) 
+let education = _.map(this.props.profile, prof => {  return  prof.education  }) 
+let career = _.map(this.props.profile, prof => {  return  prof.career  }) 
+let aboutme = _.map(this.props.profile, prof => {  return  prof.aboutme  }) 
+let credentials = _.map(this.props.profile, prof => {  return  prof.credentials  }) 
+
+    const initData = {
+      "firstname": firstname[0],
+      "lastname": lastname[0],
+      "email": email[0],
+      "city": city[0],
+      "state": state[0],
+      "zipcode": zipcode[0],
+      "education": education[0],
+      "career": career[0],
+      "aboutme": aboutme[0],
+      "credentials": credentials[0]
+    };
+
+    this.props.initialize(initData);
   }
 
     renderField(field) {
@@ -37,10 +73,18 @@ class UpdateProfile extends Component {
         this.props.history.push('/main/profile')
       });
       }
-          
+
+      componentWillReceiveProps(nextProps) {
+        if (nextProps.newPost) {
+          this.props.posts.unshift(nextProps.newPost);
+        }
+      }  
 
     render () {
         const { handleSubmit } = this.props;
+
+        let firstname =  _.map(this.props.profile, prof => {  return  prof.firstname  })
+        let lastname =  _.map(this.props.profile, prof => { return  prof.lastname    }) 
 
         let redirectVar = null;
         if(!cookie.load('cookie_user')){
@@ -53,11 +97,13 @@ class UpdateProfile extends Component {
               <div  className="login-form">
                   <div style={{ "max-width": "60%"}} className="main-div">
                       <div className="panel">
+{firstname} {" "} {lastname}
                       <h1 className="h3 mb-3 font-weight-normal">Profile Update Form</h1>
                       </div>
                     <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                               
          <Field
+         
         name="firstname"
         label="First Name"
         component={this.renderField}
@@ -157,15 +203,22 @@ function validate(values) {
     return errors;
   }
 
-
-  const mapStateToProps = state => (
+  function mapStateToProps(state)
     {
-  rescode: state.status
-});
+     
+return{
+  rescode: state.status,
+  profile: state.profile.items,
+
+} 
+}
+
+UpdateProfile = reduxForm({
+  validate,
+  form: 'ProfileUpdateForm'
+})(UpdateProfile)
 
 
-export default reduxForm({
-    validate,
-    form: "ProfileUpdateForm"
-  })(connect(mapStateToProps, { updateProfile })(UpdateProfile));
+UpdateProfile = connect(mapStateToProps, { fetchProfile, updateProfile })(UpdateProfile);
 
+export default UpdateProfile;
