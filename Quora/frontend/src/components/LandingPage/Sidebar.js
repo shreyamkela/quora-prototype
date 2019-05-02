@@ -10,6 +10,7 @@ import { logout } from "../../actions";
 import cookie from "react-cookies";
 import Answers from "../Answers/Answers";
 import API from "../../utils/API";
+import quoraLogo from "../../utils/documents/images/quora_logo.jpg";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -88,13 +89,15 @@ class Sidebar extends Component {
       <div>
         <Layout>
           <Header className="header">
-            <div className="logo" />
             <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]} style={{ lineHeight: "64px" }}>
+              <Menu.Item key="0">
+                <img src={quoraLogo} style={{ width: 100 }} />
+              </Menu.Item>
               <Menu.Item key="2">
                 <Link to="/main/home">Home</Link>
               </Menu.Item>
 
-              <Menu.Item key="4" style={{ marginLeft: 180, width: 500 }}>
+              <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
                 <Search
                   style={{ marginTop: 18 }}
                   placeholder="Search for questions, topics, or people"
@@ -107,7 +110,7 @@ class Sidebar extends Component {
                 />
               </Menu.Item>
 
-              <Menu.Item key="1" style={{ marginLeft: 120 }}>
+              <Menu.Item key="1" style={{ marginLeft: 90 }}>
                 <Link to="/main/profile"> Profile</Link>
               </Menu.Item>
               <Menu.Item key="3">
