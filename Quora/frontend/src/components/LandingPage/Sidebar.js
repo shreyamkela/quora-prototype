@@ -10,7 +10,7 @@ import { logout } from "../../actions";
 import cookie from "react-cookies";
 import Answers from "../Answers/Answers";
 import API from "../../utils/API";
-import quoraLogo from "../../utils/documents/images/quora_logo.jpg";
+import quoraLogo from "../../utils/documents/images/quora_logo_dark.jpg";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
