@@ -24,7 +24,7 @@ const Editor = ({
         <div>
             <Form layout='inline'>
         <Form.Item>
-                    <TextArea rows={1} cols={68} onChange={onChange} value={value}/>
+                    <TextArea rows={1} cols={60} onChange={onChange} value={value}/>
         </Form.Item>
         <Form.Item> 
             <Button
@@ -87,11 +87,9 @@ class Comments extends Component {
 
 
     render() {
-        if(!cookie.load('cookie_user')){
-            this.props.history.push("/login");
-        }
         return (
             <div>  
+                <Card style={{background:"#fafafa"}}>
                     {this.state.comments.length > 0 && <CommentList comments={this.state.comments}/>}
                     <Comment
                         avatar={(
@@ -109,6 +107,7 @@ class Comments extends Component {
                             />
                         )}
                     />
+                    </Card>
                     </div>
         )
     }

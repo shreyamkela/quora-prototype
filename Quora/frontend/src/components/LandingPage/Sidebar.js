@@ -167,9 +167,9 @@ class Sidebar extends Component {
                 </Menu>
               </Sider>
               <Content style={{ padding: "0 24px", minHeight: 280 }}>
-                <div className="heading">
+                {/*<div className="heading">
                   <h2>Welcome to Quora!</h2>
-                </div>
+                </div>*/}
                 <div className="larger">
                   {/*TEAM ----define your routes here routes that will be shown
                                     when a tab 2is clicked*/}

@@ -26,25 +26,31 @@ class Answers extends Component {
     }
 
     renderQuestion = () => {
-        if(this.props.ques_answers.question !== undefined)
-        return(
-                <Card
-                type="inner"
-                title={<div>
-                    <Meta
-            avatar={<Avatar
-            src={this.props.ques_answers.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-            title={this.props.ques_answers.profile.firstname}//"User's name goes here"
-            description={this.props.ques_answers.profile.credentials}//"User credentials goes here"
+        if (this.props.ques_answers.question !== undefined) {
+            let d = new Date(this.props.ques_answers.posted_on)
+            return (
+                <Card>
+                    <div>
+                        <Meta
+                            avatar={<Avatar
+                                src={this.props.ques_answers.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                            title={this.props.ques_answers.profile.firstname + "  " + this.props.ques_answers.profile.lastname}//"User's name goes here"
+                            description={<div>{this.props.ques_answers.profile.credentials}
+                                <div>
+                                    {d.toLocaleDateString()}&nbsp;&nbsp;
+                                    {d.toLocaleTimeString()}
+                                </div>
+                            </div>
+                            }
+                        />
+                        <h3><b> {this.props.ques_answers.question}</b></h3>
+                    </div>
 
-                />
-                    {this.props.ques_answers.question}
-                </div>}
-                >
-                {this.renderAnswers()}
+                    {this.renderAnswers()}
                 
                 </Card>
-        )
+            )
+        }
         else return null
     }
 
@@ -53,15 +59,13 @@ class Answers extends Component {
         return _.map(this.props.ques_answers.answers, answer => {
             let d = new Date(answer.answered_on)
             return (
-                <Card>
-                            
-                <br/>
+                <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
 
                     <div>
                     <Meta
             avatar={<Avatar
             src={answer.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-            title={answer.profile.firstname}//"User's name goes here"
+            title={answer.profile.firstname+"  "+answer.profile.lastname}//"User's name goes here"
                             description={<div>{answer.profile.credentials}
                                 <div>
                             {d.toLocaleDateString()}&nbsp;&nbsp;
