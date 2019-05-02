@@ -247,34 +247,25 @@ db.bookmark = function(values, successCallback, failureCallback) {
     });
 };
 
-let fetchProfileById = function(email_id) {
-  return (
-    Profile.findOne(
-      {
+let fetchProfileById = function (email_id) {
+    console.log(email_id)
+    return Profile.findOne({
         email: email_id
-      },
-      "firstname lastname credentials photo"
-    )
-      .then(docs => {
-        if (docs == null) {
-          docs = {};
-          docs.firstname = "Quora";
-          docs.lastname = "User";
-          docs.credentials = "";
-          docs.photo = "http://localhost:3001/profile_uploads/default_profile.png";
+    }, 'firstname lastname credentials photo').then((docs) => {
+        if (docs == null)
+        {
+            docs = {}
+            docs.firstname = "Quora"
+            docs.lastname = "User"
+            docs.credentials = ""
+            docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
         }
-        return docs;
-      })
-      // .catch(err => {
-      //   console.log(err);
-      //   return {};
-      // })
-      .catch(error => {
-        failureCallback(error);
-        return;
-      })
-  );
-};
+        return docs
+    }).catch((err) => {
+        console.log(err)
+        return {}
+    })
+}
 
 db.getAnswersByQuestionId = function(q_id, successCallback, failureCallback) {
   Questions.findOne({
