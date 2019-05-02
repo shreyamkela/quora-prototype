@@ -11,6 +11,7 @@ import cookie from "react-cookies";
 import Answers from "../Answers/Answers";
 import API from "../../utils/API";
 import quoraLogo from "../../utils/documents/images/quora_logo_dark.jpg";
+import Topics from "../Topics/Topics";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -100,7 +101,7 @@ class Sidebar extends Component {
               <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
                 <Search
                   style={{ marginTop: 18 }}
-                  placeholder="Search for questions, topics, or people"
+                  placeholder="Search Quora"
                   enterButton="Search"
                   size="medium"
                   onSearch={value => {
@@ -151,7 +152,7 @@ class Sidebar extends Component {
                     <Link to="">Following</Link>
                   </Menu.Item>
                   <Menu.Item key="6">
-                    <Link to="">Topics</Link>
+                    <Link to="/main/topics/followed">Topics</Link>
                   </Menu.Item>
                   <Menu.Item key="7">
                     <Link to="">Bookmarks</Link>
@@ -177,6 +178,8 @@ class Sidebar extends Component {
                     <Route exact path="/main/profile" component={Profile} />
                     <Route path="/main/profile/updateProfile" component={UpdateProfile} />
                     <Route exact path="/main/:question_id" component={Answers} />
+                    <Route exact path="/main/topics/followed" component={Topics} />
+                    {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
                   </Switch>
                 </div>
               </Content>
