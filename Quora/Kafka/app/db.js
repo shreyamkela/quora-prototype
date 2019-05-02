@@ -2,6 +2,7 @@
 var crypt = require("./crypt");
 var db = {};
 let mysql = require("mysql");
+let profileSchema = require("../model/profile");
 let con = mysql.createPool({
   host: "cmpe273-quora-group3.cjw2lhsmorrx.us-east-1.rds.amazonaws.com",
   user: "admin",
@@ -10,6 +11,7 @@ let con = mysql.createPool({
   multipleStatements: true
 });
 const mongoose = require("mongoose");
+//"mongodb://localhost:27017/CanvasApp"
 let uri =  "mongodb+srv://canvas_user:2407Rakhee%21@cluster0-jjkgt.mongodb.net/quoradb?poolSize=10?retryWrites=true"
 mongoose.connect(uri, { useNewUrlParser: true, poolSize: 5 });
 let con1 = mongoose.connection;
@@ -136,6 +138,7 @@ db.addFollower = function(values, successCallback, failureCallback) {
 
 //add an answer to a question
 db.addAnswer = function (values, successCallback, failureCallback) {
+   console.log(values)
     Questions.findOneAndUpdate({
         _id:mongoose.Types.ObjectId(values.q_id)
     }, {
@@ -261,28 +264,35 @@ let fetchProfileById = function (email_id) {
 }
 
 db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
-    Questions.findOne({
-        _id:mongoose.Types.ObjectId(q_id)
-    }).then(async (doc) => {
-        let final_doc =await {
-            ques_id: doc._id,
-            question: doc.question,
-            posted_on: doc.timestamp,
-            profile: await fetchProfileById(''),
-            answers:await Promise.all(doc.answers.map(async (ans) => {
-                console.log(ans)
-                ans = ans.toJSON()
-                ans.profile = await fetchProfileById(ans.author)
-                return await ans
-            }))
-            
-        }
-       successCallback(final_doc)
-    }).catch((err) => {
-        console.log(err)
-        failureCallback(err)
+  console.log(q_id)
+  Questions.findOne({
+    _id: mongoose.Types.ObjectId(q_id)
+  })
+    .then(async doc => {
+      if (doc !== null) {
+        let final_doc = await {
+          ques_id: doc._id,
+          question: doc.question,
+          posted_on: doc.timestamp,
+          profile: await fetchProfileById(""),
+          answers: await Promise.all(
+            doc.answers.map(async ans => {
+              console.log(ans);
+              ans = ans.toJSON();
+              ans.profile = await fetchProfileById(ans.author);
+              return await ans;
+            })
+          )
+        };
+        successCallback(final_doc);
+      }
+      else successCallback(doc)
     })
-}
+    .catch(err => {
+      console.log(err);
+      failureCallback(err);
+    });
+};
 
 /*
 db.getBookmarks = function (email_id, successCallback, failureCallback) {

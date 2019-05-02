@@ -4,14 +4,16 @@ var db = require('../../Kafka/app/db');
 var kafka = require('../kafka/client');
 
 //Route to Add an Answer to a question
-router.post('/',function(req,response){
+router.post('/', function (req, response) {
     console.log("Inside Add Answer Post Request");
-    db.addAnswer({q_id:req.query.question_id,answer:req.body.answer,email_id:req.body.email_id}, function () {
-        return response.status(200).json({ success: true, message: "Successfully added the answer" });
-    }, function (err) {
-        response.status(400).json({ success: false, message: "Unable to add answer" });
-    });
-    
+    req.body.q_id = req.query.question_id
+    kafka.make_request('add_answer', req.body, function (err, msg) {
+        if (err) {
+            response.status(401).json({ success: false, message: msg });
+        } else {
+            return response.status(200).json({ success: true, message: msg });
+        }
+    })
 });
 
 //Route to get All answers for a given question
