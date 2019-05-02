@@ -102,17 +102,7 @@ let credentials = _.map(this.props.profile, prof => {  return  prof.credentials 
                       </div>
                     <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                               
-         <Field
-         
-        name="firstname"
-        label="First Name"
-        component={this.renderField}
-      />
-        <Field
-          name="lastname"
-          label="Last Name"
-          component={this.renderField}
-        />
+
 
         <Field
           name="city"
@@ -167,32 +157,9 @@ function validate(values) {
     const errors = {};
   
     // Validate the inputs from 'values'
-    if (!values.firstname) {
-      errors.firstname = "Enter your First Name";
-    }
-    if (!values.lastname) {
-      errors.lastname = "Enter Your Last Name";
-    }
-    if (!values.city) {
-        errors.city = "Enter City";
-      }
-      if (!values.state) {
-        errors.state = "Enter State";
-      }
-      if (!values.zipcode) {
-        errors.zipcode = "Enter Zipcode";
-      }
-      if (!values.education) {
-        errors.education = "Enter Education";
-      }
-      if (!values.career) {
-        errors.career = "Enter Career";
-      }
-      if (!values.aboutme) {
-        errors.aboutme = "Enter About Yourself";
-      }
+
       if (!values.credentials) {
-        errors.credentials = "Enter Credentials";
+        errors.credentials = "Please Enter Credentials";
       }
    
    //   if (!values.user_photo) {

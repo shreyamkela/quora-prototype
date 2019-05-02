@@ -37,7 +37,9 @@ photo: {
     type: String
 },
 followers : [String],
-following : [String]
+following : [String],
+topicsFollowed : Array,
+questionsFollowed : Array
 });
 
 Profile = module.exports = mongoose.model('profile',profileSchema);
