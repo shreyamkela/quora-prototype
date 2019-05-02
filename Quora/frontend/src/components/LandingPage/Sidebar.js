@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Layout, Menu } from "antd";
+import { Input, Layout, Menu, Select } from "antd";
 import { Link } from "react-router-dom";
 import { Router, Route, Switch } from "react-router-dom";
 import Questions from "../Question/Questions";
@@ -13,6 +13,7 @@ import Answers from "../Answers/Answers";
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
+const Option = Select.Option;
 
 class Sidebar extends Component {
   state = {
@@ -33,6 +34,15 @@ class Sidebar extends Component {
     if (!cookie.load("cookie_user")) {
       this.props.history.push("/login");
     }
+
+    // Menu for the dropdown in the search bar
+    const selectBefore = (
+      <Select defaultValue="Questions" style={{ width: 120 }}>
+        <Option value="Questions">Questions</Option>
+        <Option value="Topics">Topics</Option>
+        <Option value="People">People</Option>
+      </Select>
+    );
     return (
       <div>
         <Layout>
@@ -43,17 +53,18 @@ class Sidebar extends Component {
                 <Link to="/main/home">Home</Link>
               </Menu.Item>
 
-              <Menu.Item key="4" style={{ marginLeft: 150, width: 450 }}>
+              <Menu.Item key="4" style={{ marginLeft: 180, width: 500 }}>
                 <Search
-                  style={{ marginTop: 10 }}
-                  className="my-4"
-                  placeholder="Search for questions, topics, people ..."
+                  style={{ marginTop: 18 }}
+                  placeholder="Search for questions, topics, or people"
                   enterButton="Search"
-                  size="large"
+                  size="medium"
                   onSearch={value => console.log(value)}
+                  addonBefore={selectBefore}
                 />
               </Menu.Item>
-              <Menu.Item key="1" style={{ marginLeft: 200 }}>
+
+              <Menu.Item key="1" style={{ marginLeft: 120 }}>
                 <Link to="/main/profile"> Profile</Link>
               </Menu.Item>
               <Menu.Item key="3">
