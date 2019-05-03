@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Layout, Menu, Select, message } from "antd";
+import { Input, Layout, Menu, Select, message, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import { Router, Route, Switch } from "react-router-dom";
 import Questions from "../Question/Questions";
@@ -15,6 +15,7 @@ import Topics from "../Topics/Topics";
 import SearchTopics from "../Search/SearchTopics"
 import SearchQuestions from "../Search/SearchQuestions"
 import SearchPeople from "../Search/SearchPeople"
+import Stats from "../Statistics/Stats"
 
 
 const { SubMenu } = Menu;
@@ -53,17 +54,32 @@ class Sidebar extends Component {
       if (this.state.searchType === "Q") {
         response = await API.get("searchQuestions", { params: searchTerm });
         console.log("Search results: ", response.data);
-        this.props.history.push("/main/questions/search")
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
+          pathname: "/main/questions/search",
+          state: {
+            searchResults: response.data
+          }
+        })
         // NOTE - Using this.props.history.push we can change the /main/home to /main/questions/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "T") {
         response = await API.get("searchTopics", { params: searchTerm });
         console.log("Search results: ", response.data);
-        this.props.history.push("/main/topics/search")
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchTopics, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
+          pathname: "/main/topics/search",
+          state: {
+            searchResults: response.data
+          }
+        })
         // NOTE - Using this.props.history.push we can change the /main/home to /main/topics/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "P") {
         response = await API.get("searchPeople", { params: searchTerm });
         console.log("Search results: ", response.data);
-        this.props.history.push("/main/people/search")
+        this.props.history.push({
+          pathname: "/main/people/search",
+          state: {
+            searchResults: response.data
+          }
+        })
       }
     } catch (error) {
       console.log(error);
@@ -108,6 +124,7 @@ class Sidebar extends Component {
 
             <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
               <Search
+                  className="Search-Button"
                 style={{ marginTop: 18 }}
                 placeholder="Search Quora"
                 enterButton="Search"
@@ -118,7 +135,9 @@ class Sidebar extends Component {
                 addonBefore={selectBefore}
               />
             </Menu.Item>
-
+              {/*<Menu.Item key="5" style={{ marginLeft: 90 }}>*/}
+                  {/*<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />*/}
+              {/*</Menu.Item>*/}
             <Menu.Item key="1" style={{ marginLeft: 90 }}>
               <Link to="/main/profile"> Profile</Link>
             </Menu.Item>
@@ -135,7 +154,7 @@ class Sidebar extends Component {
             <Menu mode="inline" defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
               {/*Team --- Add your routes over here for each corresponding Tab*/}
               <Menu.Item key="1">
-                <Link to="">Home</Link>
+                <Link to="/main/home">Feed</Link>
               </Menu.Item>
               <Menu.Item key="2">
                 <Link to="/main/questions">Questions</Link>
@@ -155,7 +174,9 @@ class Sidebar extends Component {
               <Menu.Item key="7">
                 <Link to="">Bookmarks</Link>
               </Menu.Item>
-
+              <Menu.Item key="8">
+                <Link to="/main/stats">Stats</Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Content style={{ padding: "0 24px", minHeight: 280 }}>
@@ -166,12 +187,13 @@ class Sidebar extends Component {
                 <Route exact path="/main/home" component={Questions} />
                 <Route exact path="/main/profile" component={Profile} />
                 <Route path="/main/profile/updateProfile" component={UpdateProfile} />
+                <Route exact path="/main/stats" component={Stats}/>
                 <Route exact path="/main/:question_id" component={Answers} />
                 <Route exact path="/main/topics/followed" component={Topics} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
-                <Route exact path="/main/topics/search" component={SearchTopics} />
-                <Route exact path="/main/questions/search" component={SearchQuestions} />
-                <Route exact path="/main/people/search" component={SearchPeople} />
+                <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
+                <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />}/>
+                <Route exact path="/main/people/search" render={(props) => <SearchPeople {...props} />} />
               </Switch>
             </div>
           </Content>

@@ -3,7 +3,7 @@ const router = express.Router();
 const Model = require("../database/connection");
 
 // Route to GET topics according to the search term
-router.get("/", function(req, res) {
+router.get("/", function (req, res) {
   console.log("GET /searchTopics");
   console.log("Req: ", req.query[0].toLowerCase());
 
@@ -27,8 +27,8 @@ router.get("/", function(req, res) {
           res.status(400).send("No topics found with the entered search term!");
         } else {
           console.log("searchedTopics: ", searchedTopics);
-          //res.status(200).send(searchedTopics);
-          res.status(200).send("SUCCESS");
+          res.status(200).send(searchedTopics);
+          //res.status(200).send("SUCCESS");
         }
 
         //res.status(200).end("Course already enrolled!"); // res.end will end the response here and dont go futher in this post request? But this doesnt work here why? return res.end also doesnt work if a db.query is after this db.query

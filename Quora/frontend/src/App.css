@@ -149,9 +149,9 @@ table, th, td {
  
   .wrapper {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 20px;
-    grid-auto-rows: 250px;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 50px;
+    grid-auto-rows:300px;
   }
 
   .resultcontainer{

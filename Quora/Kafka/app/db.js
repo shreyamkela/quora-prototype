@@ -49,7 +49,7 @@ var QuestionSchema = new mongoose.Schema({
   topic: { type: String },
   timestamp: { type: Date, default: Date.now },
   question: { type: String },
-  // author: {User},
+  author: String,
   answers: [AnswerSchema]
 });
 
@@ -224,7 +224,7 @@ db.vote = function(values, successCallback, failureCallback) {
   Questions.findOneAndUpdate(
     {
       "answers._id": mongoose.Types.ObjectId(values.a_id),
-      "answers.votes.user": { $ne: values.email_id }
+      "answers.$.votes.user": { $ne: values.email_id }
     },
     {
       $push: { "answers.$.votes": { user: values.email_id, flag: values.flag } }
@@ -406,13 +406,14 @@ db.getTopAnswers = function(email_id, successCallback, failureCallback) {
         if (a.votes !== undefined) return a.votes.filter(v => v.flag === 1).length;
         else return 0;
       };
-      answers = docs.map(d => {
-        return d.answers.map(a => {
-          return {
+      answers = []
+      docs.map(d => {
+        d.answers.map(a => {
+          answers.push({
             content: a.content,
             upvotes: countvotes(a),
             ques_id: d._id
-          };
+          });
         });
       });
       console.log(answers);
@@ -505,6 +506,37 @@ db.addQuestion = function(questionInfo, successCallback, failureCallback) {
       callback(null, result);
     }
   );
+};
+
+
+db.getQuestionByEmail = function (email_id, successCallback, failureCallback) {
+    console.log(email_id)
+    Questions.findOne({
+        _id: mongoose.Types.ObjectId(email_id)
+    })
+        .then(async doc => {
+            if (doc !== null) {
+                let final_doc = await {
+                    ques_id: doc._id,
+                    // question: doc.question,
+                    profile: await fetchProfileById(""),
+                    question: await Promise.all(
+                        doc.question.map(async ans => {
+                            console.log(ans);
+                            ans = ans.toJSON();
+                            ans.profile = await fetchProfileById(ans.author);
+                            return await ans;
+                        })
+                    )
+                };
+                successCallback(final_doc);
+            }
+            else successCallback(doc)
+        })
+        .catch(err => {
+            console.log(err);
+            failureCallback(err);
+        });
 };
 
 module.exports = db;

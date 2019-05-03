@@ -5,8 +5,8 @@ var db = require('../../Kafka/app/db');
 //Route to get All answers for a given question
 router.get('/', function (req, res) {
     console.log("Inside get top 5 downvoted Answers");
-    console.log("Req:", req.body.email_id)
-    db.getTopDownAnswers(req.body.email_id, function (results) {
+    console.log("Req:", req.cookies.cookie_user)
+    db.getTopDownAnswers(req.cookies.cookie_user, function (results) {
         res.writeHead(200, {
             'Content-Type': 'application/json'
         })

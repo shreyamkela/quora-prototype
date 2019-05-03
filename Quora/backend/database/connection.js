@@ -7,7 +7,7 @@ mongoose.Promise = global.Promise;
 mongoose.connect(uri, { useNewUrlParser: true, poolSize: 5 });
 let con1 = mongoose.connection;
 con1.on("error", console.error.bind(console, "Connection error in mongoose (backend folder): "));
-con1.once("open", function() {
+con1.once("open", function () {
   console.log("Connected to mongoose - From backend folder");
 });
 var AutoIncrement = require("mongoose-sequence")(mongoose);
@@ -21,6 +21,47 @@ var topics = mongoose.model("topics", {
   followers: Array
 });
 
+var profile = mongoose.model("profile", {
+  firstname: {
+    type: String
+  },
+  lastname: {
+    type: String
+  },
+  email: {
+    type: String
+  },
+  city: {
+    type: String
+  },
+  state: {
+    type: String
+  },
+  zipcode: {
+    type: String
+  },
+  education: {
+    type: String
+  },
+  career: {
+    type: String
+  },
+  aboutme: {
+    type: String
+  },
+  credentials: {
+    type: String
+  },
+  photo: {
+    type: String
+  },
+  followers: [String],
+  following: [String],
+  topicsFollowed: Array,
+  questionsFollowed: Array
+});
+
 module.exports = {
-  topics
+  topics,
+  profile
 };
