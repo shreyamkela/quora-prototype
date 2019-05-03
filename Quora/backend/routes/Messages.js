@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router();
 var db = require('../../Kafka/app/db');
-var Messages = require("../../Kafka/model/messages.js");
+//var Messages = require("../../Kafka/model/messages.js");
 
 //Route to get all messages
 router.get('/',function(request,response){
