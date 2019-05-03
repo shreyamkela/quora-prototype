@@ -135,7 +135,7 @@ class Sidebar extends Component {
             <Menu mode="inline" defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
               {/*Team --- Add your routes over here for each corresponding Tab*/}
               <Menu.Item key="1">
-                <Link to="">Home</Link>
+                <Link to="/main/home">Feed</Link>
               </Menu.Item>
               <Menu.Item key="2">
                 <Link to="/main/questions">Questions</Link>

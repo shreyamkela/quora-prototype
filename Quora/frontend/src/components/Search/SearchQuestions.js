@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Card } from "antd"
 
 class SearchQuestions extends Component {
     render() {
-        return <div>Search Questions:</div>;
+        return <div><Card>Search Questions:</Card></div>;
     }
 }
 
