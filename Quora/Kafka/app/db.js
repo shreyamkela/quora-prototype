@@ -49,7 +49,7 @@ var QuestionSchema = new mongoose.Schema({
   topic: { type: String },
   timestamp: { type: Date, default: Date.now },
   question: { type: String },
-  // author: {User},
+  author: String,
   answers: [AnswerSchema]
 });
 
@@ -505,6 +505,37 @@ db.addQuestion = function(questionInfo, successCallback, failureCallback) {
       callback(null, result);
     }
   );
+};
+
+
+db.getQuestionByEmail = function (email_id, successCallback, failureCallback) {
+    console.log(email_id)
+    Questions.findOne({
+        _id: mongoose.Types.ObjectId(email_id)
+    })
+        .then(async doc => {
+            if (doc !== null) {
+                let final_doc = await {
+                    ques_id: doc._id,
+                    // question: doc.question,
+                    profile: await fetchProfileById(""),
+                    question: await Promise.all(
+                        doc.question.map(async ans => {
+                            console.log(ans);
+                            ans = ans.toJSON();
+                            ans.profile = await fetchProfileById(ans.author);
+                            return await ans;
+                        })
+                    )
+                };
+                successCallback(final_doc);
+            }
+            else successCallback(doc)
+        })
+        .catch(err => {
+            console.log(err);
+            failureCallback(err);
+        });
 };
 
 module.exports = db;
