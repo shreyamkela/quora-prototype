@@ -1,6 +1,6 @@
-var express = require("express");
-var router = express.Router();
-const Model = require("../database/model/topics");
+const express = require("express");
+const router = express.Router();
+const Model = require("../database/connection");
 
 // Route to GET all topics followed for an email
 router.get("/", function(req, res) {
