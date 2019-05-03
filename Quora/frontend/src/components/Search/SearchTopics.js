@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Card } from "antd";
+import { Button, Card, Row, Col } from "antd";
 
 class SearchTopics extends Component {
   render() {
@@ -13,11 +13,24 @@ class SearchTopics extends Component {
     } else {
       displayedResults = searchResults.map(key => (
         <div style={{ textAlign: "center" }}>
-          <div className="card" style={{ width: "70%", height: 100 }}>
+          <div className="card" style={{ width: "70%", height: 100, textAlign: "center" }}>
             <div className="card-body">
               <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
                 {key.title}
               </h5>
+              <br />
+              <Row style={{ marginLeft: 205 }}>
+                <Col span={6}>
+                  <Button size="small" icon="check-circle" shape="round">
+                    Follow
+                  </Button>
+                </Col>
+                <Col span={6}>
+                  <Button size="small" icon="close-circle" shape="round">
+                    Unfollow
+                  </Button>
+                </Col>
+              </Row>
             </div>
           </div>
           <br />
