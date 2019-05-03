@@ -23,6 +23,7 @@ var SearchQuestions = require("./routes/searchQuestions");
 var SearchTopics = require("./routes/SearchTopics");
 var SearchPeople = require("./routes/SearchPeople");
 var TopicsFollowed = require("./routes/TopicsFollowed");
+var Messages = require('./routes/Messages')
 
 var passport = require("passport");
 // Set up middleware
@@ -82,6 +83,7 @@ app.use("/searchQuestions", SearchQuestions);
 app.use("/searchTopics", SearchTopics);
 app.use("/searchPeople", SearchPeople);
 app.use("/topicsFollowed", TopicsFollowed);
+app.use('/message',Messages);
 
 module.exports = app;
 //start your server on port 3001

@@ -53,11 +53,60 @@ var QuestionSchema = new mongoose.Schema({
   answers: [AnswerSchema]
 });
 
+var MessageSchema = new mongoose.Schema({
+    sender : String,
+    receiver : String,
+    message : String, 
+    time : {type :Date, default: Date.now()}, 
+    isRead : Boolean
+})
+
+var ConversationSchema = new mongoose.Schema({
+    person1 : String,
+    person2 : String,
+    chat : [MessageSchema]
+})
+
 QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
 AnswerSchema.plugin(AutoIncrement, { id: "ans_seq", inc_field: "ID" });
 
+
 var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 var Profile = require("../model/profile");
+var Messages = mongoose.model('Message',MessageSchema);
+var Chat = mongoose.model('Chat', ConversationSchema);
+
+// finding if a conversation exists and adding messages to it else create a new conversation
+
+db.sendMessage = function(values, successCallback, failureCallback){
+
+    console.log("values: "+JSON.stringify(values));
+    var options = {useFindAndModify:false, upsert:true};
+    var addMessage = new Messages({"sender":values.sender,"receiver":values.receiver,"message":values.message,"isRead":false})
+    console.log("addMessage: "+JSON.stringify(addMessage));
+    var conversation = {"person1":values.sender,"person2":values.receiver,$push:{"chat":addMessage}};
+    console.log("conversation: "+JSON.stringify(conversation));
+    Chat.findOneAndUpdate({$or:[{$and:[{person1:values.sender},{person2:values.receiver}]},{$and:[{person1:values.receiver},{person2:values.sender}]}]},conversation, options)
+       
+    .then(() => {successCallback()})
+        .catch((error) => {
+            failureCallback(error)
+            return
+        })
+}
+
+// show message box
+db.showMessages = function(email_id, successCallback, failureCallback){
+    Chat.find({$or:[{person1:email_id},{person2:email_id}]},{_id:0})
+        .then((result) => {
+            console.log("Result message get: "+JSON.stringify(result));
+            successCallback(result)
+        })
+        .catch((error) => {
+            failureCallback(error);
+        })
+        
+}
 
 // Creating a new User and creating profile for the user
 db.createUser = function(user, successCallback, failureCallback) {
