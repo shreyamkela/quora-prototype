@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 class SearchQuestions extends Component {
     render() {
-        return <div>AAAAAAAAAAAAAAAAAAAAAAAAAAAAa</div>;
+        return <div>Search Questions:</div>;
     }
 }
 

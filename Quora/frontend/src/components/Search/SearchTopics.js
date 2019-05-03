@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 class SearchTopics extends Component {
   render() {
-    return <div>AAAAAAAAAAAAAAAAAAAAAAAAAAAAa</div>;
+    return <div>Search Topics:</div>;
   }
 }
 

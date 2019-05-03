@@ -13,6 +13,9 @@ import API from "../../utils/API";
 import quoraLogo from "../../utils/documents/images/quora_logo_light.jpg";
 import Topics from "../Topics/Topics";
 import SearchTopics from "../Search/SearchTopics"
+import SearchQuestions from "../Search/SearchQuestions"
+import SearchPeople from "../Search/SearchPeople"
+
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -49,13 +52,18 @@ class Sidebar extends Component {
       let response = null;
       if (this.state.searchType === "Q") {
         response = await API.get("searchQuestions", { params: searchTerm });
-        message.success(response.data);
+        console.log("Search results: ", response.data);
+        this.props.history.push("/main/questions/search")
+        // NOTE - Using this.props.history.push we can change the /main/home to /main/questions/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "T") {
         response = await API.get("searchTopics", { params: searchTerm });
-        message.success(response.data);
+        console.log("Search results: ", response.data);
+        this.props.history.push("/main/topics/search")
+        // NOTE - Using this.props.history.push we can change the /main/home to /main/topics/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "P") {
         response = await API.get("searchPeople", { params: searchTerm });
-        message.success(response.data);
+        console.log("Search results: ", response.data);
+        this.props.history.push("/main/people/search")
       }
     } catch (error) {
       console.log(error);
@@ -162,6 +170,8 @@ class Sidebar extends Component {
                 <Route exact path="/main/topics/followed" component={Topics} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
                 <Route exact path="/main/topics/search" component={SearchTopics} />
+                <Route exact path="/main/questions/search" component={SearchQuestions} />
+                <Route exact path="/main/people/search" component={SearchPeople} />
               </Switch>
             </div>
           </Content>
