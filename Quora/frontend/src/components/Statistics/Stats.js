@@ -5,6 +5,7 @@ import cookie from 'react-cookies';
 import _ from "lodash";
 import ReactChartkick, { PieChart, ColumnChart } from 'react-chartkick'
 import Chart from 'chart.js'
+import { getTopDownAnswers,getTopUpAnswers} from "../../actions";
 
 ReactChartkick.addAdapter(Chart)
 const {Meta} = Card;
@@ -16,11 +17,36 @@ class Stats extends Component {
     //get the announcements data from backend  
     componentDidMount() {
         console.log("Mounting")
+        this.props.getTopUpAnswers()
+        this.props.getTopDownAnswers()
     }
 
-    columnchart = () => {
-        return <ColumnChart data={{"A": 2, "B": 5}} width="400px" height="300px" />
+    getUpVoteData = () => {
+        let data = {}
+        _.map(this.props.topUpAnswers, answer => {
+            data[answer.content]=answer.upvotes
+         })
+        console.log(data)
+        return data
     }
+
+    getDownVoteData = () => {
+        let data = {}
+        _.map(this.props.topDownAnswers, answer => {
+            data[answer.content]=answer.downvotes
+         })
+        console.log(data)
+        return data
+    }
+
+    columnupchart = () => {
+        return <ColumnChart data={this.getUpVoteData()} width="400px" height="300px" />
+    }
+
+    columndownchart = () => {
+        return <ColumnChart data={this.getDownVoteData()} width="400px" height="300px" />
+    }
+
     piechart = () => {
         return <PieChart data={[["Blueberry", 44], ["Strawberry", 23],["Apple",0]]} width="300px" height="300px"/>
     }
@@ -33,7 +59,8 @@ class Stats extends Component {
                 
                 <div>
                     <div className="wrapper">
-                        {this.columnchart()}
+                        {this.columnupchart()}
+                        {this.columndownchart()}
                         {this.piechart()}
                     </div>
                 </div>
@@ -45,7 +72,9 @@ class Stats extends Component {
 //This method is provided by redux and it gives access to centeral store
 function mapStateToProps(state) {
     return {
-        authFlag: state.authFlag
+        authFlag: state.authFlag,
+        topUpAnswers: state.topUpAnswers,
+        topDownAnswers:state.topDownAnswers
     };
   }
-export default connect(mapStateToProps)(Stats);
+export default connect(mapStateToProps,{getTopDownAnswers,getTopUpAnswers})(Stats);

@@ -406,13 +406,14 @@ db.getTopAnswers = function(email_id, successCallback, failureCallback) {
         if (a.votes !== undefined) return a.votes.filter(v => v.flag === 1).length;
         else return 0;
       };
-      answers = docs.map(d => {
-        return d.answers.map(a => {
-          return {
+      answers = []
+      docs.map(d => {
+        d.answers.map(a => {
+          answers.push({
             content: a.content,
             upvotes: countvotes(a),
             ques_id: d._id
-          };
+          });
         });
       });
       console.log(answers);
