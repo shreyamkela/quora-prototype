@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Modal, Button, Icon, Card, Comment, Avatar, Form, List, Input,} from 'antd';
+import {Modal, Button, Icon, Card, Comment, Avatar, Form, List, Input,AutoComplete} from 'antd';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
@@ -16,6 +16,10 @@ const gridStyle = {
 const {Meta} = Card;
 
 const TextArea = Input.TextArea;
+
+//Input topics here
+const dataSource = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+// const dataSource = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
 
 const CommentList = ({comments}) => (
     <List
@@ -149,13 +153,11 @@ class Questions extends Component {
                     </div>
                     <div>
                         <label for="topic">Topic:</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            name="topic"
-                            placeholder="Enter the topic for your question"
-                            // value={this.state.fname}
-                            onChange={this.handleChange}
+                        <AutoComplete
+                            style={{ width: 200 }}
+                            dataSource={dataSource}
+                            placeholder="try to type `b`"
+                            filterOption={(inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1}
                         /></div>
                 </Modal>
                 <br/><br/>
