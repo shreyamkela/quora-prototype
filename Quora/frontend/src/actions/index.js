@@ -7,7 +7,8 @@ export const LOGOUT = "logout";
 export const UPDATE_PROFILE = "update_profile"
 export const FETCH_PROFILE = "fetch_profile"
 export const FETCH_ANSWERS = "fetch_answers"
-export const ADD_ANSWER="add_answer"
+export const ADD_ANSWER = "add_answer"
+export const DISPLAY_ADD_ANSWER  = "display_add_answer"
 const ROOT_URL = "http://localhost:3001";
 
 var accessToken = localStorage.getItem('auth_token')
@@ -112,6 +113,13 @@ export function logout() {
   };
  }
  
+export function displayAddAnswerForm(display) {
+  return {
+    type: DISPLAY_ADD_ANSWER,
+    display:display
+  }
+}
+
  export function addAnswer(values, callback) {
   //set the with credentials to true
   axios.defaults.withCredentials = true;

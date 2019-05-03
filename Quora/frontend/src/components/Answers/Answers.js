@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Card,Avatar} from 'antd';
 import {connect} from 'react-redux';
-import {fetchAnswersByQID} from "../../actions";
+import {fetchAnswersByQID,displayAddAnswerForm} from "../../actions";
 import cookie from 'react-cookies';
 import _ from "lodash";
 import Comments from "./Comments"
@@ -28,9 +28,17 @@ class Answers extends Component {
         this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')
     }
 
+    addAnswerClick = () => {
+        this.props.displayAddAnswerForm(true)
+    }
+
     renderQuestion = () => {
         if (this.props.ques_answers.question !== undefined) {
             let d = new Date(this.props.ques_answers.posted_on)
+            let addForm = null
+            if (this.props.displayAddAnswer === true)
+                addForm = <AddEditAnswer></AddEditAnswer>
+            else addForm = null
             return (
                 <Card>
                     <div>
@@ -47,8 +55,8 @@ class Answers extends Component {
                             }
                         />
                         <h3><b> {this.props.ques_answers.question}</b></h3>
-                        <QuoraButton value="answer" text="Answer"></QuoraButton>
-                        <AddEditAnswer></AddEditAnswer>
+                        <QuoraButton value="answer" text="Answer" onclick={()=>this.addAnswerClick()}></QuoraButton>
+                        {addForm}
                     </div>
 
                     {this.renderAnswers()}
@@ -95,6 +103,7 @@ class Answers extends Component {
         })
     }
 
+   
 
     render() {
         if(!cookie.load('cookie_user')){
@@ -105,11 +114,8 @@ class Answers extends Component {
                 
                 <div>
                     <div>
-                        
                         {this.renderQuestion()}
                     </div>
-
-
                 </div>
             </div>
         )
@@ -120,7 +126,8 @@ class Answers extends Component {
 function mapStateToProps(state) {
     return {
         authFlag: state.authFlag,
-        ques_answers:state.ques_answers
+        ques_answers: state.ques_answers,
+        displayAddAnswer:state.displayAddAnswer
     };
   }
-export default connect(mapStateToProps,{ fetchAnswersByQID })(Answers);
+export default connect(mapStateToProps,{ fetchAnswersByQID,displayAddAnswerForm })(Answers);
