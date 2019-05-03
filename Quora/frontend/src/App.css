@@ -185,4 +185,28 @@ table, th, td {
     z-index: 800;
   }
 
+  .quora-button {
+    border: none;
+    cursor: pointer;
+    color: #666;
+    font-size: 15px;
+    background-color: #ffffff;
+    line-height:22px;
+    height:38px;
+    padding:7px 12px 7px 12px;
+  }
   
+  .quora-button:hover {
+    background-color: rgba(0, 0, 0, 0.05)!important;
+    border-radius: 20px;
+  }
+  
+  .svg-color {
+      stroke: #329bff!important;
+  }
+  
+  .quora-button:focus, .quora-button:active {
+    outline: 0;
+    outline-style: none;
+    outline-width: 0;
+  }

@@ -5,7 +5,9 @@ import {fetchAnswersByQID} from "../../actions";
 import cookie from 'react-cookies';
 import _ from "lodash";
 import Comments from "./Comments"
+import QuoraButton from "../QuoraButton"
 const {Meta} = Card;
+
 
 class Answers extends Component {
 
@@ -44,6 +46,7 @@ class Answers extends Component {
                             }
                         />
                         <h3><b> {this.props.ques_answers.question}</b></h3>
+                        <QuoraButton value="answer" text="Answer"></QuoraButton>
                     </div>
 
                     {this.renderAnswers()}
@@ -78,7 +81,9 @@ class Answers extends Component {
                         <div>
                         
                             {answer.content}
-                        </div>                        
+                        </div>  <br></br>
+                        <QuoraButton value="upvote" text="Upvote .count"></QuoraButton>
+                        <br></br>
                 </div>
                 <div>
                     <Comments></Comments>
