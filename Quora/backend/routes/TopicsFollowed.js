@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const Model = require("../database/connection");
 
-// Route to GET all topics followed for an email
+// Depending on the type - Route to GET all topics followed for an email OR Route to follow a topic (Route to follow a topic should ideally be POST but we have implemented in GET onl, to save from writing router.post)
 router.get("/", function (req, res) {
   console.log("GET /topicsFollowed");
   console.log("Req: ", req.query);
 
-  Model.profile.find({ email: req.query.email }, (err, results) => {
+  Model.profile.findOne({ email: req.query.email }, (err, results) => {
     if (err) {
       console.log("Unable to fetch user profile", err);
       res.status(400).send("Unable to fetch user profile!");
@@ -17,12 +17,12 @@ router.get("/", function (req, res) {
         if (req.query.type === "1") { // For fetching all topics followed
 
         } else if (req.query.type === "2") { // For following a searched topic
-          if (results[0].topicsFollowed.includes(req.query.topicId)) {
+          if (results.topicsFollowed.includes(req.query.topicId)) {
             res.status(200).send("Already followed!");
           } else {
             // If the topic is not already followed, update the user profile collection topicsFollowed. Then update the topics collection followers
-            results[0].topicsFollowed.push(req.query.topicId)
-            results[0].save().then( // Save into user profile collection
+            results.topicsFollowed.push(req.query.topicId)
+            results.save().then( // Save into user profile collection
               doc => {
                 console.log("New details added to this users followed topics");
                 // Save into topics collection

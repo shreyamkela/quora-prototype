@@ -23,6 +23,7 @@ var SearchQuestions = require("./routes/searchQuestions");
 var SearchTopics = require("./routes/SearchTopics");
 var SearchPeople = require("./routes/SearchPeople");
 var TopicsFollowed = require("./routes/TopicsFollowed");
+var TopicsUnfollowed = require("./routes/TopicsUnfollowed")
 var Messages = require('./routes/Messages');
 var FetchQuestions = require('./routes/FetchQuestion');
 
@@ -84,6 +85,7 @@ app.use("/searchQuestions", SearchQuestions);
 app.use("/searchTopics", SearchTopics);
 app.use("/searchPeople", SearchPeople);
 app.use("/topicsFollowed", TopicsFollowed);
+app.use("/topicsUnfollowed", TopicsUnfollowed);
 app.use('/message',Messages);
 app.use('/fetchQuestions',FetchQuestions);
 
