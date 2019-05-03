@@ -16,6 +16,8 @@ import SearchTopics from "../Search/SearchTopics"
 import SearchQuestions from "../Search/SearchQuestions"
 import SearchPeople from "../Search/SearchPeople"
 import Stats from "../Statistics/Stats"
+import Bookmarks from "../Answers/Bookmarks/Bookmarks";
+import UserAnswers from "../Answers/UserAnswers/UserAnswers";
 
 
 const { SubMenu } = Menu;
@@ -160,7 +162,7 @@ class Sidebar extends Component {
                 <Link to="/main/questions">Questions</Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to="">Answers</Link>
+                <Link to="/main/useranswers">Answers</Link>
               </Menu.Item>
               <Menu.Item key="4">
                 <Link to="">Followers</Link>
@@ -172,7 +174,7 @@ class Sidebar extends Component {
                 <Link to="/main/topics/followed">Topics</Link>
               </Menu.Item>
               <Menu.Item key="7">
-                <Link to="">Bookmarks</Link>
+                <Link to="/main/bookmarks">Bookmarks</Link>
               </Menu.Item>
               <Menu.Item key="8">
                 <Link to="/main/stats">Stats</Link>
@@ -187,7 +189,9 @@ class Sidebar extends Component {
                 <Route exact path="/main/home" component={Questions} />
                 <Route exact path="/main/profile" component={Profile} />
                 <Route path="/main/profile/updateProfile" component={UpdateProfile} />
-                <Route exact path="/main/stats" component={Stats}/>
+                <Route exact path="/main/stats" component={Stats} />
+                <Route exact path="/main/bookmarks" component={Bookmarks} />
+                <Route exact path="/main/useranswers" component={UserAnswers} />
                 <Route exact path="/main/:question_id" component={Answers} />
                 <Route exact path="/main/topics/followed" component={Topics} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
