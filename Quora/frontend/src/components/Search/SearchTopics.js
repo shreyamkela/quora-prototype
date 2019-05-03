@@ -14,7 +14,11 @@ class SearchTopics extends Component {
       // GET topicsFollowed backend route is being used here to follow if not already followed. GET topicsFollowed backend route is being used in the Topics.js frontend to GET all topics followed by this user. They type property in data determines which frontend component is calling /topicsFollowed 
       let response = null;
       response = await API.get("topicsFollowed", { params: data });
-      message.success(response.data)
+      if (response.data.toLowerCase().includes("already")) {
+        message.warning("Topic already followed!")
+      } else {
+        message.success(response.data)
+      }
     } catch (error) {
       console.log(error);
       message.error("Unable to follow topic at the moment. Please refresh the page and try again.")
@@ -34,7 +38,7 @@ class SearchTopics extends Component {
       searchResults = this.props.history.location.state.searchResults
     }
     let displayedResults = null;
-    if (searchResults[0] === undefined) {
+    if (searchResults === null || searchResults[0] === undefined) {
       displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No topics found for this search.</div>;
     } else {
       displayedResults = searchResults.map(key => (

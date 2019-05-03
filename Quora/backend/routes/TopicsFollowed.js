@@ -20,27 +20,45 @@ router.get("/", function (req, res) {
           if (results[0].topicsFollowed.includes(req.query.topicId)) {
             res.status(200).send("Already followed!");
           } else {
-            res.status(200).send("Topic followed!");
+            // If the topic is not already followed, update the user profile collection topicsFollowed. Then update the topics collection followers
+            results[0].topicsFollowed.push(req.query.topicId)
+            results[0].save().then( // Save into user profile collection
+              doc => {
+                console.log("New details added to this users followed topics");
+                // Save into topics collection
+                Model.topics.findOne({ _id: req.query.topicId }, (err, results_topics) => {
+                  if (err) {
+                    console.log("Unable to fetch topics database", err);
+                    res.status(400).send("Unable to fetch topics database!");
+                  } else {
+                    if (results_topics) {
+                      results_topics.followers.push(req.query.email)
+                      results_topics.save().then(
+                        doc_1 => {
+                          console.log("New details added to this topics followers");
+                          // Only send success if both the collections have been updated
+                          res.status(200).send("Topic followed!");
+                        },
+                        err => {
+                          console.log("Unable to save follower details!", err);
+                          res.status(400).send("Unable to save follower details!");
+                        }
+                      )
+                    } else {
+                      console.log("Topic not found in database!");
+                      res.status(400).send("Topic not found in database!");
+                    }
+                  }
+                })
+              },
+              err => {
+                console.log("Unable to save topic details!", err);
+                res.status(400).send("Unable to save topic details!");
+              }
+            );
           }
-
         }
 
-        // for (var key in results) {
-        //   let currentTerm = results[key].title.toLowerCase();
-        //   if (currentTerm.includes(searchValue)) {
-        //     searchedTopics.push(results[key]);
-        //   }
-        // }
-        // if (searchedTopics === []) {
-        //   console.log("No topics found with the entered search term!");
-        //   res.status(400).send("No topics found with the entered search term!");
-        // } else {
-        //   console.log("searchedTopics: ", searchedTopics);
-        //   res.status(200).send(searchedTopics);
-        //   //res.status(200).send("SUCCESS");
-        // }
-
-        //res.status(200).end("Course already enrolled!"); // res.end will end the response here and dont go futher in this post request? But this doesnt work here why? return res.end also doesnt work if a db.query is after this db.query
       } else {
         console.log("User not found in database!", err);
         res.status(400).send("User not found in database!");
