@@ -11,15 +11,11 @@ router.get("/", function(req, res) {
   let searchedTopics = [];
 
   Model.topics.find({}, (err, results) => {
-    console.log("XXXXXXXXXXXXXXXXXXXXx");
-
     if (err) {
       console.log("Unable to fetch topics", err);
       res.status(400).send("Unable to fetch topics!");
     } else {
       if (results) {
-        console.log("XXXXXXXXXXXXXXXXXXXXx", results);
-
         for (var key in results) {
           let currentTerm = results[key].title.toLowerCase();
           if (currentTerm.includes(searchValue)) {
@@ -31,7 +27,8 @@ router.get("/", function(req, res) {
           res.status(400).send("No topics found with the entered search term!");
         } else {
           console.log("searchedTopics: ", searchedTopics);
-          res.status(200).send(searchedTopics);
+          //res.status(200).send(searchedTopics);
+          res.status(200).send("SUCCESS");
         }
 
         //res.status(200).end("Course already enrolled!"); // res.end will end the response here and dont go futher in this post request? But this doesnt work here why? return res.end also doesnt work if a db.query is after this db.query

@@ -12,6 +12,7 @@ con1.once("open", function() {
 });
 var AutoIncrement = require("mongoose-sequence")(mongoose);
 
+// NOTE - Have to keep all model schema declarations in the file where the above mongo/mongoose connections have been made, so that the connection is available to the below schema. If schema is kept in a different file then we have to export the connection configuration from here
 // Topics Model
 var topics = mongoose.model("topics", {
   title: String,
