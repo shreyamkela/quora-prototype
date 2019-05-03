@@ -53,17 +53,32 @@ class Sidebar extends Component {
       if (this.state.searchType === "Q") {
         response = await API.get("searchQuestions", { params: searchTerm });
         console.log("Search results: ", response.data);
-        this.props.history.push("/main/questions/search")
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
+          pathname: "/main/questions/search",
+          state: {
+            searchResults: response.data
+          }
+        })
         // NOTE - Using this.props.history.push we can change the /main/home to /main/questions/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "T") {
         response = await API.get("searchTopics", { params: searchTerm });
         console.log("Search results: ", response.data);
-        this.props.history.push("/main/topics/search")
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchTopics, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
+          pathname: "/main/topics/search",
+          state: {
+            searchResults: response.data
+          }
+        })
         // NOTE - Using this.props.history.push we can change the /main/home to /main/topics/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "P") {
         response = await API.get("searchPeople", { params: searchTerm });
         console.log("Search results: ", response.data);
-        this.props.history.push("/main/people/search")
+        this.props.history.push({
+          pathname: "/main/people/search",
+          state: {
+            searchResults: response.data
+          }
+        })
       }
     } catch (error) {
       console.log(error);
@@ -169,9 +184,9 @@ class Sidebar extends Component {
                 <Route exact path="/main/:question_id" component={Answers} />
                 <Route exact path="/main/topics/followed" component={Topics} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
-                <Route exact path="/main/topics/search" component={SearchTopics} />
-                <Route exact path="/main/questions/search" component={SearchQuestions} />
-                <Route exact path="/main/people/search" component={SearchPeople} />
+                <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
+                <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />}/>
+                <Route exact path="/main/people/search" render={(props) => <SearchPeople {...props} />} />
               </Switch>
             </div>
           </Content>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import cookie from "react-cookies";
 import { connect } from "react-redux";
-import { Layout, message } from "antd";
+import { Layout, Card, message } from "antd";
 
 import API from "../../utils/API";
 
@@ -26,14 +26,14 @@ class Topics extends Component {
     console.log("Topics followed:", this.state.topicsFollowed);
     return (
       <div>
-        <Layout>
+        <Card>
           <Content style={{ background: "#fff" }}>Followed Topics</Content>
-        </Layout>
+        </Card>
       </div>
     );
   }
 }
 
 //This method is provided by redux and it gives access to centeral store
-function mapStateToProps(state) {}
+function mapStateToProps(state) { }
 export default connect(mapStateToProps)(Topics);
