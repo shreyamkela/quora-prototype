@@ -9,6 +9,7 @@ export const FETCH_PROFILE = "fetch_profile"
 export const FETCH_ANSWERS = "fetch_answers"
 export const ADD_ANSWER = "add_answer"
 export const DISPLAY_ADD_ANSWER  = "display_add_answer"
+export const ADD_QUESTIONS  = "addQuestion"
 const ROOT_URL = "http://localhost:3001";
 
 var accessToken = localStorage.getItem('auth_token')
@@ -134,6 +135,21 @@ export function displayAddAnswerForm(display) {
     return {
       type: ADD_ANSWER,
       payload: response
+    };
+}
+
+export function addQuestion() {
+    axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    const response = axios.get(`${ROOT_URL}/questions`)
+        .then(response =>{
+            return response
+        })
+        .catch(error => { return error.response })
+
+    return {
+        type: ADD_QUESTIONS,
+        payload: response
     };
 }
        

@@ -3,7 +3,8 @@ import {Modal, Button, Icon, Card, Comment, Avatar, Form, List, Input,} from 'an
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {fetchProfile} from "../../actions";
+import {displayAddAnswerForm, fetchAnswersByQID, fetchProfile} from "../../actions";
+import {addQuestion} from "../../actions";
 import {Redirect} from 'react-router';
 import cookie from 'react-cookies';
 import _ from "lodash";
@@ -53,6 +54,8 @@ class Questions extends Component {
         topic: '',
         question: '',
         comments: [],
+        author: '',
+        followers: [],
         submitting: false,
         value: '',
 
@@ -209,4 +212,13 @@ class Questions extends Component {
     }
 }
 
-export default Questions;
+
+function mapStateToProps(state) {
+    return {
+        authFlag: state.authFlag,
+        question: state.question,
+
+    };
+}
+// export default Questions;
+export default connect(mapStateToProps,{addQuestion })(Questions);
