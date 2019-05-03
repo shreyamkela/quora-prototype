@@ -11,9 +11,10 @@ class Topics extends Component {
   state = { topicsFollowed: "" };
 
   async componentDidMount() {
-    let cookies = cookie.load("cookie_user");
+    let data = { email: cookie.load("cookie_user"), type: 1 }
+    // GET topicsFollowed backend route is being used here to GET all topics followed by this user. GET topicsFollowed backend route is being used in the SearchTopics.js frontend to follow if not already followed. They type property in data determines which frontend component is calling /topicsFollowed 
     try {
-      let response = await API.get("topicsFollowed", { params: cookies });
+      let response = await API.get("topicsFollowed", { params: data });
       message.success("SUCCESS");
       this.setState({ topicsFollowed: response.data });
     } catch (error) {
