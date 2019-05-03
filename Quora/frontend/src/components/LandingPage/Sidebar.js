@@ -10,7 +10,7 @@ import { logout } from "../../actions";
 import cookie from "react-cookies";
 import Answers from "../Answers/Answers";
 import API from "../../utils/API";
-import quoraLogo from "../../utils/documents/images/quora_logo_dark.jpg";
+import quoraLogo from "../../utils/documents/images/quora_logo_light.jpg";
 import Topics from "../Topics/Topics";
 
 const { SubMenu } = Menu;
@@ -87,10 +87,9 @@ class Sidebar extends Component {
     );
 
     return (
-      <div>
-        <Layout>
-          <Header className="header">
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]} style={{ lineHeight: "64px" }}>
+      <Layout>
+          <Header className="topbar" style={{background:"#fff"}}>
+          <Menu theme="light" mode="horizontal" defaultSelectedKeys={["2"]} style={{ lineHeight: "64px",zIndex:"800"}}>
               <Menu.Item key="0">
                 <img src={quoraLogo} style={{ width: 100 }} />
               </Menu.Item>
@@ -120,27 +119,17 @@ class Sidebar extends Component {
                 </Link>
               </Menu.Item>
             </Menu>
-          </Header>
-          {/*<div className='sidenav'>*/}
-          {/*<h3>SJSU</h3>*/}
-          {/*<ul className="nav nav-pills nav-stacked">*/}
-          {/*<li className={accountClass}><Link to="/main/profile" ><i className="fa fa-circle-o"></i> Profile</Link></li>*/}
-          {/*<li className={homeClass}><a href="/main/home">Home</a></li>*/}
-          {/*<li className={settingsClass}><a href="/main/settings">Settings</a></li>*/}
-          {/*{navLogin}*/}
-          {/*</ul>*/}
-          {/*</div>*/}
-
-          <Content style={{ padding: "0 50px" }}>
-            <Layout style={{ padding: "24px 0", background: "#fff" }}>
-              <Sider width={200} style={{ background: "#fff" }}>
+        </Header>
+        
+            <Layout style={{ padding: "24px 0", background: "#fafafa" }}>
+              <Sider width={200} style={{ background: "#fafafa" }}>
                 <Menu mode="inline" defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
                   {/*Team --- Add your routes over here for each corresponding Tab*/}
                   <Menu.Item key="1">
                     <Link to="">Home</Link>
                   </Menu.Item>
                   <Menu.Item key="2">
-                    <Link to="/questions">Questions</Link>
+                    <Link to="/main/profile">Questions</Link>
                   </Menu.Item>
                   <Menu.Item key="3">
                     <Link to="">Answers</Link>
@@ -158,18 +147,9 @@ class Sidebar extends Component {
                     <Link to="">Bookmarks</Link>
                   </Menu.Item>
 
-                  {/*<SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>*/}
-                  {/*<Menu.Item key="9">option9</Menu.Item>*/}
-                  {/*<Menu.Item key="10">option10</Menu.Item>*/}
-                  {/*<Menu.Item key="11">option11</Menu.Item>*/}
-                  {/*<Menu.Item key="12">option12</Menu.Item>*/}
-                  {/*</SubMenu>*/}
                 </Menu>
               </Sider>
               <Content style={{ padding: "0 24px", minHeight: 280 }}>
-                {/*<div className="heading">
-                  <h2>Welcome to Quora!</h2>
-                </div>*/}
                 <div className="larger">
                   {/*TEAM ----define your routes here routes that will be shown
                                     when a tab 2is clicked*/}
@@ -184,9 +164,7 @@ class Sidebar extends Component {
                 </div>
               </Content>
             </Layout>
-          </Content>
-        </Layout>
-      </div>
+      </Layout>
     );
   }
 }
