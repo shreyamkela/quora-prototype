@@ -204,8 +204,6 @@ class Questions extends Component {
                                 />
                             </div>
                         </Card></div>
-
-
                 </div>
             </div>
         )
@@ -217,7 +215,9 @@ function mapStateToProps(state) {
     return {
         authFlag: state.authFlag,
         question: state.question,
-
+        topic: state.topic,
+        author: state.author,
+        followers: state.followers
     };
 }
 // export default Questions;
