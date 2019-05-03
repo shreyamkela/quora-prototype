@@ -191,7 +191,7 @@ db.addAnswer = function (values, successCallback, failureCallback) {
     Questions.findOneAndUpdate({
         _id:mongoose.Types.ObjectId(values.q_id)
     }, {
-            $push: { answers: {content:values.answer,author:values.email_id} } 
+            $push: { answers: {content:values.answer,author:values.email_id,isAnonymous:values.isanonymous} } 
         }
     ).then(() => { successCallback() })
         .catch((error) => {

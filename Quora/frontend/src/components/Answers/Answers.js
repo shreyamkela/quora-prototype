@@ -92,7 +92,7 @@ class Answers extends Component {
                         
                             {answer.content}
                         </div>  <br></br>
-                        <QuoraButton value="upvote" text="Upvote .count"></QuoraButton>
+                        <QuoraButton value="upvote" text={"Upvote " + answer.votes.length}></QuoraButton>
                         <br></br>
                 </div>
                 <div>

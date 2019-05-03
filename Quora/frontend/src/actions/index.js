@@ -121,11 +121,12 @@ export function displayAddAnswerForm(display) {
   }
 }
 
- export function addAnswer(values, callback) {
+ export function addAnswer(q_id,values, callback) {
   //set the with credentials to true
   axios.defaults.withCredentials = true;
   //make a post request with the user data
-  const response = axios.post(`${ROOT_URL}/addanswer`,values)
+   console.log(q_id)
+  const response = axios.post(`${ROOT_URL}/answer?question_id=`+q_id,values)
       .then(response => {
         callback()
         return response

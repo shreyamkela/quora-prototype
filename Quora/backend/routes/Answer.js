@@ -7,6 +7,7 @@ var kafka = require('../kafka/client');
 router.post('/', function (req, response) {
     console.log("Inside Add Answer Post Request");
     req.body.q_id = req.query.question_id
+    req.body.email_id = req.cookies.cookie_user
     kafka.make_request('add_answer', req.body, function (err, msg) {
         if (err) {
             response.status(401).json({ success: false, message: msg });
