@@ -54,5 +54,6 @@ handleTopicRequest("add_question", Question)
 handleTopicRequest("fetch_answers", Answers)
 handleTopicRequest("add_answer", addAnswer)
 handleTopicRequest("fetch_questions", fetchQuestions)
+handleTopicRequest("user_answers", fetchQuestions)
 //first argument is topic name
 //second argument is a function that will handle this topic request

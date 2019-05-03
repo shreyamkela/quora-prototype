@@ -11,7 +11,8 @@ export const ADD_ANSWER = "add_answer"
 export const DISPLAY_ADD_ANSWER  = "display_add_answer"
 export const ADD_QUESTIONS = "addQuestion"
 export const TOP__UP_ANSWERS = "top_up_answers"
-export const TOP__DOWN_ANSWERS  = "top_down_answers"
+export const TOP__DOWN_ANSWERS = "top_down_answers"
+export const USER_ANSWERS = "user_answers"
 const ROOT_URL = "http://localhost:3001";
 
 var accessToken = localStorage.getItem('auth_token')
@@ -204,4 +205,20 @@ export function getTopDownAnswers() {
         payload: response
     };
 }
-    
+ 
+
+export function fetchUserAnswers() {
+  axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    const response = axios.get(`${ROOT_URL}/useranswers`)
+        .then(response =>{
+            return response
+        })
+        .catch(error => { return error.response })
+
+    return {
+        type: USER_ANSWERS,
+        payload: response
+    };
+}
+

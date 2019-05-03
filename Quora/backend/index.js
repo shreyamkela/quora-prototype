@@ -17,6 +17,7 @@ var Vote = require("./routes/Vote");
 var Follow = require("./routes/Follow");
 var TopUpAnswers = require("./routes/TopUpAnswers");
 var TopDownAnswers = require("./routes/TopDownAnswers");
+var UserAnswers = require('./routes/UserAnswers');
 var Profile = require("./routes/Profile");
 var Question = require("./routes/Question");
 var SearchQuestions = require("./routes/searchQuestions");
@@ -87,7 +88,8 @@ app.use("/searchPeople", SearchPeople);
 app.use("/topicsFollowed", TopicsFollowed);
 app.use("/topicsUnfollowed", TopicsUnfollowed);
 app.use('/message',Messages);
-app.use('/fetchQuestions',FetchQuestions);
+app.use('/fetchQuestions', FetchQuestions);
+app.use('/useranswers',UserAnswers);
 
 module.exports = app;
 //start your server on port 3001
