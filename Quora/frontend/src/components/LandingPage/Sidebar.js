@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Layout, Menu, Select, message } from "antd";
+import { Input, Layout, Menu, Select, message, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import { Router, Route, Switch } from "react-router-dom";
 import Questions from "../Question/Questions";
@@ -134,7 +134,9 @@ class Sidebar extends Component {
                 addonBefore={selectBefore}
               />
             </Menu.Item>
-
+              {/*<Menu.Item key="5" style={{ marginLeft: 90 }}>*/}
+                  {/*<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />*/}
+              {/*</Menu.Item>*/}
             <Menu.Item key="1" style={{ marginLeft: 90 }}>
               <Link to="/main/profile"> Profile</Link>
             </Menu.Item>
