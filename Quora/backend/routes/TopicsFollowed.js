@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const Model = require("../model/topics");
+const Model = require("../database/model/topics");
 
 // Route to GET all topics followed for an email
 router.get("/", function(req, res) {
