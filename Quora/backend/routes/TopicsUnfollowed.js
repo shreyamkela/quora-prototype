@@ -4,7 +4,7 @@ const Model = require("../database/connection");
 
 // Route to unfollow a topic for an email
 router.post("/", function (req, res) {
-  console.log("POST /topicsUnollowed");
+  console.log("POST /topicsUnfollowed");
   console.log("Req: ", req.body);
 
   Model.profile.findOne({ email: req.body.email }, (err, results) => {
@@ -18,7 +18,11 @@ router.post("/", function (req, res) {
           res.status(200).send("Already not followed!");
         } else {
           // If the topic is not already followed, update the user profile collection topicsFollowed. Then update the topics collection followers
-          results.topicsFollowed.pop(req.body.topicId)
+
+          var index = results.topicsFollowed.indexOf(req.body.topicId); // To remove the topicId from followed topics we spice at index. Cannot use pop as pop will remove from the end of the array
+          if (index > -1) {
+            results.topicsFollowed.splice(index, 1);
+          }
           results.save().then( // Save into user profile collection
             doc => {
               console.log("Topic removed from this users followed topics");
@@ -30,6 +34,10 @@ router.post("/", function (req, res) {
                 } else {
                   if (results_topics) {
                     results_topics.followers.pop(req.body.email)
+                    var index_1 = results_topics.followers.indexOf(req.body.email);
+                    if (index_1 > -1) {
+                      results_topics.followers.splice(index_1, 1);
+                    }
                     results_topics.save().then(
                       doc_1 => {
                         console.log("User removed from this topics followers");

@@ -15,7 +15,22 @@ router.get("/", function (req, res) {
       if (results) {
         //console.log(results)
         if (req.query.type === "1") { // For fetching all topics followed
-
+          Model.topics.find({
+            _id: { $in: results.topicsFollowed }
+          }, (err, results_topics) => {
+            if (err) {
+              console.log("Unable to fetch topics database", err);
+              res.status(400).send("Unable to fetch topics database!");
+            } else {
+              if (results_topics[0] !== undefined) {
+                console.log("Topics followed by this user: ", results_topics);
+                res.status(200).send(results_topics);
+              } else {
+                console.log("No topics followed by this user!");
+                res.status(200).send("No topics followed by this user!");
+              }
+            }
+          });
         } else if (req.query.type === "2") { // For following a searched topic
           if (results.topicsFollowed.includes(req.query.topicId)) {
             res.status(200).send("Already followed!");
