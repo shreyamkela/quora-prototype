@@ -7,6 +7,7 @@ export const LOGOUT = "logout";
 export const UPDATE_PROFILE = "update_profile"
 export const FETCH_PROFILE = "fetch_profile"
 export const FETCH_ANSWERS = "fetch_answers"
+export const ADD_ANSWER="add_answer"
 const ROOT_URL = "http://localhost:3001";
 
 var accessToken = localStorage.getItem('auth_token')
@@ -111,5 +112,21 @@ export function logout() {
   };
  }
  
+ export function addAnswer(values, callback) {
+  //set the with credentials to true
+  axios.defaults.withCredentials = true;
+  //make a post request with the user data
+  const response = axios.post(`${ROOT_URL}/addanswer`,values)
+      .then(response => {
+        callback()
+        return response
+      })
+    .catch(error => { return error.response })
+  
+    return {
+      type: ADD_ANSWER,
+      payload: response
+    };
+}
        
     

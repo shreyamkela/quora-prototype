@@ -6,6 +6,7 @@ import cookie from 'react-cookies';
 import _ from "lodash";
 import Comments from "./Comments"
 import QuoraButton from "../QuoraButton"
+import AddEditAnswer from './AddEditAnswer';
 const {Meta} = Card;
 
 
@@ -47,6 +48,7 @@ class Answers extends Component {
                         />
                         <h3><b> {this.props.ques_answers.question}</b></h3>
                         <QuoraButton value="answer" text="Answer"></QuoraButton>
+                        <AddEditAnswer></AddEditAnswer>
                     </div>
 
                     {this.renderAnswers()}
