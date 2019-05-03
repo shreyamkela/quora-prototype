@@ -12,6 +12,7 @@ import Answers from "../Answers/Answers";
 import API from "../../utils/API";
 import quoraLogo from "../../utils/documents/images/quora_logo_light.jpg";
 import Topics from "../Topics/Topics";
+import SearchTopics from "../Search/SearchTopics"
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -88,82 +89,83 @@ class Sidebar extends Component {
 
     return (
       <Layout>
-          <Header className="topbar" style={{background:"#fff"}}>
-          <Menu theme="light" mode="horizontal" defaultSelectedKeys={["2"]} style={{ lineHeight: "64px",zIndex:"800"}}>
-              <Menu.Item key="0">
-                <img src={quoraLogo} style={{ width: 100 }} />
+        <Header className="topbar" style={{ background: "#fff" }}>
+          <Menu theme="light" mode="horizontal" defaultSelectedKeys={["2"]} style={{ lineHeight: "64px", zIndex: "800" }}>
+            <Menu.Item key="0">
+              <img src={quoraLogo} style={{ width: 100 }} />
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Link to="/main/home">Home</Link>
+            </Menu.Item>
+
+            <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
+              <Search
+                style={{ marginTop: 18 }}
+                placeholder="Search Quora"
+                enterButton="Search"
+                size="medium"
+                onSearch={value => {
+                  this.handleSearch(value);
+                }}
+                addonBefore={selectBefore}
+              />
+            </Menu.Item>
+
+            <Menu.Item key="1" style={{ marginLeft: 90 }}>
+              <Link to="/main/profile"> Profile</Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/login" onClick={this.handleLogout}>
+                Logout
+                </Link>
+            </Menu.Item>
+          </Menu>
+        </Header>
+
+        <Layout style={{ padding: "24px 0", background: "#fafafa" }}>
+          <Sider width={200} style={{ background: "#fafafa" }}>
+            <Menu mode="inline" defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
+              {/*Team --- Add your routes over here for each corresponding Tab*/}
+              <Menu.Item key="1">
+                <Link to="">Home</Link>
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to="/main/home">Home</Link>
-              </Menu.Item>
-
-              <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
-                <Search
-                  style={{ marginTop: 18 }}
-                  placeholder="Search Quora"
-                  enterButton="Search"
-                  size="medium"
-                  onSearch={value => {
-                    this.handleSearch(value);
-                  }}
-                  addonBefore={selectBefore}
-                />
-              </Menu.Item>
-
-              <Menu.Item key="1" style={{ marginLeft: 90 }}>
-                <Link to="/main/profile"> Profile</Link>
+                <Link to="/main/questions">Questions</Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to="/login" onClick={this.handleLogout}>
-                  Logout
-                </Link>
+                <Link to="">Answers</Link>
               </Menu.Item>
-            </Menu>
-        </Header>
-        
-            <Layout style={{ padding: "24px 0", background: "#fafafa" }}>
-              <Sider width={200} style={{ background: "#fafafa" }}>
-                <Menu mode="inline" defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
-                  {/*Team --- Add your routes over here for each corresponding Tab*/}
-                  <Menu.Item key="1">
-                    <Link to="">Home</Link>
-                  </Menu.Item>
-                  <Menu.Item key="2">
-                    <Link to="/main/profile">Questions</Link>
-                  </Menu.Item>
-                  <Menu.Item key="3">
-                    <Link to="">Answers</Link>
-                  </Menu.Item>
-                  <Menu.Item key="4">
-                    <Link to="">Followers</Link>
-                  </Menu.Item>
-                  <Menu.Item key="5">
-                    <Link to="">Following</Link>
-                  </Menu.Item>
-                  <Menu.Item key="6">
-                    <Link to="/main/topics/followed">Topics</Link>
-                  </Menu.Item>
-                  <Menu.Item key="7">
-                    <Link to="">Bookmarks</Link>
-                  </Menu.Item>
+              <Menu.Item key="4">
+                <Link to="">Followers</Link>
+              </Menu.Item>
+              <Menu.Item key="5">
+                <Link to="">Following</Link>
+              </Menu.Item>
+              <Menu.Item key="6">
+                <Link to="/main/topics/followed">Topics</Link>
+              </Menu.Item>
+              <Menu.Item key="7">
+                <Link to="">Bookmarks</Link>
+              </Menu.Item>
 
-                </Menu>
-              </Sider>
-              <Content style={{ padding: "0 24px", minHeight: 280 }}>
-                <div className="larger">
-                  {/*TEAM ----define your routes here routes that will be shown
+            </Menu>
+          </Sider>
+          <Content style={{ padding: "0 24px", minHeight: 280 }}>
+            <div className="larger">
+              {/*TEAM ----define your routes here routes that will be shown
                                     when a tab 2is clicked*/}
-                  <Switch>
-                    <Route exact path="/main/home" component={Questions} />
-                    <Route exact path="/main/profile" component={Profile} />
-                    <Route path="/main/profile/updateProfile" component={UpdateProfile} />
-                    <Route exact path="/main/:question_id" component={Answers} />
-                    <Route exact path="/main/topics/followed" component={Topics} />
-                    {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
-                  </Switch>
-                </div>
-              </Content>
-            </Layout>
+              <Switch>
+                <Route exact path="/main/home" component={Questions} />
+                <Route exact path="/main/profile" component={Profile} />
+                <Route path="/main/profile/updateProfile" component={UpdateProfile} />
+                <Route exact path="/main/:question_id" component={Answers} />
+                <Route exact path="/main/topics/followed" component={Topics} />
+                {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
+                <Route exact path="/main/topics/search" component={SearchTopics} />
+              </Switch>
+            </div>
+          </Content>
+        </Layout>
       </Layout>
     );
   }
