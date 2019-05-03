@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import {Card,Avatar,Icon,Input,Button} from 'antd';
 import { connect } from 'react-redux';
-import { displayAddAnswerForm,addAnswer } from "../../actions";
+import { displayAddAnswerForm,addAnswer,fetchAnswersByQID } from "../../actions";
 import { Field, reduxForm } from "redux-form"
 const { Meta } = Card;
 
@@ -12,7 +12,10 @@ class AddEditAnswer extends Component {
     onSubmit = (values) => {
         if (values.isanonymous) values.isanonymous = 1
         else values.isanonymous = 0
-        this.props.addAnswer("5ccb33f0cc26351195ae6d72",values,()=>this.props.displayAddAnswerForm(false))
+        this.props.addAnswer("5ccb33f0cc26351195ae6d72", values, () => {
+            this.props.displayAddAnswerForm(false);
+            this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')
+        })
         
     }
     renderAnswerField = (field) => {
@@ -79,7 +82,7 @@ AddEditAnswer = reduxForm({
 
 AddEditAnswer = connect(
     mapStateToProps,
-    { displayAddAnswerForm ,addAnswer }  
+    { displayAddAnswerForm ,addAnswer,fetchAnswersByQID }  
 )(AddEditAnswer)
 
 

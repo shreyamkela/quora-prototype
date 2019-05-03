@@ -139,6 +139,25 @@ export function displayAddAnswerForm(display) {
     };
 }
 
+export function voteAnswer(a_id, values, callback) {
+  //set the with credentials to true
+  axios.defaults.withCredentials = true;
+  //make a post request with the user data
+   console.log(a_id)
+  const response = axios.post(`${ROOT_URL}/vote?answer_id=`+a_id,values)
+      .then(response => {
+        callback()
+        return response
+      })
+    .catch(error => { return error.response })
+  
+    return {
+      type: ADD_ANSWER,
+      payload: response
+    };
+}
+   
+
 export function addQuestion() {
     axios.defaults.withCredentials = true;
     //make a post request with the user data

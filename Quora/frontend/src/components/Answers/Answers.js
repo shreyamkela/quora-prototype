@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Card,Avatar} from 'antd';
 import {connect} from 'react-redux';
-import {fetchAnswersByQID,displayAddAnswerForm} from "../../actions";
+import {fetchAnswersByQID,displayAddAnswerForm,voteAnswer} from "../../actions";
 import cookie from 'react-cookies';
 import _ from "lodash";
 import Comments from "./Comments"
@@ -32,10 +32,14 @@ class Answers extends Component {
         this.props.displayAddAnswerForm(true)
     }
 
+    vote = (a_id,vote) => {
+        this.props.voteAnswer(a_id,{flag:vote},()=>{this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')})
+    }
     renderQuestion = () => {
         if (this.props.ques_answers.question !== undefined) {
             let d = new Date(this.props.ques_answers.posted_on)
             let addForm = null
+           
             if (this.props.displayAddAnswer === true)
                 addForm = <AddEditAnswer></AddEditAnswer>
             else addForm = null
@@ -71,28 +75,43 @@ class Answers extends Component {
        
         return _.map(this.props.ques_answers.answers, answer => {
             let d = new Date(answer.answered_on)
+            let content = ''
+            if (answer.content !== undefined) {
+                content = answer.content.split('\n').map(i => {
+                    return <>{i}<br></br></>
+                })
+            }
+            let photo = answer.profile.photo
+            let firstname = answer.profile.firstname
+            let lastname = answer.profile.lastname
+            let credentials = answer.profile.credentials
+            if (answer.isAnonymous === 1) {
+                photo = ""
+                firstname = "Anonymous"
+                lastname = ""
+                credentials=""
+            }
             return (
                 <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
-
+                 
                     <div>
                     <Meta
-            avatar={<Avatar
-            src={answer.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-            title={answer.profile.firstname+"  "+answer.profile.lastname}//"User's name goes here"
-                            description={<div>{answer.profile.credentials}
+                    avatar={<Avatar
+                            src={photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                            title={firstname+"  "+lastname}//"User's name goes here"
+                            description={<div>{credentials}
                                 <div>
                             {d.toLocaleDateString()}&nbsp;&nbsp;
                             {d.toLocaleTimeString()}
-                        </div>
+                            </div>
                             </div>}//"User credentials goes here"
-
-                        />
+                     />
                 <br></br>
                         <div>
                         
-                            {answer.content}
+                            {content}
                         </div>  <br></br>
-                        <QuoraButton value="upvote" text={"Upvote " + answer.votes.length}></QuoraButton>
+                        <QuoraButton value="upvote" text={"Upvote " + answer.votes.length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
                         <br></br>
                 </div>
                 <div>
@@ -130,4 +149,4 @@ function mapStateToProps(state) {
         displayAddAnswer:state.displayAddAnswer
     };
   }
-export default connect(mapStateToProps,{ fetchAnswersByQID,displayAddAnswerForm })(Answers);
+export default connect(mapStateToProps,{ fetchAnswersByQID,displayAddAnswerForm,voteAnswer })(Answers);
