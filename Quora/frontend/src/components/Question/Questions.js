@@ -164,7 +164,7 @@ class Questions extends Component {
                         <Card
                             type="inner"
                             title="Question goes here"
-                            extra={<a href="#">Bookmark</a>}
+                            extra={<a className="Bookmark" href="#">Bookmark</a>}
                         >
                             <Meta
                                 avatar={<Avatar

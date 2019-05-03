@@ -123,6 +123,7 @@ class Sidebar extends Component {
 
             <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
               <Search
+                  className="Search-Button"
                 style={{ marginTop: 18 }}
                 placeholder="Search Quora"
                 enterButton="Search"
