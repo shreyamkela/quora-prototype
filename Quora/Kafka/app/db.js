@@ -2,6 +2,7 @@
 var crypt = require("./crypt");
 var db = {};
 let mysql = require("mysql");
+let profileSchema = require("../model/profile");
 let con = mysql.createPool({
   host: "cmpe273-quora-group3.cjw2lhsmorrx.us-east-1.rds.amazonaws.com",
   user: "admin",
@@ -11,9 +12,8 @@ let con = mysql.createPool({
 });
 const mongoose = require("mongoose");
 //"mongodb://localhost:27017/CanvasApp"
-let uri = "mongodb+srv://canvas_user:canvas@canvas-upy4d.mongodb.net/CanvasApp?retryWrites=true";
-//let uri = "mongodb://shreyamkela:Shreyam123@ds149146.mlab.com:49146/quora-shreyamkela";
-mongoose.connect("mongodb://localhost:27017/QuoraApp", { useNewUrlParser: true, poolSize: 5 });
+let uri =  "mongodb+srv://canvas_user:2407Rakhee%21@cluster0-jjkgt.mongodb.net/quoradb?poolSize=10?retryWrites=true"
+mongoose.connect(uri, { useNewUrlParser: true, poolSize: 5 });
 let con1 = mongoose.connection;
 con1.on("error", console.error.bind(console, "connection error:"));
 con1.once("open", function() {
@@ -53,11 +53,60 @@ var QuestionSchema = new mongoose.Schema({
   answers: [AnswerSchema]
 });
 
+var MessageSchema = new mongoose.Schema({
+    sender : String,
+    receiver : String,
+    message : String, 
+    time : {type :Date, default: Date.now()}, 
+    isRead : Boolean
+})
+
+var ConversationSchema = new mongoose.Schema({
+    person1 : String,
+    person2 : String,
+    chat : [MessageSchema]
+})
+
 QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
 AnswerSchema.plugin(AutoIncrement, { id: "ans_seq", inc_field: "ID" });
 
+
 var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 var Profile = require("../model/profile");
+var Messages = mongoose.model('Message',MessageSchema);
+var Chat = mongoose.model('Chat', ConversationSchema);
+
+// finding if a conversation exists and adding messages to it else create a new conversation
+
+db.sendMessage = function(values, successCallback, failureCallback){
+
+    console.log("values: "+JSON.stringify(values));
+    var options = {useFindAndModify:false, upsert:true};
+    var addMessage = new Messages({"sender":values.sender,"receiver":values.receiver,"message":values.message,"isRead":false})
+    console.log("addMessage: "+JSON.stringify(addMessage));
+    var conversation = {"person1":values.sender,"person2":values.receiver,$push:{"chat":addMessage}};
+    console.log("conversation: "+JSON.stringify(conversation));
+    Chat.findOneAndUpdate({$or:[{$and:[{person1:values.sender},{person2:values.receiver}]},{$and:[{person1:values.receiver},{person2:values.sender}]}]},conversation, options)
+       
+    .then(() => {successCallback()})
+        .catch((error) => {
+            failureCallback(error)
+            return
+        })
+}
+
+// show message box
+db.showMessages = function(email_id, successCallback, failureCallback){
+    Chat.find({$or:[{person1:email_id},{person2:email_id}]},{_id:0})
+        .then((result) => {
+            console.log("Result message get: "+JSON.stringify(result));
+            successCallback(result)
+        })
+        .catch((error) => {
+            failureCallback(error);
+        })
+        
+}
 
 // Creating a new User and creating profile for the user
 db.createUser = function(user, successCallback, failureCallback) {
@@ -137,23 +186,19 @@ db.addFollower = function(values, successCallback, failureCallback) {
 };
 
 //add an answer to a question
-db.addAnswer = function(values, successCallback, failureCallback) {
-  Questions.findOneAndUpdate(
-    {
-      ID: Number(values.q_id)
-    },
-    {
-      $push: { answers: { content: values.answer, author: values.email_id } }
-    }
-  )
-    .then(() => {
-      successCallback();
-    })
-    .catch(error => {
-      failureCallback(error);
-      return;
-    });
-};
+db.addAnswer = function (values, successCallback, failureCallback) {
+   console.log(values)
+    Questions.findOneAndUpdate({
+        _id:mongoose.Types.ObjectId(values.q_id)
+    }, {
+            $push: { answers: {content:values.answer,author:values.email_id,isAnonymous:values.isanonymous} } 
+        }
+    ).then(() => { successCallback() })
+        .catch((error) => {
+            failureCallback(error)
+            return
+        })
+}
 
 //update  an answer
 db.updateAnswer = function(values, successCallback, failureCallback) {
@@ -267,26 +312,30 @@ let fetchProfileById = function (email_id) {
     })
 }
 
-db.getAnswersByQuestionId = function(q_id, successCallback, failureCallback) {
+db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
+  console.log(q_id)
   Questions.findOne({
     _id: mongoose.Types.ObjectId(q_id)
   })
     .then(async doc => {
-      let final_doc = await {
-        ques_id: doc._id,
-        question: doc.question,
-        posted_on: doc.timestamp,
-        profile: await fetchProfileById(""),
-        answers: await Promise.all(
-          doc.answers.map(async ans => {
-            console.log(ans);
-            ans = ans.toJSON();
-            ans.profile = await fetchProfileById(ans.author);
-            return await ans;
-          })
-        )
-      };
-      successCallback(final_doc);
+      if (doc !== null) {
+        let final_doc = await {
+          ques_id: doc._id,
+          question: doc.question,
+          posted_on: doc.timestamp,
+          profile: await fetchProfileById(""),
+          answers: await Promise.all(
+            doc.answers.map(async ans => {
+              console.log(ans);
+              ans = ans.toJSON();
+              ans.profile = await fetchProfileById(ans.author);
+              return await ans;
+            })
+          )
+        };
+        successCallback(final_doc);
+      }
+      else successCallback(doc)
     })
     .catch(err => {
       console.log(err);

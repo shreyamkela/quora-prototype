@@ -10,8 +10,12 @@ import { logout } from "../../actions";
 import cookie from "react-cookies";
 import Answers from "../Answers/Answers";
 import API from "../../utils/API";
-import quoraLogo from "../../utils/documents/images/quora_logo_dark.jpg";
+import quoraLogo from "../../utils/documents/images/quora_logo_light.jpg";
 import Topics from "../Topics/Topics";
+import SearchTopics from "../Search/SearchTopics"
+import SearchQuestions from "../Search/SearchQuestions"
+import SearchPeople from "../Search/SearchPeople"
+
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -48,13 +52,18 @@ class Sidebar extends Component {
       let response = null;
       if (this.state.searchType === "Q") {
         response = await API.get("searchQuestions", { params: searchTerm });
-        message.success(response.data);
+        console.log("Search results: ", response.data);
+        this.props.history.push("/main/questions/search")
+        // NOTE - Using this.props.history.push we can change the /main/home to /main/questions/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "T") {
         response = await API.get("searchTopics", { params: searchTerm });
-        message.success(response.data);
+        console.log("Search results: ", response.data);
+        this.props.history.push("/main/topics/search")
+        // NOTE - Using this.props.history.push we can change the /main/home to /main/topics/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "P") {
         response = await API.get("searchPeople", { params: searchTerm });
-        message.success(response.data);
+        console.log("Search results: ", response.data);
+        this.props.history.push("/main/people/search")
       }
     } catch (error) {
       console.log(error);
@@ -87,106 +96,87 @@ class Sidebar extends Component {
     );
 
     return (
-      <div>
-        <Layout>
-          <Header className="header">
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]} style={{ lineHeight: "64px" }}>
-              <Menu.Item key="0">
-                <img src={quoraLogo} style={{ width: 100 }} />
+      <Layout>
+        <Header className="topbar" style={{ background: "#fff" }}>
+          <Menu theme="light" mode="horizontal" defaultSelectedKeys={["2"]} style={{ lineHeight: "64px", zIndex: "800" }}>
+            <Menu.Item key="0">
+              <img src={quoraLogo} style={{ width: 100 }} />
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Link to="/main/home">Home</Link>
+            </Menu.Item>
+
+            <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
+              <Search
+                style={{ marginTop: 18 }}
+                placeholder="Search Quora"
+                enterButton="Search"
+                size="medium"
+                onSearch={value => {
+                  this.handleSearch(value);
+                }}
+                addonBefore={selectBefore}
+              />
+            </Menu.Item>
+
+            <Menu.Item key="1" style={{ marginLeft: 90 }}>
+              <Link to="/main/profile"> Profile</Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to="/login" onClick={this.handleLogout}>
+                Logout
+                </Link>
+            </Menu.Item>
+          </Menu>
+        </Header>
+
+        <Layout style={{ padding: "24px 0", background: "#fafafa" }}>
+          <Sider width={200} style={{ background: "#fafafa" }}>
+            <Menu mode="inline" defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
+              {/*Team --- Add your routes over here for each corresponding Tab*/}
+              <Menu.Item key="1">
+                <Link to="">Home</Link>
               </Menu.Item>
               <Menu.Item key="2">
-                <Link to="/main/home">Home</Link>
-              </Menu.Item>
-
-              <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
-                <Search
-                  style={{ marginTop: 18 }}
-                  placeholder="Search Quora"
-                  enterButton="Search"
-                  size="medium"
-                  onSearch={value => {
-                    this.handleSearch(value);
-                  }}
-                  addonBefore={selectBefore}
-                />
-              </Menu.Item>
-
-              <Menu.Item key="1" style={{ marginLeft: 90 }}>
-                <Link to="/main/profile"> Profile</Link>
+                <Link to="/main/questions">Questions</Link>
               </Menu.Item>
               <Menu.Item key="3">
-                <Link to="/login" onClick={this.handleLogout}>
-                  Logout
-                </Link>
+                <Link to="">Answers</Link>
               </Menu.Item>
+              <Menu.Item key="4">
+                <Link to="">Followers</Link>
+              </Menu.Item>
+              <Menu.Item key="5">
+                <Link to="">Following</Link>
+              </Menu.Item>
+              <Menu.Item key="6">
+                <Link to="/main/topics/followed">Topics</Link>
+              </Menu.Item>
+              <Menu.Item key="7">
+                <Link to="">Bookmarks</Link>
+              </Menu.Item>
+
             </Menu>
-          </Header>
-          {/*<div className='sidenav'>*/}
-          {/*<h3>SJSU</h3>*/}
-          {/*<ul className="nav nav-pills nav-stacked">*/}
-          {/*<li className={accountClass}><Link to="/main/profile" ><i className="fa fa-circle-o"></i> Profile</Link></li>*/}
-          {/*<li className={homeClass}><a href="/main/home">Home</a></li>*/}
-          {/*<li className={settingsClass}><a href="/main/settings">Settings</a></li>*/}
-          {/*{navLogin}*/}
-          {/*</ul>*/}
-          {/*</div>*/}
-
-          <Content style={{ padding: "0 50px" }}>
-            <Layout style={{ padding: "24px 0", background: "#fff" }}>
-              <Sider width={200} style={{ background: "#fff" }}>
-                <Menu mode="inline" defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
-                  {/*Team --- Add your routes over here for each corresponding Tab*/}
-                  <Menu.Item key="1">
-                    <Link to="">Home</Link>
-                  </Menu.Item>
-                  <Menu.Item key="2">
-                    <Link to="/questions">Questions</Link>
-                  </Menu.Item>
-                  <Menu.Item key="3">
-                    <Link to="">Answers</Link>
-                  </Menu.Item>
-                  <Menu.Item key="4">
-                    <Link to="">Followers</Link>
-                  </Menu.Item>
-                  <Menu.Item key="5">
-                    <Link to="">Following</Link>
-                  </Menu.Item>
-                  <Menu.Item key="6">
-                    <Link to="/main/topics/followed">Topics</Link>
-                  </Menu.Item>
-                  <Menu.Item key="7">
-                    <Link to="">Bookmarks</Link>
-                  </Menu.Item>
-
-                  {/*<SubMenu key="sub3" title={<span><Icon type="notification" />subnav 3</span>}>*/}
-                  {/*<Menu.Item key="9">option9</Menu.Item>*/}
-                  {/*<Menu.Item key="10">option10</Menu.Item>*/}
-                  {/*<Menu.Item key="11">option11</Menu.Item>*/}
-                  {/*<Menu.Item key="12">option12</Menu.Item>*/}
-                  {/*</SubMenu>*/}
-                </Menu>
-              </Sider>
-              <Content style={{ padding: "0 24px", minHeight: 280 }}>
-                <div className="heading">
-                  <h2>Welcome to Quora!</h2>
-                </div>
-                <div className="larger">
-                  {/*TEAM ----define your routes here routes that will be shown
+          </Sider>
+          <Content style={{ padding: "0 24px", minHeight: 280 }}>
+            <div className="larger">
+              {/*TEAM ----define your routes here routes that will be shown
                                     when a tab 2is clicked*/}
-                  <Switch>
-                    <Route exact path="/main/home" component={Questions} />
-                    <Route exact path="/main/profile" component={Profile} />
-                    <Route path="/main/profile/updateProfile" component={UpdateProfile} />
-                    <Route exact path="/main/:question_id" component={Answers} />
-                    <Route exact path="/main/topics/followed" component={Topics} />
-                    {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
-                  </Switch>
-                </div>
-              </Content>
-            </Layout>
+              <Switch>
+                <Route exact path="/main/home" component={Questions} />
+                <Route exact path="/main/profile" component={Profile} />
+                <Route path="/main/profile/updateProfile" component={UpdateProfile} />
+                <Route exact path="/main/:question_id" component={Answers} />
+                <Route exact path="/main/topics/followed" component={Topics} />
+                {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
+                <Route exact path="/main/topics/search" component={SearchTopics} />
+                <Route exact path="/main/questions/search" component={SearchQuestions} />
+                <Route exact path="/main/people/search" component={SearchPeople} />
+              </Switch>
+            </div>
           </Content>
         </Layout>
-      </div>
+      </Layout>
     );
   }
 }

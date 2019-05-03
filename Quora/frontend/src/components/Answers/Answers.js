@@ -1,45 +1,14 @@
 import React, {Component} from 'react'
-import {Button, Card, Comment, Avatar, Form, List, Input,} from 'antd';
+import {Card,Avatar} from 'antd';
 import {connect} from 'react-redux';
-import moment from 'moment';
-import {fetchAnswersByQID} from "../../actions";
+import {fetchAnswersByQID,displayAddAnswerForm,voteAnswer} from "../../actions";
 import cookie from 'react-cookies';
 import _ from "lodash";
-
+import Comments from "./Comments"
+import QuoraButton from "../QuoraButton"
+import AddEditAnswer from './AddEditAnswer';
 const {Meta} = Card;
 
-const TextArea = Input.TextArea;
-
-const CommentList = ({comments}) => (
-    <List
-        dataSource={comments}
-        header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
-        itemLayout="horizontal"
-        renderItem={props => <Comment {...props} />}
-    />
-);
-
-const Editor = ({
-                    onChange, onSubmit, submitting, value,
-                }) => (
-        <div>
-            <Form layout='inline'>
-        <Form.Item>
-                    <TextArea rows={1} cols={68} onChange={onChange} value={value}/>
-        </Form.Item>
-        <Form.Item> 
-            <Button
-                htmlType="submit"
-                loading={submitting}
-                onClick={onSubmit}
-                type="primary"
-            >
-                Add Comment
-            </Button>
-                </Form.Item>
-                </Form>
-    </div>
-);
 
 class Answers extends Component {
 
@@ -56,29 +25,49 @@ class Answers extends Component {
     //get the announcements data from backend  
     componentDidMount() {
         console.log("Mounting")
-        this.props.fetchAnswersByQID('5cc79f545ed54a2898599b7b')
+        this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')
     }
 
-    renderQuestion = () => {
-        if(this.props.ques_answers.question !== undefined)
-        return(
-                <Card
-                type="inner"
-                title={<div>
-                    <Meta
-            avatar={<Avatar
-            src={this.props.ques_answers.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-            title={this.props.ques_answers.profile.firstname}//"User's name goes here"
-            description={this.props.ques_answers.profile.credentials}//"User credentials goes here"
+    addAnswerClick = () => {
+        this.props.displayAddAnswerForm(true)
+    }
 
-                />
-                    {this.props.ques_answers.question}
-                </div>}
-                >
-                {this.renderAnswers()}
+    vote = (a_id,vote) => {
+        this.props.voteAnswer(a_id,{flag:vote},()=>{this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')})
+    }
+    renderQuestion = () => {
+        if (this.props.ques_answers.question !== undefined) {
+            let d = new Date(this.props.ques_answers.posted_on)
+            let addForm = null
+           
+            if (this.props.displayAddAnswer === true)
+                addForm = <AddEditAnswer></AddEditAnswer>
+            else addForm = null
+            return (
+                <Card>
+                    <div>
+                        <Meta
+                            avatar={<Avatar
+                                src={this.props.ques_answers.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                            title={this.props.ques_answers.profile.firstname + "  " + this.props.ques_answers.profile.lastname}//"User's name goes here"
+                            description={<div>{this.props.ques_answers.profile.credentials}
+                                <div>
+                                    {d.toLocaleDateString()}&nbsp;&nbsp;
+                                    {d.toLocaleTimeString()}
+                                </div>
+                            </div>
+                            }
+                        />
+                        <h3><b> {this.props.ques_answers.question}</b></h3>
+                        <QuoraButton value="answer" text="Answer" onclick={()=>this.addAnswerClick()}></QuoraButton>
+                        {addForm}
+                    </div>
+
+                    {this.renderAnswers()}
                 
                 </Card>
-        )
+            )
+        }
         else return null
     }
 
@@ -86,87 +75,54 @@ class Answers extends Component {
        
         return _.map(this.props.ques_answers.answers, answer => {
             let d = new Date(answer.answered_on)
+            let content = ''
+            if (answer.content !== undefined) {
+                content = answer.content.split('\n').map(i => {
+                    return <>{i}<br></br></>
+                })
+            }
+            let photo = answer.profile.photo
+            let firstname = answer.profile.firstname
+            let lastname = answer.profile.lastname
+            let credentials = answer.profile.credentials
+            if (answer.isAnonymous === 1) {
+                photo = ""
+                firstname = "Anonymous"
+                lastname = ""
+                credentials=""
+            }
             return (
-                <Card>
-                            
-                <br/>
-
+                <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
+                 
                     <div>
                     <Meta
-            avatar={<Avatar
-            src={answer.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-            title={answer.profile.firstname}//"User's name goes here"
-                            description={<div>{answer.profile.credentials}
+                    avatar={<Avatar
+                            src={photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                            title={firstname+"  "+lastname}//"User's name goes here"
+                            description={<div>{credentials}
                                 <div>
                             {d.toLocaleDateString()}&nbsp;&nbsp;
                             {d.toLocaleTimeString()}
-                        </div>
+                            </div>
                             </div>}//"User credentials goes here"
-
-                        />
+                     />
                 <br></br>
                         <div>
                         
-                            {answer.content}
-                        </div>                        
+                            {content}
+                        </div>  <br></br>
+                        <QuoraButton value="upvote" text={"Upvote " + answer.votes.length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
+                        <br></br>
                 </div>
                 <div>
-                    {this.state.comments.length > 0 && <CommentList comments={this.state.comments}/>}
-                    <Comment
-                        avatar={(
-                            <Avatar
-                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                alt="Han Solo"
-                            />
-                        )}
-                        content={(
-                            <Editor
-                                onChange={this.handleChange}
-                                onSubmit={this.handleSubmit}
-                                submitting={this.state.submitting}
-                                value={this.state.value}
-                            />
-                        )}
-                    />
+                    <Comments></Comments>
                 </div>
             </Card>
             )
         })
     }
-    handleSubmit = () => {
-        if (!this.state.value) {
-            return;
-        }
 
-        this.setState({
-            submitting: true,
-        });
-
-
-        setTimeout(() => {
-            this.setState({
-                submitting: false,
-                value: '',
-                comments: [
-                    {
-                        author: 'Han Solo',
-                        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                        content: <p>{this.state.value}</p>,
-                        datetime: moment().fromNow(),
-                    },
-                    ...this.state.comments,
-                ],
-            });
-        }, 1000);
-    }
-
-    handleChange = (e) => {
-        this.setState({
-            value: e.target.value,
-        });
-    }
-
-
+   
 
     render() {
         if(!cookie.load('cookie_user')){
@@ -177,11 +133,8 @@ class Answers extends Component {
                 
                 <div>
                     <div>
-                        
                         {this.renderQuestion()}
                     </div>
-
-
                 </div>
             </div>
         )
@@ -192,7 +145,8 @@ class Answers extends Component {
 function mapStateToProps(state) {
     return {
         authFlag: state.authFlag,
-        ques_answers:state.ques_answers
+        ques_answers: state.ques_answers,
+        displayAddAnswer:state.displayAddAnswer
     };
   }
-export default connect(mapStateToProps,{ fetchAnswersByQID })(Answers);
+export default connect(mapStateToProps,{ fetchAnswersByQID,displayAddAnswerForm,voteAnswer })(Answers);

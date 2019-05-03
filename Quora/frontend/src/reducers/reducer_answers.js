@@ -1,4 +1,4 @@
-import { FETCH_ANSWERS} from "../actions";
+import { FETCH_ANSWERS, ADD_ANSWER, DISPLAY_ADD_ANSWER} from "../actions";
 //import cookie from 'react-cookies';
 
 
@@ -9,10 +9,19 @@ export function fetchAnswersReducer(state = {}, action) {
     //target 
     case FETCH_ANSWERS:
       return action.payload.data
+    case ADD_ANSWER:
+      return state
     default:
       return state;
   }
 }
 
-
-
+export function displayAddAnswerFormReducer(state = false, action) {
+  switch (action.type) {
+    //target 
+    case DISPLAY_ADD_ANSWER:
+      return action.display
+    default:
+      return state
+  }
+}
