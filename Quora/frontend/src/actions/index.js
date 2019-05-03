@@ -9,7 +9,9 @@ export const FETCH_PROFILE = "fetch_profile"
 export const FETCH_ANSWERS = "fetch_answers"
 export const ADD_ANSWER = "add_answer"
 export const DISPLAY_ADD_ANSWER  = "display_add_answer"
-export const ADD_QUESTIONS  = "addQuestion"
+export const ADD_QUESTIONS = "addQuestion"
+export const TOP__UP_ANSWERS = "top_up_answers"
+export const TOP__DOWN_ANSWERS  = "top_down_answers"
 const ROOT_URL = "http://localhost:3001";
 
 var accessToken = localStorage.getItem('auth_token')
@@ -172,5 +174,34 @@ export function addQuestion() {
         payload: response
     };
 }
-       
+
+export function getTopUpAnswers() {
+  axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    const response = axios.get(`${ROOT_URL}/topupanswers`)
+        .then(response =>{
+            return response
+        })
+        .catch(error => { return error.response })
+
+    return {
+        type: TOP__UP_ANSWERS,
+        payload: response
+    };
+}
+ 
+export function getTopDownAnswers() {
+  axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    const response = axios.get(`${ROOT_URL}/topdownanswers`)
+        .then(response =>{
+            return response
+        })
+        .catch(error => { return error.response })
+
+    return {
+        type: TOP__DOWN_ANSWERS,
+        payload: response
+    };
+}
     

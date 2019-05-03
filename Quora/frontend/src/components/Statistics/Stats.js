@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
-import {Card,Avatar} from 'antd';
+import {Card} from 'antd';
 import {connect} from 'react-redux';
 import cookie from 'react-cookies';
 import _ from "lodash";
-//import { Chart } from "react-charts";
-import ReactChartkick, { LineChart, PieChart, ColumnChart } from 'react-chartkick'
+import ReactChartkick, { PieChart, ColumnChart } from 'react-chartkick'
 import Chart from 'chart.js'
 
 ReactChartkick.addAdapter(Chart)
@@ -23,7 +22,7 @@ class Stats extends Component {
         return <ColumnChart data={{"A": 2, "B": 5}} width="400px" height="300px" />
     }
     piechart = () => {
-        return <PieChart data={[["Blueberry", 44], ["Strawberry", 23]]} width="300px" height="300px"/>
+        return <PieChart data={[["Blueberry", 44], ["Strawberry", 23],["Apple",0]]} width="300px" height="300px"/>
     }
     render() {
         if(!cookie.load('cookie_user')){
