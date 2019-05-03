@@ -3,6 +3,11 @@ import {Card,Avatar} from 'antd';
 import {connect} from 'react-redux';
 import cookie from 'react-cookies';
 import _ from "lodash";
+//import { Chart } from "react-charts";
+import ReactChartkick, { LineChart, PieChart, ColumnChart } from 'react-chartkick'
+import Chart from 'chart.js'
+
+ReactChartkick.addAdapter(Chart)
 const {Meta} = Card;
 
 
@@ -14,8 +19,12 @@ class Stats extends Component {
         console.log("Mounting")
     }
 
-    
-
+    columnchart = () => {
+        return <ColumnChart data={{"A": 2, "B": 5}} width="400px" height="300px" />
+    }
+    piechart = () => {
+        return <PieChart data={[["Blueberry", 44], ["Strawberry", 23]]} width="300px" height="300px"/>
+    }
     render() {
         if(!cookie.load('cookie_user')){
             this.props.history.push("/login");
@@ -24,8 +33,9 @@ class Stats extends Component {
             <div>
                 
                 <div>
-                    <div>
-                        Display some graphs here
+                    <div className="wrapper">
+                        {this.columnchart()}
+                        {this.piechart()}
                     </div>
                 </div>
             </div>
