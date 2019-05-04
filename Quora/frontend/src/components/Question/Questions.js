@@ -59,7 +59,8 @@ class Questions extends Component {
         followers: [],
         submitting: false,
         value: '',
-        allTopics: ""
+        allTopics: "",
+        selectedTopics: ""
 
     }
 
@@ -111,11 +112,36 @@ class Questions extends Component {
         });
     }
 
-    handleOk = (e) => {
-        console.log(e);
-        this.setState({
-            visible: false,
-        });
+    handleOk = async (e) => {
+        // For 'Add a question' modal
+
+        // Check if no topic is selected
+        if (this.state.selectedTopics[0] === undefined) {
+            message.error("Please select atleast one topic for the question.")
+            return;
+        }
+
+        // Check if the question string is empty or does not have any alphabet in it
+        if (this.refs.question.value === "" || (/[a-z]/.test(this.refs.question.value.toString().toLowerCase())) === false) {
+            message.error("Please enter a valid question.")
+            return;
+        }
+
+        try {
+            // this.state.selectedTopics contains the topic titles
+            let data = { email: cookie.load("cookie_user"), question: this.refs.question.value, topicTitles: this.state.selectedTopics }
+            // GET topicsFollowed backend route is being used here to follow if not already followed. GET topicsFollowed backend route is being used in the Topics.js frontend to GET all topics followed by this user. They type property in data determines which frontend component is calling /topicsFollowed 
+            let response = null;
+            response = await API.post("questions", data);
+            message.success("Question added!")
+            this.setState({
+                visible: false,
+            });
+
+        } catch (error) {
+            console.log(error);
+            message.error("Unable to add question at the moment. Please refresh the page and try again.")
+        }
     }
 
     handleCancel = (e) => {
@@ -126,16 +152,17 @@ class Questions extends Component {
     }
 
     handleTopicChange = (value) => {
-        console.log(`selected ${value}`);
+        this.setState({ selectedTopics: value })
     }
 
-    render() {
 
+    render() {
         // For autocomplete and multiple select for topics in modal of add question
         const Option = Select.Option;
         const children = [];
         for (const obj of this.state.allTopics) {
-            children.push(<Option key={obj._id}>{obj.title}</Option>);
+            // If displayed string is {obj.title} then keep key also {obj.title} and ant design autocorrect is working by finding string in the key and not in the displayed string itself
+            children.push(<Option key={obj.title}>{obj.title}</Option>);
         }
 
         const { comments, submitting, value } = this.state;
@@ -149,6 +176,8 @@ class Questions extends Component {
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
+                    // To remove any input when cancel is pressed
+                    destroyOnClose="true"
                 >
                     <div>
                         <label for="comment">
@@ -167,14 +196,14 @@ class Questions extends Component {
                     <div class="form-group">
                         <label for="comment">Question:</label>
                         <textarea class="form-control" rows="5" id="comment"
-                            placeholder="Start your Question with What, How, Why etc"></textarea>
+                            placeholder="Start your Question with What, How, Why etc" ref="question"></textarea>
                     </div>
                     <div>
                         <label for="topic">Select Topics:</label>
                         <Select
                             mode="multiple"
                             style={{ width: '100%' }}
-                            placeholder="Please select"
+                            placeholder="Please select topics for the question"
                             onChange={this.handleTopicChange}
                         >
                             {children}
