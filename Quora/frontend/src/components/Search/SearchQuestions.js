@@ -74,7 +74,6 @@ class SearchQuestions extends Component {
                     <div className="card" style={{ width: "70%", height: 100, textAlign: "center" }}>
                         <div className="card-body">
                             <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
-                                {/*{key.question}*/}
                                 <href to="#" onClick={() => { this.handleQuestionLinkClick(key) }}><font color="#6495ED"> {key.question}</font></href>
                             </h5>
                             <br />
