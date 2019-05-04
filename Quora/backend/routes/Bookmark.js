@@ -5,7 +5,7 @@ var db = require('../../Kafka/app/db');
 //Route to Add an Bookmark to a answer
 router.post('/',function(req,response){
     console.log("Inside Bookmark post Request");
-    db.bookmark({a_id:req.query.answer_id,email_id:req.body.email_id}, function () {
+    db.bookmark({a_id:req.query.answer_id,email_id:req.cookies.cookie_user}, function () {
         return response.status(200).json({ success: true, message: "Successfully added the bookmark" });
     }, function (err) {
             console.log(err)

@@ -3,7 +3,7 @@ import { reducer as formReducer } from "redux-form";
 import { loginReducer, signupReducer, authReducer } from "./reducer_login"
 import { updateProfileReducer } from "./reducer_updateProfile"
 import { profileReducer } from "./reducer_profile"
-import { fetchAnswersReducer, displayAddAnswerFormReducer, fetchTopDownAnswersReducer, fetchTopUpAnswersReducer, fetchUserAnswersReducer } from "./reducer_answers";
+import { fetchAnswersReducer, displayAddAnswerFormReducer, fetchTopDownAnswersReducer, fetchTopUpAnswersReducer, fetchUserAnswersReducer, fetchBookmarksReducer } from "./reducer_answers";
 
 const rootReducer = combineReducers({
   login_msg: loginReducer,
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
   topUpAnswers:fetchTopUpAnswersReducer,
   topDownAnswers: fetchTopDownAnswersReducer,
   userAnswers: fetchUserAnswersReducer,
+  bookmarked_answers:fetchBookmarksReducer,
   form: formReducer
 });
 

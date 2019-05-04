@@ -14,7 +14,9 @@ export const TOP__UP_ANSWERS = "top_up_answers"
 export const TOP__DOWN_ANSWERS = "top_down_answers"
 export const USER_ANSWERS = "user_answers"
 export const COMMENT_ON_ANSWER = "comment_on_answers"
-export const FETCH_COMMENTS="fetch_comments"
+export const BOOKMARK_ANSWER = "bookmark_answer"
+export const FETCH_BOOKMARKS = "fetch_bookmarks"
+
 const ROOT_URL = "http://localhost:3001";
 
 var accessToken = localStorage.getItem('auth_token')
@@ -148,7 +150,8 @@ export function voteAnswer(a_id, values, callback) {
   //set the with credentials to true
   axios.defaults.withCredentials = true;
   //make a post request with the user data
-   console.log(a_id)
+  console.log(a_id)
+  console.log(values)
   const response = axios.post(`${ROOT_URL}/vote?answer_id=`+a_id,values)
       .then(response => {
         callback()
@@ -239,5 +242,37 @@ export function commentOnAnswer(a_id,values, callback) {
     return {
       type: COMMENT_ON_ANSWER,
       payload: response
+    };
+}
+
+export function bookmarkAnAnswer(a_id, callback) {
+  //set the with credentials to true
+  axios.defaults.withCredentials = true;
+  //make a post request with the user data
+  const response = axios.post(`${ROOT_URL}/bookmark?answer_id=` + a_id)
+      .then(response => {
+        callback()
+        return response
+      })
+    .catch(error => { return error.response })
+  
+    return {
+      type: BOOKMARK_ANSWER,
+      payload: response
+    };
+}
+
+export function fetchBookmarkedAnswers() {
+  axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    const response = axios.get(`${ROOT_URL}/bookmark`)
+        .then(response =>{
+            return response
+        })
+        .catch(error => { return error.response })
+
+    return {
+        type: FETCH_BOOKMARKS,
+        payload: response
     };
 }
