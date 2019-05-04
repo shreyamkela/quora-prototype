@@ -46,6 +46,14 @@ class Answers extends Component {
             if (this.props.displayAddAnswer === true)
                 addForm = <AddEditAnswer question_id={this.props.match.params.question_id}></AddEditAnswer>
             else addForm = null
+            /*
+            let question_title = <Link to={{
+                pathname: '/main/profile/'+this.props.ques_answers.author
+            }} >{this.props.ques_answers.profile.firstname + "  " + this.props.ques_answers.profile.lastname}</Link>
+            */
+            let answerOption = <QuoraButton value="answer" text="Answer" onclick={() => this.addAnswerClick()}></QuoraButton>
+            if (this.props.ques_answers.answers.filter(a => a.author === cookie.load('cookie_user')).length !== 0)
+                answerOption = <div style={{display:"inline",color:"gray"}}>Answered</div>
             return (
                 <Card>
                     <div>
@@ -62,7 +70,7 @@ class Answers extends Component {
                             }
                         />
                         <h3><b> {this.props.ques_answers.question}</b></h3>
-                        <QuoraButton value="answer" text="Answer" onclick={() => this.addAnswerClick()}></QuoraButton>
+                        {answerOption}
                         {addForm}
                     </div>
 
@@ -109,6 +117,8 @@ class Answers extends Component {
                 downvoteOption = null
                 bookmarkOption = null
             }
+            if (answer.bookmarks.includes(cookie.load('cookie_user')))
+                bookmarkOption = <div style={{display:"inline",color:"gray"}}>Bookmarked</div>
             return (
                 <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
                  

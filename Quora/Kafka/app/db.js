@@ -305,7 +305,7 @@ db.getAnswersByUserId= function (email_id, successCallback, failureCallback) {
           ques_id: doc._id,
           question: doc.question,
           posted_on: doc.timestamp,
-          profile: await fetchProfileById(""),
+          profile: await fetchProfileById(doc.author),
           answers: await Promise.all(
             doc.answers.map(async ans => {
               console.log(ans);
@@ -326,7 +326,8 @@ db.getAnswersByUserId= function (email_id, successCallback, failureCallback) {
 };
 
 //bookmark an answer
-db.bookmark = function(values, successCallback, failureCallback) {
+db.bookmark = function (values, successCallback, failureCallback) {
+  console.log(values)
   Questions.findOneAndUpdate(
     {
       "answers._id": mongoose.Types.ObjectId(values.a_id)
