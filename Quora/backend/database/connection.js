@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 //mongoose.Promise = global.Promise;
 let uri = "mongodb+srv://canvas_user:2407Rakhee%21@cluster0-jjkgt.mongodb.net/quoradb?poolSize=10?retryWrites=true";
 mongoose.Promise = global.Promise;
-mongoose.connect(uri, { useNewUrlParser: true, poolSize: 5,  useCreateIndex: true  });
+mongoose.connect(uri, { useNewUrlParser: true, poolSize: 5, useCreateIndex: true });
+// NOTE - useCreateIndex is important otherwise it causes this error - https://www.opentechguides.com/askotg/question/16/mongodb-create-unique-index-e11000-duplicate-key-error-collection-dup-keynull
 let con1 = mongoose.connection;
 con1.on("error", console.error.bind(console, "Connection error in mongoose (backend folder): "));
 con1.once("open", function () {
@@ -61,19 +62,22 @@ var profile = mongoose.model("profile", {
   questionsFollowed: Array
 });
 
-var questions = mongoose.model("questions", {
-    ID: { type: Number, unique: true },
-    followers: Array,
-    topics: Array,
-    timestamp: { type: Date, default: Date.now },
-    question: { type: String },
-    author: String,
-    answers: Array
+
+var QuestionSchema = new mongoose.Schema({
+  ID: { type: Number, unique: true },
+  topics: [String],
+  timestamp: { type: Date, default: Date.now() },
+  question: { type: String },
+  author: String,
+  answers: [String],
+  followers: [String]
 });
+QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
+var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 
 
 module.exports = {
-    topics,
-    questions,
-    profile
+  topics,
+  Questions,
+  profile
 };
