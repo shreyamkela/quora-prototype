@@ -210,3 +210,8 @@ table, th, td {
     outline-style: none;
     outline-width: 0;
   }
+
+/*RTE Height*/
+  .ql-editor {
+    min-height: 15em;
+  }

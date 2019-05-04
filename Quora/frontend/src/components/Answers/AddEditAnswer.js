@@ -4,14 +4,21 @@ import {Card,Avatar,Icon,Input,Button} from 'antd';
 import { connect } from 'react-redux';
 import { displayAddAnswerForm,addAnswer,fetchAnswersByQID } from "../../actions";
 import { Field, reduxForm } from "redux-form"
+import RTE from './RichTextEditor'
 const { Meta } = Card;
 
 const TextArea = Input.TextArea;
 
 class AddEditAnswer extends Component {
+    constructor (props) {
+        super(props)
+        this.state = { content:''}
+    }
+    
     onSubmit = (values) => {
         if (values.isanonymous) values.isanonymous = 1
         else values.isanonymous = 0
+        values.answer=this.state.content
         this.props.addAnswer(this.props.question_id, values, () => {
             this.props.displayAddAnswerForm(false);
             this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')
@@ -23,11 +30,38 @@ class AddEditAnswer extends Component {
         const className = `form-group ${touched && error ? "has-danger" : ""}`;
         return(
         <div className={className} style={{width: '100%'}} >
-            <TextArea rows={field.rows} placeholder={field.label} className="form-control" type={field.type}{...field.input}></TextArea>
+            <TextArea hidden rows={field.rows} placeholder={field.label} className="form-control" type={field.type}{...field.input}></TextArea>
         </div>
         )
         
     }
+    /*
+    renderRTE = (field) => {
+        const { meta: { touched, error } } = field;
+        const className = `form-group ${touched && error ? "has-danger" : ""}`;
+        return (
+        <div className={className} style={{width: '100%'}} >
+                <RTE placeholder={field.label}
+                    onChange={(newValue, delta, source) => {
+                        if (source === 'user') {
+                          field.input.onChange(newValue);
+                        }
+                    }}
+                    onBlur={(range, source, quill) => {
+                        field.input.onBlur(quill.getHTML());
+                      }}
+                ></RTE>
+        </div>
+        )
+    }*/
+    
+    
+    onRTEChange = (content) => {
+        this.setState({
+            content:content
+        })
+    }
+    
     renderAnonymousCheck = (field) => {
         const { meta: { touched, error } } = field;
         return(
@@ -51,7 +85,9 @@ class AddEditAnswer extends Component {
                 >
                     <div style={{ width: "100%" }}>
                     <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
-                    <Field rows={6} label="Write your Answer" name="answer" component={this.renderAnswerField}></Field>
+                            {/*<Field rows={6} label="Write your Answer" name="answer" component={this.renderAnswerField}></Field>*/}
+                            <RTE placeholder="Write your answer" callChange={(e)=>this.onRTEChange(e)}></RTE>
+                            {/*<Field name='answer' label='Write your answer' component={this.renderRTE}/>*/}
                             <div style={{ background: "#fafafa", padding: "15px", width: "100%" }}>
                                 <Button type="primary" htmlType="submit">Submit</Button>&nbsp;&nbsp;&nbsp;&nbsp;   
                                 <Field type="checkbox" name="isanonymous" component={this.renderAnonymousCheck}></Field>&nbsp;&nbsp;<label style={{display:"inline"}}>Anonymously</label>
