@@ -11,6 +11,7 @@ var addAnswer = require('./services/addAnswer')
 var fetchQuestions = require('./services/fetchQuestions')
 var fetchUserAnswers = require('./services/fetchUserAnswers')
 var Comment = require('./services/comment')
+var deleteUser = require('./services/deleteUser')
 
 function handleTopicRequest(topic_name,fname){
     var consumer = connection.getConsumer(topic_name);
@@ -58,5 +59,6 @@ handleTopicRequest("add_answer", addAnswer)
 handleTopicRequest("fetch_questions", fetchQuestions)
 handleTopicRequest("user_answers", fetchUserAnswers)
 handleTopicRequest("answer_comment", Comment)
+handleTopicRequest("delete_user", deleteUser)
 //first argument is topic name
 //second argument is a function that will handle this topic request

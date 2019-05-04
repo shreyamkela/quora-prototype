@@ -7,6 +7,7 @@ import cookie from 'react-cookies';
 import { List, Button} from 'antd';
 import _ from "lodash";
 import axios from 'axios';
+import API from "../../utils/API";
 
 const ROOT_URL = "http://localhost:3001";
 
@@ -21,6 +22,7 @@ class Profile extends Component {
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
         this.onSubmit1 = this.onSubmit1.bind(this)
+        this.onSubmit2 = this.onSubmit2.bind(this)
     }
     onChange (e) {
       this.setState({photo: e.target.files[0]});
@@ -52,28 +54,57 @@ class Profile extends Component {
         console.log("in onsubmit profile")
         this.props.history.push('/main/profile/updateProfile')
     }
-    onSubmit (e) {
-      const formData = new FormData();
-      formData.append('photo', this.state.photo);
+    async onSubmit (e) {
+
+      try{
+        let response = null;
   
-  const config = {
-    headers: {
-        'content-type': 'multipart/form-data'
-    }
-  };
-  e.preventDefault()
-  axios.post(`${ROOT_URL}/profile/pic`,formData,config)
-  .then((response) => {
-      alert("The photo is successfully uploaded");
-      console.log("printing response" + JSON.stringify(response))
- 
-      window.location.reload()
-  //  this.props.history.push('/main/profile')
-})
-    .catch(err => {
-        console.log(err)
-    })
-    }
+        const formData = new FormData();
+        formData.append('photo', this.state.photo);
+    
+    const config = {
+      headers: {
+          'content-type': 'multipart/form-data'
+      }
+    };
+    e.preventDefault()
+    response = await API.post("profile/pic",formData,config);
+  
+   // axios.post(`${ROOT_URL}/profile/pic`,formData,config)
+   // .then((response) => {
+        alert("The photo is successfully uploaded");
+        console.log("printing response" + JSON.stringify(response))
+   
+        window.location.reload()
+    //  this.props.history.push('/main/profile')
+      }
+      catch(err)  {
+          console.log(err)
+      }
+      }
+
+
+      async onSubmit2 (e) {
+
+        try{
+          let response = null;
+    
+      
+      e.preventDefault()
+      response = await API.post("profile/delete");
+    
+     // axios.post(`${ROOT_URL}/profile/pic`,formData,config)
+     // .then((response) => {
+          alert("Your account is being deleted");
+          console.log("printing delete response" + JSON.stringify(response))
+          cookie.remove('cookie_user', { path: '/' })
+          cookie.remove('auth_token', { path: '/' })
+        this.props.history.push('/login')
+        }
+        catch(err)  {
+            console.log(err)
+        }
+        }
 
     render () { 
       
@@ -140,6 +171,7 @@ class Profile extends Component {
               redirectVar = <Redirect to="/login" />
       let UploadImageForm = null
       let updateProfileButton = null
+      let deleteAccountButton = null
       if (cookie.load('cookie_user') === this.props.match.params.user_id)
       {
         UploadImageForm= <form   style={{"margin-top":"180px"}}  noValidate onSubmit={this.onSubmit}>
@@ -150,6 +182,7 @@ class Profile extends Component {
             <Button  style={{"margin-right":"10px"}} onClick={this.onSubmit} className="add-button" type="primary"   >Upload Photo</Button>
         </form>
         updateProfileButton=<Button  id="btn_space"   onClick={this.onSubmit1} className="add-button" type="primary"  >Update Profile</Button>
+        deleteAccountButton=<Button   onClick={this.onSubmit2} className="add-button" type="primary"  >Delete Account</Button>
         }
       return (
         <div>
@@ -180,6 +213,7 @@ class Profile extends Component {
           )}
         />
         
+        {deleteAccountButton}
         {updateProfileButton}
       
 

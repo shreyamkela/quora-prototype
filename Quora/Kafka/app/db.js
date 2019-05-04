@@ -577,4 +577,23 @@ db.getQuestionByEmail = function (email_id, successCallback, failureCallback) {
         });
 };
 
+db.deleteUser = function (user, successCallback, failureCallback) {
+  let sql = "DELETE FROM Users where Email = " + mysql.escape(user.email_id);
+  con.query(sql, function (err, result) {
+    
+      if (err) {
+         failureCallback(err)
+      }
+      console.log('Deleted Row(s):', result.affectedRows, " ", result.changedRows);
+      if (result.affectedRows === 0) {
+        console.log("row not deleted")
+          failureCallback("User not found in db.js")
+      }
+      if (result.affectedRows > 0) {
+        console.log("row successfully deleted")
+        successCallback(result[0])
+    }
+  })
+}
+
 module.exports = db;

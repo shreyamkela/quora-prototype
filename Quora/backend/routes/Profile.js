@@ -151,5 +151,20 @@ router.get('/pic',function (req, res) {
 }
 )
 
+router.post('/delete', function (req, response) {
+    console.log("in user-profile delete: " + req.session.user);
+
+    kafka.make_request('delete_user', {email:req.session.user}, function (err, msg) {
+        if (err) {
+            console.log("response status: 401")
+            response.status(401).json({success: false,message:msg});
+        } else {
+            console.log("response status: 200")
+            response.status(200).json({success: true,message:msg.msg});
+        }
+    })
+});
+
+
 
 module.exports = router
