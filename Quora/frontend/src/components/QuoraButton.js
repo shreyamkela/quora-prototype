@@ -29,6 +29,15 @@ class QuoraButton extends Component {
                     </svg>
             )
         }
+        else if (this.props.value === 'downvote') {
+            return (
+                <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <g id="downvote" class="svg-color" stroke="#666" fill="none" stroke-width="1.5" fill-rule="evenodd" stroke-linejoin="round">
+                        <polygon transform="translate(12.000000, 12.000000) rotate(-180.000000) translate(-12.000000, -12.000000) " points="12 4 3 15 9 15 9 20 15 20 15 15 21 15"></polygon>
+                    </g>
+                </svg>
+            )
+        }
         else if (this.props.value === 'ellipsis') {
             return(
             <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -36,6 +45,16 @@ class QuoraButton extends Component {
                   <path d="M5,14 C3.8954305,14 3,13.1045695 3,12 C3,10.8954305 3.8954305,10 5,10 C6.1045695,10 7,10.8954305 7,12 C7,13.1045695 6.1045695,14 5,14 Z M12,14 C10.8954305,14 10,13.1045695 10,12 C10,10.8954305 10.8954305,10 12,10 C13.1045695,10 14,10.8954305 14,12 C14,13.1045695 13.1045695,14 12,14 Z M19,14 C17.8954305,14 17,13.1045695 17,12 C17,10.8954305 17.8954305,10 19,10 C20.1045695,10 21,10.8954305 21,12 C21,13.1045695 20.1045695,14 19,14 Z"></path>
                 </g>
                 </svg>
+            )
+        }
+
+        else if (this.props.value === 'bookmark') {
+            return (
+                <svg height="24px" version="1.1" viewBox="0 0 24 24" width="24px" xmlns="http://www.w3.org/2000/svg" >
+                <g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1"><g fill="#329bff"><path d="M19,13 L19,10 L20,10 L20,13 L23,13 L23,14 L20,14 L20,17 L19,17 L19,14 L16,14 L16,13 L19,13 L19,13 Z M20,19.9810552 L20,28 L14,22 L8,28 L8,6.99109042 C8,5.34177063 9.34187067,4 10.997152,4 L17.002848,4 C18.6583772,4 20,5.33915679 20,6.99109042 L20,7.01894481 C19.8349792,7.00639146 19.668236,7 19.5,7 C15.9101489,7 13,9.91014895 13,13.5 C13,17.0898511 15.9101489,20 19.5,20 C19.668236,20 19.8349792,19.9936085 20,19.9810552 L20,19.9810552 L20,19.9810552 Z M19.5,19 C22.5375663,19 25,16.5375663 25,13.5 C25,10.4624337 22.5375663,8 19.5,8 C16.4624337,8 14,10.4624337 14,13.5 C14,16.5375663 16.4624337,19 19.5,19 L19.5,19 Z" />
+                </g>
+                </g>
+                </svg >
             )
         }
         

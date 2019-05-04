@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Card,Avatar} from 'antd';
 import {connect} from 'react-redux';
-import {fetchAnswersByQID,displayAddAnswerForm,voteAnswer} from "../../actions";
+import {fetchAnswersByQID,displayAddAnswerForm,voteAnswer,bookmarkAnAnswer} from "../../actions";
 import cookie from 'react-cookies';
 import _ from "lodash";
 import Comments from "./Comments"
@@ -32,6 +32,9 @@ class Answers extends Component {
         this.props.displayAddAnswerForm(true)
     }
 
+    bookmark = (a_id) => {
+        this.props.bookmarkAnAnswer(a_id,()=>{this.props.fetchAnswersByQID(this.props.match.params.question_id)})
+    }
     vote = (a_id,vote) => {
         this.props.voteAnswer(a_id,{flag:vote},()=>{this.props.fetchAnswersByQID(this.props.match.params.question_id)})
     }
@@ -100,7 +103,7 @@ class Answers extends Component {
 
             let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.filter(v=>v.flag===1).length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
             let downvoteOption = <QuoraButton value="downvote" text='' onclick={()=>this.vote(answer._id,0)}></QuoraButton>
-            let bookmarkOption = <QuoraButton value="bookmark" text='Bookmark'></QuoraButton>
+            let bookmarkOption = <QuoraButton value="bookmark" text='Bookmark' onclick={()=>this.bookmark(answer._id)}></QuoraButton>
             if (answer.author === cookie.load('cookie_user')) {
                 upvoteOption = <div style={{ display: "inline", float: "left", color: "gray" }}>{answer.votes.length + " Upvotes"}</div>
                 downvoteOption = null
@@ -167,7 +170,8 @@ function mapStateToProps(state) {
     return {
         authFlag: state.authFlag,
         ques_answers: state.ques_answers,
-        displayAddAnswer:state.displayAddAnswer
+        displayAddAnswer: state.displayAddAnswer,
+        bookmarked_answers:state.bookmarked_answers
     };
   }
-export default connect(mapStateToProps,{ fetchAnswersByQID,displayAddAnswerForm,voteAnswer })(Answers);
+export default connect(mapStateToProps,{ fetchAnswersByQID,displayAddAnswerForm,voteAnswer,bookmarkAnAnswer })(Answers);
