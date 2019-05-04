@@ -27,8 +27,9 @@ class Profile extends Component {
   }
     componentWillMount() {
         //call to action
-        this.props.fetchProfile();
-        axios.get(`${ROOT_URL}/profile/pic`)
+      console.log(this.props.match.params.user_id)
+        this.props.fetchProfile(this.props.match.params.user_id);
+        axios.get(`${ROOT_URL}/profile/pic/?email_id=`+this.props.match.params.user_id)
         .then((response) => {
           //  alert("The file is successfully uploaded");
             console.log("printing response" + JSON.stringify(response.data))
@@ -136,7 +137,20 @@ class Profile extends Component {
     
             let redirectVar = null;
             if(!cookie.load('cookie_user'))
-                redirectVar = <Redirect to= "/login"/>
+              redirectVar = <Redirect to="/login" />
+      let UploadImageForm = null
+      let updateProfileButton = null
+      if (cookie.load('cookie_user') === this.props.match.params.user_id)
+      {
+        UploadImageForm= <form   style={{"margin-top":"180px"}}  noValidate onSubmit={this.onSubmit}>
+        <Button variant="contained"
+              label='My Label'>
+              <input type="file" name="common_name" onChange = {this.onChange}/>
+            </Button> <br></br>
+            <Button  style={{"margin-right":"10px"}} onClick={this.onSubmit} className="add-button" type="primary"   >Upload Photo</Button>
+        </form>
+        updateProfileButton=<Button  id="btn_space"   onClick={this.onSubmit1} className="add-button" type="primary"  >Update Profile</Button>
+        }
       return (
         <div>
         {redirectVar}
@@ -147,13 +161,7 @@ class Profile extends Component {
            <div  className="pull-left image">
            <img src={pic}  alt="" width="200" height="200"  /> 
          </div>   
-         <form   style={{"margin-top":"180px"}}  noValidate onSubmit={this.onSubmit}>
-         <Button variant="contained"
-               label='My Label'>
-               <input type="file" name="common_name" onChange = {this.onChange}/>
-             </Button> <br></br>
-             <Button  style={{"margin-right":"10px"}} onClick={this.onSubmit} className="add-button" type="primary"   >Upload Photo</Button>
-   </form>
+        {UploadImageForm}
    </div> 
   
    <div  style={{"float":"right","width":"50%"}} >
@@ -172,7 +180,7 @@ class Profile extends Component {
           )}
         />
         
-        <Button  id="btn_space"   onClick={this.onSubmit1} className="add-button" type="primary"  >Update Profile</Button>
+        {updateProfileButton}
       
 
         </div>

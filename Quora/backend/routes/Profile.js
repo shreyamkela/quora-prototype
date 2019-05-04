@@ -27,10 +27,10 @@ else
   const upload = multer({ storage: file_storage ,fileFilter:fileFilter});
 
 router.get('/', function (req, res) {
-    console.log('in Get profile before kafka: ',req.session.user);
-    kafka.make_request('profile',{email:req.session.user}, function(err,results){
+    console.log('in Get profile before kafka: ',req.query.email_id);
+    kafka.make_request('profile',{email:req.query.email_id}, function(err,results){
     
-        console.log('in Get profile Details request: ',req.session.user);
+        console.log('in Get profile Details request: ',req.query.email_id);
         console.log("results" + JSON.stringify(results));
     if (err)
     console.log(err);
@@ -125,9 +125,9 @@ router.get('/pic',function (req, res) {
     console.log("in profile PIC get");
 
 
-    kafka.make_request('profilepic',{email :req.session.user}, function(err,results){
+    kafka.make_request('profilepic',{email :req.query.email_id}, function(err,results){
     
-        console.log('in pic Details request: ',req.session.user);
+        console.log('in pic Details request: ',req.query.email_id);
         console.log("results" + JSON.stringify(results));
     if (err)
     console.log(err);

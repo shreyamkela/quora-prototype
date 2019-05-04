@@ -149,7 +149,7 @@ class Sidebar extends Component {
                   {/*<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />*/}
               {/*</Menu.Item>*/}
             <Menu.Item key="1" style={{ marginLeft: 90 }}>
-              <Link to="/main/profile"> Profile</Link>
+              <Link to={"/main/profile/"+cookie.load('cookie_user')}> Profile</Link>
             </Menu.Item>
             <Menu.Item key="3">
               <Link to="/login" onClick={this.handleLogout}>
@@ -198,7 +198,7 @@ class Sidebar extends Component {
                                     when a tab 2is clicked*/}
               <Switch>
                 <Route exact path="/main/home" component={Questions} />
-                <Route exact path="/main/profile" component={Profile} />
+                <Route exact path="/main/profile/:user_id" component={Profile} />
                 <Route path="/main/profile/updateProfile" component={UpdateProfile} />
                 <Route exact path="/main/stats" component={Stats} />
                 <Route exact path="/main/bookmarks" component={Bookmarks} />

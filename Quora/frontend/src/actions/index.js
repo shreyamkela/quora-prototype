@@ -84,13 +84,13 @@ export function logout() {
 
 
  
- export function fetchProfile() {
+ export function fetchProfile(user_id) {
   console.log("accessToken: " + accessToken)
  // axios.post(`${ROOT_URL}/profileupdate`,values,{headers:{'Content-Type': 'application/json','Authorization': `Bearer ${accessToken}`}},callback)
   //set the with credentials to true
   axios.defaults.withCredentials = true;
   //make a post request with the user data
-  const response = axios.get(`${ROOT_URL}/profile`)
+  const response = axios.get(`${ROOT_URL}/profile?email_id=`+user_id)
     .then(response =>{
       console.log("response status in display profile action : " + response.status + JSON.stringify(response.data))
       return response
