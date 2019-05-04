@@ -273,6 +273,37 @@ db.comment = function(values, successCallback, failureCallback) {
     });
 };
 
+//get retrieve all the answers of a user
+db.getAnswersByUserId= function (email_id, successCallback, failureCallback) {
+  Questions.findOne({
+    "answers.author": email_id
+  },'answers.$ _id question timestamp author')
+    .then(async doc => {
+      if (doc !== null) {
+        let final_doc = await {
+          ques_id: doc._id,
+          question: doc.question,
+          posted_on: doc.timestamp,
+          profile: await fetchProfileById(""),
+          answers: await Promise.all(
+            doc.answers.map(async ans => {
+              console.log(ans);
+              ans = ans.toJSON();
+              ans.profile = await fetchProfileById(ans.author);
+              return await ans;
+            })
+          )
+        };
+        successCallback(final_doc);
+      }
+      else successCallback(doc)
+    })
+    .catch(err => {
+      console.log(err);
+      failureCallback(err);
+    });
+};
+
 //bookmark an answer
 db.bookmark = function(values, successCallback, failureCallback) {
   Questions.findOneAndUpdate(

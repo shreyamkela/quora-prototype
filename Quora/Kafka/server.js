@@ -9,6 +9,7 @@ var Question = require('./services/question');
 var Answers = require('./services/fetchAnswers')
 var addAnswer = require('./services/addAnswer')
 var fetchQuestions = require('./services/fetchQuestions')
+var fetchUserAnswers = require('./services/fetchUserAnswers')
 
 function handleTopicRequest(topic_name,fname){
     var consumer = connection.getConsumer(topic_name);
@@ -54,5 +55,6 @@ handleTopicRequest("add_question", Question)
 handleTopicRequest("fetch_answers", Answers)
 handleTopicRequest("add_answer", addAnswer)
 handleTopicRequest("fetch_questions", fetchQuestions)
+handleTopicRequest("user_answers", fetchUserAnswers)
 //first argument is topic name
 //second argument is a function that will handle this topic request
