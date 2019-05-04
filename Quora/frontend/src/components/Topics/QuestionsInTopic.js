@@ -2,12 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import cookie from "react-cookies";
-import { Button, Card, Row, Col, message } from "antd";
+import { Button, Card, Row, Col, message, Pagination } from "antd";
 import API from "../../utils/API";
 
 class QuestionsInTopic extends Component {
     state = {
-        questions: ""
+        questions: "",
+        pagenumber: 1
     }
 
     componentDidMount = async () => {
@@ -69,6 +70,11 @@ class QuestionsInTopic extends Component {
         }) // TODO - Complete the page `/main/${key._id}`
     }
 
+    handlePageNumberClick = e => {
+        console.log("Page number changed!", e);
+        this.setState({ pagenumber: e });
+    };
+
     render() {
         //console.log("QuestionsInTopic component: ", this.props.history.location.state);
         let title = null;
@@ -82,7 +88,24 @@ class QuestionsInTopic extends Component {
         if (this.state.questions === "" || this.state.questions.includes("No questions")) {
             displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No questions have been added to this topic yet. Be the first to add one!</div>;
         } else {
-            displayedResults = this.state.questions.map(key => (
+
+            var pagination = null;
+            let allQuestions = null;
+            let pageQuestions = []; // questions to show on this page number
+
+            let pageNumbers = Math.floor(this.state.questions.length / 5) + 1;
+            pagination = <Pagination defaultPageSize={1} defaultCurrent={1} total={pageNumbers} onChange={this.handlePageNumberClick} />;
+            allQuestions = this.state.questions;
+            let thisPageLast = this.state.pagenumber * 5;
+            for (var i = thisPageLast - 5; i < thisPageLast; i++) {
+                if (allQuestions[i] !== undefined) {
+                    pageQuestions[i] = allQuestions[i];
+                }
+            }
+
+
+
+            displayedResults = pageQuestions.map(key => (
                 <div style={{ textAlign: "center" }}>
                     <div className="card" style={{ width: "70%", height: "auto", textAlign: "center" }}>
                         <div className="card-body">
@@ -90,8 +113,11 @@ class QuestionsInTopic extends Component {
                                 <href to="#" onClick={() => { this.handleQuestionLinkClick(key) }}><font color="#6495ED">{key.question}</font></href>
                             </h5>
                             <br />
+
                         </div>
                     </div>
+                    <br />
+                    <br />
                 </div>
             ));
         }
@@ -127,6 +153,9 @@ class QuestionsInTopic extends Component {
                     <br />
                     <br />
                     {displayedResults}
+                    <br />
+                    <br />
+                    <div style={{ textAlign: "center" }}>{pagination}</div>
                 </Card>
             </div>
         );

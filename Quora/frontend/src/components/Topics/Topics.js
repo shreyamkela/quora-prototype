@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import cookie from "react-cookies";
 import { connect } from "react-redux";
-import { Layout, Card, message, Row, Col, Button } from "antd";
+import { Layout, Card, message, Row, Col, Button, Pagination } from "antd";
 
 import API from "../../utils/API";
 
 const { Content } = Layout;
 
 class Topics extends Component {
-  state = { topicsFollowed: "" };
+  state = { topicsFollowed: "", pagenumber: 1 };
 
   async componentDidMount() {
     let data = { email: cookie.load("cookie_user"), type: 1 }
@@ -52,6 +52,11 @@ class Topics extends Component {
     })
   }
 
+  handlePageNumberClick = e => {
+    console.log("Page number changed!", e);
+    this.setState({ pagenumber: e });
+  };
+
   render() {
     console.log("Topics followed:", this.state.topicsFollowed);
 
@@ -59,7 +64,28 @@ class Topics extends Component {
     if (this.state.topicsFollowed[0] === undefined) {
       displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No topics followed. Search for a topic and follow to view it here.</div>;
     } else {
-      displayedResults = this.state.topicsFollowed.map(key => (
+
+
+
+
+      var pagination = null;
+      let allTopics = null;
+      let pageTopics = []; // topics to show on this page number
+
+      let pageNumbers = Math.floor(this.state.topicsFollowed.length / 5) + 1;
+      pagination = <Pagination defaultPageSize={1} defaultCurrent={1} total={pageNumbers} onChange={this.handlePageNumberClick} />;
+      allTopics = this.state.topicsFollowed;
+      let thisPageLast = this.state.pagenumber * 5;
+      for (var i = thisPageLast - 5; i < thisPageLast; i++) {
+        if (allTopics[i] !== undefined) {
+          pageTopics[i] = allTopics[i];
+        }
+      }
+
+
+
+
+      displayedResults = pageTopics.map(key => (
         <div style={{ textAlign: "center" }}>
           <div className="card" style={{ width: "70%", height: 100, textAlign: "center" }}>
             <div className="card-body">
@@ -91,6 +117,9 @@ class Topics extends Component {
             <br />
             {displayedResults}
           </div>
+          <br />
+          <br />
+          <div style={{ textAlign: "center" }}>{pagination}</div>
         </Card>
       </div>
     );

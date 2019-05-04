@@ -2,10 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 import cookie from "react-cookies";
-import { Button, Card, Row, Col, message } from "antd";
+import { Button, Card, Row, Col, message, Pagination } from "antd";
 import API from "../../utils/API";
 
 class SearchTopics extends Component {
+  state = {
+    pagenumber: 1
+  }
 
   async handleFollow(key) {
     //console.log(key)
@@ -53,6 +56,11 @@ class SearchTopics extends Component {
     })
   }
 
+  handlePageNumberClick = e => {
+    console.log("Page number changed!", e);
+    this.setState({ pagenumber: e });
+  };
+
   render() {
     // To access the state passed into this component from parent through this.props.history.push - we use this.props.history.location.state
     //console.log("SearchTopics component: ", this.props.history.location.state);
@@ -68,7 +76,23 @@ class SearchTopics extends Component {
         displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No topics found for this search.</div>;
       }
       else {
-        displayedResults = searchResults.map(key => (
+
+
+        var pagination = null;
+        let allTopics = null;
+        let pageTopics = []; // topics to show on this page number
+
+        let pageNumbers = Math.floor(searchResults.length / 5) + 1;
+        pagination = <Pagination defaultPageSize={1} defaultCurrent={1} total={pageNumbers} onChange={this.handlePageNumberClick} />;
+        allTopics = searchResults;
+        let thisPageLast = this.state.pagenumber * 5;
+        for (var i = thisPageLast - 5; i < thisPageLast; i++) {
+          if (allTopics[i] !== undefined) {
+            pageTopics[i] = allTopics[i];
+          }
+        }
+
+        displayedResults = pageTopics.map(key => (
           <div style={{ textAlign: "center" }}>
             <div className="card" style={{ width: "70%", height: 100, textAlign: "center" }}>
               <div className="card-body">
@@ -94,10 +118,19 @@ class SearchTopics extends Component {
             <br />
           </div>
         ));
+
+
+
+
+
+
+
       }
     } else {
       displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No topics found for this search.</div>;
     }
+
+
 
     return (
       <div>
@@ -110,6 +143,9 @@ class SearchTopics extends Component {
             <br />
             {displayedResults}
           </div>
+          <br />
+          <br />
+          <div style={{ textAlign: "center" }}>{pagination}</div>
         </Card>
       </div>
     );
