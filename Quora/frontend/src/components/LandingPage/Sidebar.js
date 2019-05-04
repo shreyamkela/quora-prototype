@@ -207,7 +207,6 @@ class Sidebar extends Component {
                 <Route exact path="/main/bookmarks" component={Bookmarks} />
                 <Route exact path="/main/useranswers" component={UserAnswers} />
                 <Route exact path="/main/yourcontent" component={UserContent} />
-                <Route exact path="/main/:question_id" component={Answers} />
                 <Route exact path="/main/topics/followed" component={Topics} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
                 <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
@@ -215,6 +214,8 @@ class Sidebar extends Component {
                 <Route exact path="/main/people/search" render={(props) => <SearchPeople {...props} />} />
                 <Route exact path="/main/topics/:topic/questions" render={(props) => <QuestionsInTopic {...props} />} />
 
+                <Route exact path="/main/:question_id" component={Answers} />
+               
               </Switch>
             </div>
           </Content>
