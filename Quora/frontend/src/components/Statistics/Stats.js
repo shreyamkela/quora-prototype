@@ -24,7 +24,7 @@ class Stats extends Component {
     getUpVoteData = () => {
         let data = {}
         _.map(this.props.topUpAnswers, answer => {
-            data[answer.content]=answer.upvotes
+            data[answer.question]=answer.upvotes
          })
         console.log(data)
         return data
@@ -33,18 +33,18 @@ class Stats extends Component {
     getDownVoteData = () => {
         let data = {}
         _.map(this.props.topDownAnswers, answer => {
-            data[answer.content]=answer.downvotes
+            data[answer.question]=answer.downvotes
          })
         console.log(data)
         return data
     }
 
     columnupchart = () => {
-        return <ColumnChart data={this.getUpVoteData()} width="400px" height="300px" />
+        return <ColumnChart data={this.getUpVoteData()} width="400px" height="300px" label='Votes' xtitle='Question Answered' ytitle="Upvote Count"/>
     }
 
     columndownchart = () => {
-        return <ColumnChart data={this.getDownVoteData()} width="400px" height="300px" />
+        return <ColumnChart data={this.getDownVoteData()} width="400px" height="300px" label='Votes' xtitle='Question Answered' ytitle="Downvote Count"/>
     }
 
     piechart = () => {
