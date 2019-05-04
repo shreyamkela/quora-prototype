@@ -123,7 +123,10 @@ class Answers extends Component {
                         </div>  <br></br><br></br>
                         <div>
                             {upvoteOption}
-                        <div style={{float:"right"}}><QuoraButton value="bookmark" text='Bookmark'></QuoraButton></div>
+                            <div style={{ float: "right" }}>
+                                <QuoraButton value="downvote" text=''></QuoraButton>
+                                <QuoraButton value="bookmark" text='Bookmark'></QuoraButton>
+                            </div>
                         </div>
                         <br></br><br></br>
                 </div>
