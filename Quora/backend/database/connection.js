@@ -61,7 +61,19 @@ var profile = mongoose.model("profile", {
   questionsFollowed: Array
 });
 
+var questions = mongoose.model("questions", {
+    ID: { type: Number, unique: true },
+    followers: [String],
+    topic: { type: String },
+    timestamp: { type: Date, default: Date.now },
+    question: { type: String },
+    author: String,
+    answers: [String]
+});
+
+
 module.exports = {
-  topics,
-  profile
+    topics,
+    questions,
+    profile
 };
