@@ -20,6 +20,8 @@ import Bookmarks from "../Answers/Bookmarks/Bookmarks";
 import UserAnswers from "../Answers/UserAnswers/UserAnswers";
 import UserContent from "../UserContent/UserContent"
 import QuestionsInTopic from "../Topics/QuestionsInTopic"
+import Following from "../Following/Following";
+import Followers from "../Followers/Followers";
 
 
 const { SubMenu } = Menu;
@@ -208,6 +210,8 @@ class Sidebar extends Component {
                 <Route exact path="/main/useranswers" component={UserAnswers} />
                 <Route exact path="/main/yourcontent" component={UserContent} />
                 <Route exact path="/main/topics/followed" component={Topics} />
+                <Route exact path="/main/followers" component={Followers} />
+                <Route exact path="/main/following" component={Following} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
                 <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
                 <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
