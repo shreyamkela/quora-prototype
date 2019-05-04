@@ -71,14 +71,15 @@ class SearchPeople extends Component {
         // To access the state passed into this component from parent through this.props.history.push - we use this.props.history.location.state
         console.log("SearchPeople component: ", this.props.history.location.state);
         let searchResults = null;
-        if (this.props.history.location.state.searchResults !== undefined) {
+        if (this.props.history.location.state.searchResults != undefined) {
           searchResults = this.props.history.location.state.searchResults
         }
         let displayedResults = null;
         let paginationBasic = null;
         let currentTodos = null;
-        if (searchResults === "NO_SUCH_PERSON" || searchResults === null || searchResults[0] === undefined) {
+        if (searchResults === "NO_SUCH_PERSON" || searchResults === null || searchResults.length === 0 || searchResults[0] === undefined) {
           displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No person found for this search.</div>;
+          currentTodos = <div style={{ textAlign: "center", fontSize: 15 }}>No person found for this search.</div>;
         } else {
           displayedResults = searchResults.map(key => (
             <div style={{ textAlign: "center" }}>
