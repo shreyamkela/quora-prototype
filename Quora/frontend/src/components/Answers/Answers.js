@@ -7,6 +7,7 @@ import _ from "lodash";
 import Comments from "./Comments"
 import QuoraButton from "../QuoraButton"
 import AddEditAnswer from './AddEditAnswer';
+import { Link } from 'react-router-dom';
 const {Meta} = Card;
 
 
@@ -84,11 +85,16 @@ class Answers extends Component {
             let firstname = answer.profile.firstname
             let lastname = answer.profile.lastname
             let credentials = answer.profile.credentials
+            let answer_title = <Link to={{
+                pathname: '/main/profile/'+answer.author
+            }} >{firstname + "  " + lastname}</Link>
+
             if (answer.isAnonymous === 1 && answer.author !== cookie.load('cookie_user')) {
                 photo = ""
                 firstname = "Anonymous"
                 lastname = ""
-                credentials=""
+                credentials = ""
+                answer_title=firstname + "  " + lastname
             }
 
             let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
@@ -101,7 +107,7 @@ class Answers extends Component {
                     <Meta
                     avatar={<Avatar
                             src={photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                            title={firstname+"  "+lastname}//"User's name goes here"
+                            title={answer_title}//"User's name goes here"
                             description={<div>{credentials}
                                 <div>
                             {d.toLocaleDateString()}&nbsp;&nbsp;
