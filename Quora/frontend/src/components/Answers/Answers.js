@@ -24,8 +24,8 @@ class Answers extends Component {
     }
 
     componentDidMount() {
-        console.log("Mounting")
-        this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')
+        console.log(this.props.match.params.question_id)
+        this.props.fetchAnswersByQID(this.props.match.params.question_id)
     }
 
     addAnswerClick = () => {
@@ -33,7 +33,7 @@ class Answers extends Component {
     }
 
     vote = (a_id,vote) => {
-        this.props.voteAnswer(a_id,{flag:vote},()=>{this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')})
+        this.props.voteAnswer(a_id,{flag:vote},()=>{this.props.fetchAnswersByQID(this.props.match.params.question_id)})
     }
     renderQuestion = () => {
         if (this.props.ques_answers.question !== undefined) {
@@ -41,7 +41,7 @@ class Answers extends Component {
             let addForm = null
            
             if (this.props.displayAddAnswer === true)
-                addForm = <AddEditAnswer></AddEditAnswer>
+                addForm = <AddEditAnswer question_id={this.props.match.params.question_id}></AddEditAnswer>
             else addForm = null
             return (
                 <Card>

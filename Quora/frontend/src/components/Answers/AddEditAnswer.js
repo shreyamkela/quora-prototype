@@ -12,7 +12,7 @@ class AddEditAnswer extends Component {
     onSubmit = (values) => {
         if (values.isanonymous) values.isanonymous = 1
         else values.isanonymous = 0
-        this.props.addAnswer("5ccb33f0cc26351195ae6d72", values, () => {
+        this.props.addAnswer(this.props.question_id, values, () => {
             this.props.displayAddAnswerForm(false);
             this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')
         })
