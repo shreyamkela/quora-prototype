@@ -450,7 +450,8 @@ db.getTopAnswers = function(email_id, successCallback, failureCallback) {
               $eq: ["$$answer.author", email_id]
             }
           }
-        }
+        },
+        question:1
       }
     }
   ])
@@ -468,7 +469,8 @@ db.getTopAnswers = function(email_id, successCallback, failureCallback) {
           answers.push({
             content: a.content,
             upvotes: countvotes(a),
-            ques_id: d._id
+            ques_id: d._id,
+            question:d.question
           });
         });
       });
@@ -497,7 +499,8 @@ db.getTopDownAnswers = function(email_id, successCallback, failureCallback) {
               $eq: ["$$answer.author", email_id]
             }
           }
-        }
+        },
+        question:1
       }
     }
   ])
@@ -515,7 +518,8 @@ db.getTopDownAnswers = function(email_id, successCallback, failureCallback) {
           answers.push({
             content: a.content,
             downvotes: countvotes(a),
-            ques_id: d._id
+            ques_id: d._id,
+            question:d.question
           });
         });
       });
