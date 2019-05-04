@@ -13,6 +13,7 @@
     "react-cookies": "^0.1.0",
     "react-dom": "^16.8.3",
     "react-file-viewer": "^1.1.0",
+    "react-infinite-scroller": "^1.2.4",
     "react-quill": "^1.3.3",
     "react-redux": "^6.0.1",
     "react-router": "^4.3.1",
@@ -21,7 +22,8 @@
     "redirect": "^0.2.0",
     "redux": "^4.0.1",
     "redux-form": "^8.1.0",
-    "redux-promise": "^0.6.0"
+    "redux-promise": "^0.6.0",
+    "reqwest": "^2.0.5"
   },
   "scripts": {
     "start": "react-scripts start",
