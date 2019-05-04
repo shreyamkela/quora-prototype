@@ -67,6 +67,13 @@ var ConversationSchema = new mongoose.Schema({
     chat : [MessageSchema]
 })
 
+var ActivitySchema = new mongoose.Schema({
+  type : { type: String },
+  timestamp: { type: Date, default: Date.now },
+  question_id: { type: String },
+  year: String,
+})
+
 QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
 AnswerSchema.plugin(AutoIncrement, { id: "ans_seq", inc_field: "ID" });
 
