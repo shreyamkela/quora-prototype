@@ -1,4 +1,4 @@
-import { FETCH_ANSWERS, ADD_ANSWER, DISPLAY_ADD_ANSWER, TOP__UP_ANSWERS, TOP__DOWN_ANSWERS, USER_ANSWERS} from "../actions";
+import { FETCH_ANSWERS, ADD_ANSWER, DISPLAY_ADD_ANSWER, TOP__UP_ANSWERS, TOP__DOWN_ANSWERS, USER_ANSWERS, FETCH_COMMENTS, COMMENT_ON_ANSWER} from "../actions";
 //import cookie from 'react-cookies';
 
 
@@ -51,6 +51,18 @@ export function fetchUserAnswersReducer(state = [], action) {
     //target 
     case USER_ANSWERS:
       return action.payload.data
+    default:
+      return state
+  }
+}
+
+export function fetchCommentsReducer(state = [], action) {
+  switch (action.type) {
+    //target 
+    case FETCH_COMMENTS:
+      return action.payload.data
+    case COMMENT_ON_ANSWER:
+      return state
     default:
       return state
   }
