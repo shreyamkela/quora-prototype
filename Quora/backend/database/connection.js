@@ -63,12 +63,12 @@ var profile = mongoose.model("profile", {
 
 var questions = mongoose.model("questions", {
     ID: { type: Number, unique: true },
-    followers: [String],
-    topics: [String],
+    followers: Array,
+    topics: Array,
     timestamp: { type: Date, default: Date.now },
     question: { type: String },
     author: String,
-    answers: [String]
+    answers: Array
 });
 
 
