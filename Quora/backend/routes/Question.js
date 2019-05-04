@@ -1,22 +1,33 @@
 var express = require('express')
 var router = express.Router();
+var kafka = require('../kafka/client');
 var db = require('../../Kafka/app/db');
+const Model = require("../database/connection");
+var mongoose = require('mongoose');
 
-//Route to Add a question
-router.post('/',function(req,response){
-    console.log("Inside Add Question Post Request");
-    db.addQuestion({
-        q_id:req.query.question_id,
-        question:req.body.question,
-        author:req.body.email_id,
-        topic:req.body.topic,
+// POST route to Add a new question
+router.post('/', function (req, res) {
+    console.log("POST /questions - Add a new question: ", req.body);
+    // First add the question into the questions collection
+    // Then add the topics to this question document
+
+    // Adding the question
+    Model.Questions.create({
+        author: req.body.email,
+        question: req.body.question,
+        topics: req.body.topicTitles,
         timestamp: Date.now(),
-
-    },  kafka.make_request('add_question',varObj, function(err,results){
-        return response.status(200).json({ success: true, message: "Successfully added the question" });
-    }, function (err) {
-        response.status(400).json({ success: false, message: "Unable to add question" });
-    }));
+        answers: [],
+        followers: []
+    }, (err, results) => {
+        if (err) {
+            console.log("Unable to insert question!", err);
+            res.status(400).send("Unable to insert question!");
+        } else {
+            console.log("XXXXXXXXXX", results)
+            res.status(200).send("Question added!");
+        }
+    })
 
 });
 
