@@ -24,8 +24,41 @@ router.post('/', function (req, res) {
             console.log("Unable to insert question!", err);
             res.status(400).send("Unable to insert question!");
         } else {
-            console.log("XXXXXXXXXX", results)
-            res.status(200).send("Question added!");
+            let questionId = results._id
+            // Add the topics to this question document
+            Model.topics.find({
+                'title': { $in: results.topics }
+            }, (err, results_topics) => {
+                if (err) {
+                    console.log("Unable to fetch topics", err);
+                    res.status(400).send("Unable to fetch topics!");
+                } else {
+                    if (results_topics) {
+                        console.log("XXXXXXXXXX", results_topics)
+                        for (const obj of results_topics) {
+                            obj.questionIds.push(questionId.toString())
+                            obj.save().then(
+                                doc => {
+                                    console.log("New details added to this topic's questionIds");
+                                },
+                                err => {
+                                    console.log("Unable to save topic details!", err);
+                                    res.status(400).send("Unable to save topic details!");
+                                }
+                            );
+                        }
+                        res.status(200).send("Question added!");
+
+
+                    } else {
+                        console.log("These topics not found in database!", err);
+                        res.status(400).send("These topics not found in database!");
+                    }
+                }
+
+
+
+            });
         }
     })
 
