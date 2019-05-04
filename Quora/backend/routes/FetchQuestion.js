@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router();
 var db = require('../../Kafka/app/db');
+const Model = require("../database/connection");
 
 //Route to get All questions by a given user
 router.get('/', function (req, res) {

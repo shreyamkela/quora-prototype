@@ -59,3 +59,14 @@ code {
     transition: color 0.3s;
     -webkit-text-decoration-skip: objects;
 }
+
+.login-form .btn.btn-primary {
+    background: #b92b27 none repeat scroll 0 0;
+    border-color: #b92b27 !important;
+    color: #ffffff;
+    font-size: 14px;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding: 0;
+}
