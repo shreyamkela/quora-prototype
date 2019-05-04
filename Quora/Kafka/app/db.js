@@ -361,7 +361,7 @@ db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
             ques_id: doc._id,
             question: doc.question,
             posted_on: doc.timestamp,
-            profile: await fetchProfileById(""),
+            profile: await fetchProfileById(doc.author),
             answers: await Promise.all(
               doc.answers.map(async ans => {
                 console.log(ans);
