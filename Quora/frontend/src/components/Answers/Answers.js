@@ -100,7 +100,7 @@ class Answers extends Component {
 
             let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
             if (answer.author === cookie.load('cookie_user'))
-                upvoteOption = <font color="gray">{answer.votes.length + " Upvotes"}</font>
+                upvoteOption = <div style={{ display: "inline", float: "left",color:"gray"} }>{answer.votes.length + " Upvotes"}</div>
             return (
                 <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
                  
@@ -122,10 +122,10 @@ class Answers extends Component {
                             {content}
                         </div>  <br></br><br></br>
                         <div>
-                        {upvoteOption}
-                        <QuoraButton value="ellipsis" text=''></QuoraButton>
+                            {upvoteOption}
+                        <div style={{float:"right"}}><QuoraButton value="bookmark" text='Bookmark'></QuoraButton></div>
                         </div>
-                        <br></br>
+                        <br></br><br></br>
                 </div>
                     <div>
                     <Comments answer_id={answer._id} comments={answer.comments}></Comments>
