@@ -175,10 +175,10 @@ class Sidebar extends Component {
                 <Link to="/main/useranswers">Answers</Link>
               </Menu.Item>
               <Menu.Item key="4">
-                <Link to="">Followers</Link>
+                <Link to="/main/followers">Followers</Link>
               </Menu.Item>
               <Menu.Item key="5">
-                <Link to="">Following</Link>
+                <Link to="/main/following">Following</Link>
               </Menu.Item>
               <Menu.Item key="6">
                 <Link to="/main/topics/followed">Topics</Link>
