@@ -198,8 +198,9 @@ class Sidebar extends Component {
                                     when a tab 2is clicked*/}
               <Switch>
                 <Route exact path="/main/home" component={Questions} />
-                <Route exact path="/main/profile/:user_id" component={Profile} />
                 <Route path="/main/profile/updateProfile" component={UpdateProfile} />
+                <Route exact path="/main/profile/:user_id" component={Profile} />
+                
                 <Route exact path="/main/stats" component={Stats} />
                 <Route exact path="/main/bookmarks" component={Bookmarks} />
                 <Route exact path="/main/useranswers" component={UserAnswers} />

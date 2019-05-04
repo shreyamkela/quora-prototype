@@ -70,7 +70,7 @@ let credentials = _.map(this.props.profile, prof => {  return  prof.credentials 
     onSubmit (values) {
 
     this.props.updateProfile(values,() => {
-        this.props.history.push('/main/profile')
+        this.props.history.push('/main/profile/'+cookie.load('cookie_user'))
       });
       }
 
