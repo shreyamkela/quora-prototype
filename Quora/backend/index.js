@@ -18,6 +18,7 @@ var Follow = require("./routes/Follow");
 var TopUpAnswers = require("./routes/TopUpAnswers");
 var TopDownAnswers = require("./routes/TopDownAnswers");
 var UserAnswers = require('./routes/UserAnswers');
+var Comment = require('./routes/Comment');
 var Profile = require("./routes/Profile");
 var Question = require("./routes/Question");
 var SearchQuestions = require("./routes/searchQuestions");
@@ -92,6 +93,7 @@ app.use("/fetchAllTopics", FetchAllTopics);
 app.use('/message',Messages);
 app.use('/fetchQuestions', FetchQuestions);
 app.use('/useranswers',UserAnswers);
+app.use('/comment',Comment);
 
 module.exports = app;
 //start your server on port 3001

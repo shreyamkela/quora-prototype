@@ -2,8 +2,9 @@ import React, {Component} from 'react'
 import {Button, Card, Comment, Avatar, Form, List, Input,} from 'antd';
 import {connect} from 'react-redux';
 import moment from 'moment';
-import cookie from 'react-cookies';
 import _ from "lodash";
+import { commentOnAnswer } from '../../actions'
+import { Field, reduxForm } from "redux-form"
 
 const {Meta} = Card;
 
@@ -18,6 +19,7 @@ const CommentList = ({comments}) => (
     />
 );
 
+
 const Editor = ({
                     onChange, onSubmit, submitting, value,
                 }) => (
@@ -30,8 +32,8 @@ const Editor = ({
             <Button
                 htmlType="submit"
                 loading={submitting}
-                onClick={onSubmit}
                 type="primary"
+                onClick={onSubmit}
             >
                 Add Comment
             </Button>
@@ -51,6 +53,9 @@ class Comments extends Component {
         value: '',
 
     }
+
+  
+
     handleSubmit = () => {
         if (!this.state.value) {
             return;
@@ -62,19 +67,28 @@ class Comments extends Component {
 
 
         setTimeout(() => {
-            this.setState({
-                submitting: false,
-                value: '',
-                comments: [
-                    {
-                        author: 'Han Solo',
-                        avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                        content: <p>{this.state.value}</p>,
-                        datetime: moment().fromNow(),
-                    },
-                    ...this.state.comments,
-                ],
-            });
+            this.props.commentOnAnswer(this.props.answer_id, this.state.value, () => {
+                this.setState({
+                    submitting: false,
+                    value: '',
+                    comments: [
+                        {
+                            author: 'Han Solo',
+                            avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                            content: <p>{this.state.value}</p>,
+                            datetime: moment().fromNow(),
+                        },
+                        ..._.map(this.props.comments, comment => {
+                            return {
+                                author: 'Han Solo',
+                                avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                                content: <p>{comment.comment}</p>,
+                                datetime: comment.postedon
+                            }
+                        }),
+                    ],
+                });
+            })
         }, 1000);
     }
 
@@ -90,7 +104,7 @@ class Comments extends Component {
         return (
             <div>  
                 <Card style={{background:"#fafafa"}}>
-                    {this.state.comments.length > 0 && <CommentList comments={this.state.comments}/>}
+                    {this.props.comments.length > 0 && <CommentList comments={this.props.comments}/>}
                     <Comment
                         avatar={(
                             <Avatar
@@ -118,5 +132,6 @@ function mapStateToProps(state) {
     return {
         authFlag: state.authFlag
     };
-  }
-export default connect(mapStateToProps)(Comments);
+}
+  
+export default connect(mapStateToProps, { commentOnAnswer })(Comments);

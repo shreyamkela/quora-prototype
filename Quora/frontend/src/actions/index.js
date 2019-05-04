@@ -228,7 +228,8 @@ export function commentOnAnswer(a_id,values, callback) {
   //set the with credentials to true
   axios.defaults.withCredentials = true;
   //make a post request with the user data
-  const response = axios.post(`${ROOT_URL}/comment?answer_id=`+a_id,values)
+  console.log(values)
+  const response = axios.post(`${ROOT_URL}/comment?answer_id=` + a_id, { comment: values })
       .then(response => {
         callback()
         return response
@@ -240,18 +241,3 @@ export function commentOnAnswer(a_id,values, callback) {
       payload: response
     };
 }
-
-export function fetchCommentsByAnswerID(a_id) {
-  axios.defaults.withCredentials = true;
-  //make a post request with the user data
-  const response = axios.get(`${ROOT_URL}/comment?answer_id=`+a_id)
-    .then(response =>{
-      return response
-    })
-  .catch(error => { return error.response })
-
-  return {
-    type: FETCH_COMMENTS,
-    payload: response
-  };
- }
