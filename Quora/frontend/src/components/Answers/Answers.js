@@ -77,9 +77,10 @@ class Answers extends Component {
             let d = new Date(answer.answered_on)
             let content = ''
             if (answer.content !== undefined) {
-                content = answer.content.split('\n').map(i => {
+                /*content = answer.content.split('\n').map(i => {
                     return <>{i}<br></br></>
-                })
+                })*/
+                content = <div style={{width:"300px",height:"100px"}} dangerouslySetInnerHTML={{__html: answer.content}} />
             }
             let photo = answer.profile.photo
             let firstname = answer.profile.firstname

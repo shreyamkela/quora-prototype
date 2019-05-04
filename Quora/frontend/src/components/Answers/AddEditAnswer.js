@@ -21,7 +21,7 @@ class AddEditAnswer extends Component {
         values.answer=this.state.content
         this.props.addAnswer(this.props.question_id, values, () => {
             this.props.displayAddAnswerForm(false);
-            this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')
+            this.props.fetchAnswersByQID(this.props.question_id)
         })
         
     }
