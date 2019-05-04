@@ -2,8 +2,27 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Button, Card, Row, Col, message } from "antd";
 import cookie from "react-cookies";
+import Pagination from 'react-bootstrap/Pagination'
 
 class SearchPeople extends Component {
+
+    constructor(){
+        super();
+        this.state = {  
+			currentPage: 1,
+			todosPerPage: 5,
+        }
+		
+    }  
+
+    handleSelect(number) {
+		console.log('page clicked', number.target.id);
+		this.setState({currentPage : number.target.id});
+	
+	}
+
+
+
     async handleFollow(email) {
         console.log(email)
         let data = { my_email : cookie.load("cookie_user"), target_email : email }
@@ -51,6 +70,8 @@ class SearchPeople extends Component {
           searchResults = this.props.history.location.state.searchResults
         }
         let displayedResults = null;
+        let paginationBasic = null;
+        let currentTodos = null;
         if (searchResults === "NO_SUCH_PERSON" || searchResults === null || searchResults[0] === undefined) {
           displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No person found for this search.</div>;
         } else {
@@ -80,6 +101,37 @@ class SearchPeople extends Component {
               <br />
             </div>
           ));
+
+           // Logic for displaying current todos
+           const indexOfLastTodo = this.state.currentPage * this.state.todosPerPage;
+           const indexOfFirstTodo = indexOfLastTodo - this.state.todosPerPage;
+           currentTodos = displayedResults.slice(indexOfFirstTodo, indexOfLastTodo);
+
+           // Logic for displaying page numbers
+           const pageNumbers = [];
+           for (let i = 1; i <= Math.ceil(displayedResults.length / this.state.todosPerPage); i++) {
+               pageNumbers.push(i);
+           }
+
+           let items = [];
+           for (let number = 1; number <= pageNumbers.length; number++) {
+               items.push(
+                   <Pagination.Item key={number} id={number} value={number} active={number == this.state.currentPage} onClick={this.handleSelect.bind(this)}>
+                       {number}
+                   </Pagination.Item>,
+               );
+           }
+
+           paginationBasic = (
+               <div>
+                   <Pagination
+                       size="sm">{items}
+                   </Pagination>
+                   <br />
+               </div>
+           );
+
+
         }
     
         return (
@@ -91,7 +143,10 @@ class SearchPeople extends Component {
                 </font>
                 <br />
                 <br />
-                {displayedResults}
+                {currentTodos}
+                <div class="container-fluid" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        {paginationBasic}
+                </div>
               </div>
             </Card>
           </div>

@@ -84,12 +84,16 @@ class Answers extends Component {
             let firstname = answer.profile.firstname
             let lastname = answer.profile.lastname
             let credentials = answer.profile.credentials
-            if (answer.isAnonymous === 1) {
+            if (answer.isAnonymous === 1 && answer.author !== cookie.load('cookie_user')) {
                 photo = ""
                 firstname = "Anonymous"
                 lastname = ""
                 credentials=""
             }
+
+            let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
+            if (answer.author === cookie.load('cookie_user'))
+                upvoteOption = <font color="gray">{answer.votes.length + " Upvotes"}</font>
             return (
                 <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
                  
@@ -111,7 +115,7 @@ class Answers extends Component {
                             {content}
                         </div>  <br></br>
                         <div>
-                        <QuoraButton value="upvote" text={"Upvote " + answer.votes.length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
+                        {upvoteOption}
                         <QuoraButton value="ellipsis" text=''></QuoraButton>
                         </div>
                         <br></br>
