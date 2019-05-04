@@ -54,6 +54,19 @@ class Comments extends Component {
 
     }
 
+    componentDidMount=()=>{
+        this.setState({
+        comments:_.map(this.props.comments, comment => {
+            return {
+                author: 'Han Solo',
+                avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                content: <p>{comment.comment}</p>,
+                datetime: comment.postedon
+            }
+        })
+    })
+    }
+
   
 
     handleSubmit = () => {
@@ -78,14 +91,7 @@ class Comments extends Component {
                             content: <p>{this.state.value}</p>,
                             datetime: moment().fromNow(),
                         },
-                        ..._.map(this.props.comments, comment => {
-                            return {
-                                author: 'Han Solo',
-                                avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                                content: <p>{comment.comment}</p>,
-                                datetime: comment.postedon
-                            }
-                        }),
+                        ...this.state.comments,
                     ],
                 });
             })
@@ -104,7 +110,7 @@ class Comments extends Component {
         return (
             <div>  
                 <Card style={{background:"#fafafa"}}>
-                    {this.props.comments.length > 0 && <CommentList comments={this.props.comments}/>}
+                    {this.state.comments.length > 0 && <CommentList comments={this.state.comments}/>}
                     <Comment
                         avatar={(
                             <Avatar
