@@ -152,6 +152,7 @@ db.findUser = function(user, successCallback, failureCallback) {
 //Step1: Add my_email to followers array of target_email
 //Step2: Add target_email to following array of my_email
 db.addFollower = function(values, successCallback, failureCallback) {
+  console.log(JSON.stringify(values))
   //step1:
   Profile.findOneAndUpdate(
     {

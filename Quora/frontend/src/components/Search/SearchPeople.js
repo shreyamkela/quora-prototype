@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Button, Card, Row, Col, message } from "antd";
 import cookie from "react-cookies";
 import Pagination from 'react-bootstrap/Pagination'
+import API from "../../utils/API";
 
 class SearchPeople extends Component {
 
@@ -25,40 +26,44 @@ class SearchPeople extends Component {
 
     async handleFollow(email) {
         console.log(email)
-        let data = { my_email : cookie.load("cookie_user"), target_email : email }
-        console.log(data);
-        /*try {
+
+        try {
           let data = { my_email : cookie.load("cookie_user"), target_email : email }
+          console.log(data);
           // GET topicsFollowed backend route is being used here to follow if not already followed. GET topicsFollowed backend route is being used in the Topics.js frontend to GET all topics followed by this user. They type property in data determines which frontend component is calling /topicsFollowed 
           let response = null;
-          response = await API.get("topicsFollowed", { params: data });
-          if (response.data.toLowerCase().includes("already")) {
-            message.warning("Topic already followed!")
-          } else {
-            message.success("Topic followed!")
+          response = await API.post("follow", data);
+          console.log("Response on follow: "+JSON.stringify(response))
+          //if (response.data.toLowerCase().includes("already")) {
+          //  message.warning("Person already followed!")
+          //} 
+          
+          if(response.data.success){
+            message.success("Person followed!")
           }
         } catch (error) {
           console.log(error);
-          message.error("Unable to follow topic at the moment. Please refresh the page and try again.")
-        }*/
+          message.error("Unable to follow person at the moment. Please refresh the page and try again.")
+        }
     
       }
     
       async handleUnfollow(email) {
         console.log(email)
-        /*try {
+        try {
           let data = { my_email: cookie.load("cookie_user"), target_email : email }
           let response = null;
-          response = await API.post("topicsUnfollowed", data);
+          response = await API.post("unfollow", data);
+          console.log("Response on unfollow: "+JSON.stringify(response))
           if (response.data.toLowerCase().includes("already")) {
-            message.warning("Topic is not followed!")
+            message.warning("Person is not followed!")
           } else {
-            message.success("Topic Unfollowed!")
+            message.success("Person Unfollowed!")
           }
         } catch (error) {
           console.log(error);
-          message.error("Unable to unfollow topic at the moment. Please refresh the page and try again.")
-        }*/
+          message.error("Unable to unfollow person at the moment. Please refresh the page and try again.")
+        }
     
       }
     
