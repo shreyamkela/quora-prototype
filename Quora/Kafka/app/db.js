@@ -224,8 +224,13 @@ db.updateAnswer = function(values, successCallback, failureCallback) {
 db.vote = function(values, successCallback, failureCallback) {
   Questions.findOneAndUpdate(
     {
-      "answers._id": mongoose.Types.ObjectId(values.a_id),
-      "answers.$.votes.user": { $ne: values.email_id }
+		answers: {
+        $elemMatch:
+        {
+          "_id": mongoose.Types.ObjectId(values.a_id),
+          "votes.user": { $ne: values.email_id }
+        }
+	 }
     },
     {
       $push: { "answers.$.votes": { user: values.email_id, flag: values.flag } }
