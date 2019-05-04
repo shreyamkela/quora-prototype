@@ -42,16 +42,17 @@ class Sidebar extends Component {
 
   handleSearch = async searchTerm => {
     // console.log(searchTerm);
-    if (searchTerm === "") {
-      message.warning("Please enter a search term.");
-      return;
-    }
+
 
     // TODO - Handle special character/scripts entered in the search bar at the backend so that the server doesnt crash when the entered term is unusual. Check how quora handles special characters or unusual search terms
     try {
       // Query backend api respective to the search type
       let response = null;
       if (this.state.searchType === "Q") {
+        if (searchTerm === "") {
+          message.warning("Please enter a search term.");
+          return;
+        }
         response = await API.get("searchQuestions", { params: searchTerm });
         console.log("Search results: ", response.data);
         this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
@@ -62,6 +63,10 @@ class Sidebar extends Component {
         })
         // NOTE - Using this.props.history.push we can change the /main/home to /main/questions/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "T") {
+        if (searchTerm === "") {
+          message.warning("Please enter a search term.");
+          return;
+        }
         response = await API.get("searchTopics", { params: searchTerm });
         console.log("Search results: ", response.data);
         this.props.history.push({ // This is how we pass data from this component to a child component i.e searchTopics, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
@@ -72,6 +77,9 @@ class Sidebar extends Component {
         })
         // NOTE - Using this.props.history.push we can change the /main/home to /main/topics/search without refreshing the page. The internal component changes. We dont have to use redux or set state to change the internal component on search to show search results
       } else if (this.state.searchType === "P") {
+        if (searchTerm === "*") {
+          searchTerm = "";
+        }
         response = await API.get("searchPeople", { params: searchTerm });
         console.log("Search results: ", response.data);
         this.props.history.push({
