@@ -215,3 +215,8 @@ table, th, td {
   .ql-editor {
     min-height: 15em;
   }
+
+  .answer_content img {
+    max-width: 100%;
+    max-height: 500px;
+}

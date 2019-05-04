@@ -80,7 +80,7 @@ class Answers extends Component {
                 /*content = answer.content.split('\n').map(i => {
                     return <>{i}<br></br></>
                 })*/
-                content = <div style={{width:"300px",height:"100px"}} dangerouslySetInnerHTML={{__html: answer.content}} />
+                content = <div dangerouslySetInnerHTML={{__html: answer.content}} />
             }
             let photo = answer.profile.photo
             let firstname = answer.profile.firstname
@@ -117,10 +117,10 @@ class Answers extends Component {
                             </div>}//"User credentials goes here"
                      />
                 <br></br>
-                        <div>
+                        <div className='answer_content'>
                         
                             {content}
-                        </div>  <br></br>
+                        </div>  <br></br><br></br>
                         <div>
                         {upvoteOption}
                         <QuoraButton value="ellipsis" text=''></QuoraButton>
