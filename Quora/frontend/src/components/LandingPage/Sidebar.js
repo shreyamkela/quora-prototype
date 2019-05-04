@@ -19,6 +19,8 @@ import Stats from "../Statistics/Stats"
 import Bookmarks from "../Answers/Bookmarks/Bookmarks";
 import UserAnswers from "../Answers/UserAnswers/UserAnswers";
 import UserContent from "../UserContent/UserContent"
+import QuestionsInTopic from "../Topics/QuestionsInTopic"
+
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -134,7 +136,7 @@ class Sidebar extends Component {
 
             <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
               <Search
-                  className="Search-Button"
+                className="Search-Button"
                 style={{ marginTop: 18 }}
                 placeholder="Search Quora"
                 enterButton="Search"
@@ -145,11 +147,11 @@ class Sidebar extends Component {
                 addonBefore={selectBefore}
               />
             </Menu.Item>
-              {/*<Menu.Item key="5" style={{ marginLeft: 90 }}>*/}
-                  {/*<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />*/}
-              {/*</Menu.Item>*/}
+            {/*<Menu.Item key="5" style={{ marginLeft: 90 }}>*/}
+            {/*<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />*/}
+            {/*</Menu.Item>*/}
             <Menu.Item key="1" style={{ marginLeft: 90 }}>
-              <Link to={"/main/profile/"+cookie.load('cookie_user')}> Profile</Link>
+              <Link to={"/main/profile/" + cookie.load('cookie_user')}> Profile</Link>
             </Menu.Item>
             <Menu.Item key="3">
               <Link to="/login" onClick={this.handleLogout}>
@@ -200,7 +202,7 @@ class Sidebar extends Component {
                 <Route exact path="/main/home" component={Questions} />
                 <Route path="/main/profile/updateProfile" component={UpdateProfile} />
                 <Route exact path="/main/profile/:user_id" component={Profile} />
-                
+
                 <Route exact path="/main/stats" component={Stats} />
                 <Route exact path="/main/bookmarks" component={Bookmarks} />
                 <Route exact path="/main/useranswers" component={UserAnswers} />
@@ -209,8 +211,10 @@ class Sidebar extends Component {
                 <Route exact path="/main/topics/followed" component={Topics} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
                 <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
-                <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />}/>
+                <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
                 <Route exact path="/main/people/search" render={(props) => <SearchPeople {...props} />} />
+                <Route exact path="/main/topics/:topic/questions" render={(props) => <QuestionsInTopic {...props} />} />
+
               </Switch>
             </div>
           </Content>
