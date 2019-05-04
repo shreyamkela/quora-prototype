@@ -28,10 +28,7 @@ router.get("/", function (req, res) {
         } else {
           console.log("searchedTopics: ", searchedTopics);
           res.status(200).send(searchedTopics);
-          //res.status(200).send("SUCCESS");
         }
-
-        //res.status(200).end("Course already enrolled!"); // res.end will end the response here and dont go futher in this post request? But this doesnt work here why? return res.end also doesnt work if a db.query is after this db.query
       } else {
         console.log("No topics found in database!", err);
         res.status(400).send("No topics found in database!");
