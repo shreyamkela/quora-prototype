@@ -22,7 +22,6 @@ class Answers extends Component {
 
     }
 
-    //get the announcements data from backend  
     componentDidMount() {
         console.log("Mounting")
         this.props.fetchAnswersByQID('5ccb33f0cc26351195ae6d72')
@@ -59,7 +58,7 @@ class Answers extends Component {
                             }
                         />
                         <h3><b> {this.props.ques_answers.question}</b></h3>
-                        <QuoraButton value="answer" text="Answer" onclick={()=>this.addAnswerClick()}></QuoraButton>
+                        <QuoraButton value="answer" text="Answer" onclick={() => this.addAnswerClick()}></QuoraButton>
                         {addForm}
                     </div>
 
@@ -111,7 +110,10 @@ class Answers extends Component {
                         
                             {content}
                         </div>  <br></br>
+                        <div>
                         <QuoraButton value="upvote" text={"Upvote " + answer.votes.length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
+                        <QuoraButton value="ellipsis" text=''></QuoraButton>
+                        </div>
                         <br></br>
                 </div>
                 <div>
