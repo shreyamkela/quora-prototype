@@ -13,7 +13,7 @@ router.get("/", function (req, res) {
     let searchedQuestions = [];
     console.log("searchValue###"+searchValue);
     console.log("searchedQuestions###"+searchedQuestions);
-    Model.questions.find({}, (err, results) => {
+    Model.Questions.find({}, (err, results) => {
         console.log("###############");
 
         if (err) {
@@ -21,8 +21,11 @@ router.get("/", function (req, res) {
             res.status(400).send("Unable to fetch questions!");
         } else {
             if (results) {
+                console.log("###############in results"+results);
                 for (var key in results) {
-                    let currentTerm = results[key].title.toLowerCase();
+                    console.log("###############in for loop");
+
+                    let currentTerm = results[key].question.toLowerCase();
                     console.log("currentTerm###"+currentTerm);
 
                     if (currentTerm.includes(searchValue)) {

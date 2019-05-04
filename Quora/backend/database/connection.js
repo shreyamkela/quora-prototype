@@ -21,6 +21,11 @@ var topics = mongoose.model("topics", {
   questionIds: Array,
   followers: Array
 });
+//
+// var searchQuestion = mongoose.model("Questions", {
+//     question: { type: String },
+//     answers: [String]
+// })
 
 var profile = mongoose.model("profile", {
   firstname: {
@@ -67,7 +72,7 @@ var QuestionSchema = new mongoose.Schema({
   ID: { type: Number, unique: true },
   topics: [String],
   timestamp: { type: Date, default: Date.now() },
-  question: { type: String },
+  question: String,
   author: String,
   answers: [String],
   followers: [String]
@@ -79,5 +84,6 @@ var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 module.exports = {
   topics,
   Questions,
+    // searchQuestion,
   profile
 };
