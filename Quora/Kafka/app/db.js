@@ -243,14 +243,22 @@ db.vote = function(values, successCallback, failureCallback) {
       $push: { "answers.$.votes": { user: values.email_id, flag: values.flag } }
     }
   )
-    .then(() => {
+    .then((docs) => {
+      console.log(docs)
       Questions.findOneAndUpdate(
         {
-          "answers._id": mongoose.Types.ObjectId(values.a_id),
-          "answers.votes.user": values.email_id
+          /*"answers._id": mongoose.Types.ObjectId(values.a_id),
+          "answers.votes.user": values.email_id*/
+          answers: {
+            $elemMatch:
+            {
+              "_id": mongoose.Types.ObjectId(values.a_id),
+              "votes.user": values.email_id
+            }
+          }
         },
         {
-          $set: { "answers.$.votes.$$.flag": values.flag }
+          $set: { "answers.$.votes.0.flag": values.flag }
         }
       )
         .then(() => {

@@ -98,9 +98,14 @@ class Answers extends Component {
                 answer_title=firstname + "  " + lastname
             }
 
-            let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
-            if (answer.author === cookie.load('cookie_user'))
-                upvoteOption = <div style={{ display: "inline", float: "left",color:"gray"} }>{answer.votes.length + " Upvotes"}</div>
+            let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.filter(v=>v.flag===1).length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
+            let downvoteOption = <QuoraButton value="downvote" text='' onclick={()=>this.vote(answer._id,0)}></QuoraButton>
+            let bookmarkOption = <QuoraButton value="bookmark" text='Bookmark'></QuoraButton>
+            if (answer.author === cookie.load('cookie_user')) {
+                upvoteOption = <div style={{ display: "inline", float: "left", color: "gray" }}>{answer.votes.length + " Upvotes"}</div>
+                downvoteOption = null
+                bookmarkOption = null
+            }
             return (
                 <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
                  
@@ -124,8 +129,8 @@ class Answers extends Component {
                         <div>
                             {upvoteOption}
                             <div style={{ float: "right" }}>
-                                <QuoraButton value="downvote" text=''></QuoraButton>
-                                <QuoraButton value="bookmark" text='Bookmark'></QuoraButton>
+                                {downvoteOption}
+                                {bookmarkOption}
                             </div>
                         </div>
                         <br></br><br></br>
