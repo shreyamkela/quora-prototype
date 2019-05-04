@@ -43,33 +43,18 @@ class SearchQuestions extends Component {
 
     }
 
-    // handleTopicLinkClick = (key) => {
-    //     this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push.
-    //         // This will change the route, render new component, and also pass data into the component.
-    //         // Passed data can be accessed in the child component through this.props.history.location.state.
-    //         // To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
-    //         pathname: `/main/questions/${key.title}/questions`,
-    //         state: {
-    //             selectedQuestion: key
-    //         }
-    //     })
-    // }
-
-//     async handleSearch(key)  {
-//         try {
-//             let data = { email: cookie.load("cookie_user"), questionId: key }
-//             let response = null;
-//             response = await API.post("searchQuestion", data);
-//             if (response.data.toLowerCase().includes(key)) {
-//                 message.warning("Success")
-//             } else {
-//                 message.success("Not Found")
-//             }
-//         } catch (error) {
-//             console.log(error);
-//             message.error("Unable to search.")
-//         }
-// }
+    handleQuestionLinkClick = (key) => {
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push.
+            // This will change the route, render new component, and also pass data into the component.
+            // Passed data can be accessed in the child component through this.props.history.location.state.
+            // To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
+            // pathname: `/main/questions/${key.question}/questions`,
+            pathname: `/main/questions/${key.question}`,
+            state: {
+                selectedQuestion: key
+            }
+        })
+    }
 
     render() {
         // To access the state passed into this component from parent through this.props.history.push - we use this.props.history.location.state
@@ -89,7 +74,8 @@ class SearchQuestions extends Component {
                     <div className="card" style={{ width: "70%", height: 100, textAlign: "center" }}>
                         <div className="card-body">
                             <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
-                                {key.title}
+                                {/*{key.question}*/}
+                                <href to="#" onClick={() => { this.handleQuestionLinkClick(key) }}><font color="#6495ED"> {key.question}</font></href>
                             </h5>
                             <br />
                             <Row style={{ marginLeft: 205 }}>
