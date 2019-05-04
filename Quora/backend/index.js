@@ -29,6 +29,7 @@ var TopicsUnfollowed = require("./routes/TopicsUnfollowed")
 var FetchAllTopics = require("./routes/FetchAllTopics")
 var Messages = require('./routes/Messages');
 var FetchQuestions = require('./routes/FetchQuestion');
+var QuestionsInTopic = require('./routes/QuestionsInTopic');
 
 var passport = require("passport");
 // Set up middleware
@@ -59,7 +60,7 @@ app.use(
 app.use(bodyParser.json({ limit: "10mb", extended: true }));
 
 //Allow Access Control
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
@@ -90,10 +91,11 @@ app.use("/searchPeople", SearchPeople);
 app.use("/topicsFollowed", TopicsFollowed);
 app.use("/topicsUnfollowed", TopicsUnfollowed);
 app.use("/fetchAllTopics", FetchAllTopics);
-app.use('/message',Messages);
+app.use('/message', Messages);
 app.use('/fetchQuestions', FetchQuestions);
-app.use('/useranswers',UserAnswers);
-app.use('/comment',Comment);
+app.use('/useranswers', UserAnswers);
+app.use('/comment', Comment);
+app.use('/questionsInTopic', QuestionsInTopic);
 
 module.exports = app;
 //start your server on port 3001

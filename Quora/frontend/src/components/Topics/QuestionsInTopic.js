@@ -6,6 +6,24 @@ import { Button, Card, Row, Col, message } from "antd";
 import API from "../../utils/API";
 
 class QuestionsInTopic extends Component {
+    state = {
+        questions: ""
+    }
+
+    componentDidMount = async () => {
+        if (this.props.history.location.state !== undefined) {
+            let topicId = this.props.history.location.state.selectedTopic._id;
+            try {
+                let data = { topicId: topicId }
+                let response = null;
+                response = await API.get("questionsInTopic", { params: data });
+                this.setState({ questions: response.data })
+            } catch (error) {
+                console.log(error);
+                message.error("Unable to fetch questions at the moment. Please refresh the page.")
+            }
+        }
+    }
 
     async handleFollow(topic) {
         try {
@@ -42,6 +60,14 @@ class QuestionsInTopic extends Component {
 
     }
 
+    handleQuestionLinkClick = (key) => {
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
+            pathname: `/main/${key._id}`,
+            state: {
+                selectedQuestion: key
+            }
+        }) // TODO - Complete the page `/main/${key._id}`
+    }
 
     render() {
         //console.log("QuestionsInTopic component: ", this.props.history.location.state);
@@ -51,6 +77,26 @@ class QuestionsInTopic extends Component {
             title = this.props.history.location.state.selectedTopic.title;
             topic = this.props.history.location.state.selectedTopic;
         }
+
+        let displayedResults = null;
+        if (this.state.questions === "" || this.state.questions.includes("No questions")) {
+            displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No questions have been added to this topic yet. Be the first to add one!</div>;
+        } else {
+            displayedResults = this.state.questions.map(key => (
+                <div style={{ textAlign: "center" }}>
+                    <div className="card" style={{ width: "70%", height: "auto", textAlign: "center" }}>
+                        <div className="card-body">
+                            <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
+                                <href to="#" onClick={() => { this.handleQuestionLinkClick(key) }}><font color="#6495ED">{key.question}</font></href>
+                            </h5>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            ));
+        }
+
+
         return (
             <div>
                 <Card>
@@ -80,6 +126,7 @@ class QuestionsInTopic extends Component {
 
                     <br />
                     <br />
+                    {displayedResults}
                 </Card>
             </div>
         );
