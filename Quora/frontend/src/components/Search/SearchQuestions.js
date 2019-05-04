@@ -6,6 +6,21 @@ import API from "../../utils/API";
 
 class SearchQuestions extends Component {
 
+    async handleSearch(key)  {
+        try {
+            let data = { email: cookie.load("cookie_user"), questionId: key }
+            let response = null;
+            response = await API.post("searchQuestion", data);
+            if (response.data.toLowerCase().includes(key)) {
+                message.warning("Success")
+            } else {
+                message.success("Not Found")
+            }
+        } catch (error) {
+            console.log(error);
+            message.error("Unable to search.")
+        }
+}
 
     render() {
         // To access the state passed into this component from parent through this.props.history.push - we use this.props.history.location.state

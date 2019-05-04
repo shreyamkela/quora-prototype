@@ -26,7 +26,7 @@ router.get("/", function (req, res) {
                 }
                 if (searchedQuestions === []) {
                     console.log("No questions found");
-                    res.status(400).send("No topics found");
+                    res.status(400).send("No questions found");
                 } else {
                     console.log("searchedQuestions: ", searchedQuestions);
                     res.status(200).send(searchedQuestions);

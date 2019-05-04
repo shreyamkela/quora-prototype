@@ -555,6 +555,7 @@ db.getQuestionByEmail = function (email_id, successCallback, failureCallback) {
                     question: await Promise.all(
                         doc.question.map(async ans => {
                             console.log(ans);
+                            console.log("############");
                             ans = ans.toJSON();
                             ans.profile = await fetchProfileById(ans.author);
                             return await ans;

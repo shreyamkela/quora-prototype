@@ -1,10 +1,10 @@
 var db = require('../app/db');
 
 function handle_request(msg, callback) {
-    db.addAnswer(msg, function () {
-        callback(null,'Successfully added a the answer.');
+    db.getQuestionByEmail(msg, function () {
+        callback(null,'Success');
     }, function (err) {
-        callback(err,'Unable to add answer');
+        callback(err,'Unable to fetch answer');
     });
 }
 
