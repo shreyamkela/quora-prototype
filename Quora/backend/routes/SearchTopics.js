@@ -9,31 +9,35 @@ router.get("/", function (req, res) {
 
   let searchValue = req.query[0].toLowerCase();
   let searchedTopics = [];
-    console.log("searchValue###"+searchValue);
-    console.log("searchedQuestions###"+searchedTopics);
+  console.log("searchValue###" + searchValue);
+  console.log("searchedQuestions###" + searchedTopics);
   Model.topics.find({}, (err, results) => {
-      console.log("sea######e###");
+    console.log("sea######e###");
 
-      if (err) {
+    if (err) {
       console.log("Unable to fetch topics", err);
       res.status(400).send("Unable to fetch topics!");
     } else {
       if (results) {
-          console.log(results);
+        console.log(results);
 
-          for (var key in results) {
-          let currentTerm = results[key].title.toLowerCase();
-
-          if (currentTerm.includes(searchValue)) {
-            searchedTopics.push(results[key]);
-          }
-        }
-        if (searchedTopics === []) {
-          console.log("No topics found with the entered search term!");
-          res.status(400).send("No topics found with the entered search term!");
+        if (searchValue === "*") {
+          res.status(200).send(results);
         } else {
-          console.log("searchedTopics: ", searchedTopics);
-          res.status(200).send(searchedTopics);
+          for (var key in results) {
+            let currentTerm = results[key].title.toLowerCase();
+
+            if (currentTerm.includes(searchValue)) {
+              searchedTopics.push(results[key]);
+            }
+          }
+          if (searchedTopics === []) {
+            console.log("No topics found with the entered search term!");
+            res.status(400).send("No topics found with the entered search term!");
+          } else {
+            console.log("searchedTopics: ", searchedTopics);
+            res.status(200).send(searchedTopics);
+          }
         }
       } else {
         console.log("No topics found in database!", err);
