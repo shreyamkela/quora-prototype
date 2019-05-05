@@ -417,6 +417,10 @@ let fetchProfileById = function (email_id) {
             docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
             docs.deactivated = true
         }
+        else {
+          docs = docs.toJSON()
+          docs.deactivated = false
+        }
         return docs
     }).catch((err) => {
         console.log(err)
