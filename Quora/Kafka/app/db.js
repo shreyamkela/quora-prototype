@@ -72,7 +72,7 @@ var ActivitySchema = new mongoose.Schema({
   type : { type: String },
   timestamp: { type: Date, default: Date.now },
   question: { type: String },
-  year: String
+  year: Number
 })
 
 QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
@@ -83,7 +83,16 @@ var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 var Profile = require("../model/profile");
 var Messages = mongoose.model('Message',MessageSchema);
 var Chat = mongoose.model('Chat', ConversationSchema);
-var Activity = mongoose.model('Activity', ActivitySchema);
+var Activity = mongoose.model('Activity', ActivitySchema,'activities');
+
+let addActivityRecord = (type, q_id, user_id) => {
+  Activity.create({
+    type: type,
+    question: q_id,
+    user_id:user_id,
+    year: new Date().getFullYear()
+  }).then(() =>{return})
+}
 
 //get user activity
 db.fetchActivity = function (msg, successCallback, failureCallback) {
@@ -219,7 +228,10 @@ db.addAnswer = function (values, successCallback, failureCallback) {
     }, {
             $push: { answers: {content:values.answer,author:values.email_id,isAnonymous:values.isanonymous} } 
         }
-    ).then(() => { successCallback() })
+    ).then(() => { 
+	addActivityRecord('You answered',values.q_id,values.email_id)
+	successCallback()
+	})
         .catch((error) => {
             failureCallback(error)
             return
