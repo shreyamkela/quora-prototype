@@ -8,6 +8,7 @@ import { List, Button} from 'antd';
 import _ from "lodash";
 import axios from 'axios';
 import API from "../../utils/API";
+import { Row, Col, message } from "antd";
 
 const ROOT_URL = "http://localhost:3001";
 
@@ -106,6 +107,55 @@ class Profile extends Component {
         }
         }
 
+
+
+
+        async handleFollow(email) {
+          console.log(email)
+  
+          try {
+            let data = { my_email : cookie.load("cookie_user"), target_email : email }
+            console.log(data);
+            // GET topicsFollowed backend route is being used here to follow if not already followed. GET topicsFollowed backend route is being used in the Topics.js frontend to GET all topics followed by this user. They type property in data determines which frontend component is calling /topicsFollowed 
+            let response = null;
+            response = await API.post("follow", data);
+            console.log("Response on follow: "+JSON.stringify(response))
+            if(!response.data.success && response.data.already){
+              message.error("Person Already Followed!")
+            } else if(response.data.success && !response.data.already){
+              message.success("Person Followed!")
+            } else {
+              message.error("Unable to follow person at the moment. Please refresh the page and try again.")
+            }
+          } catch (error) {
+            console.log(error);
+            message.error("Unable to follow person at the moment. Please refresh the page and try again.")
+          }
+      
+        }
+      
+        async handleUnfollow(email) {
+          console.log(email)
+          try {
+            let data = { my_email: cookie.load("cookie_user"), target_email : email }
+            let response = null;
+            response = await API.post("unfollow", data);
+            console.log("Response on unfollow: "+JSON.stringify(response))
+            if(!response.data.success && response.data.already){
+              message.error("Not Following Person. Can't Unfollow!")
+            } else if(response.data.success && !response.data.already){
+              message.success("Person Unfollowed!")
+            } else {
+              message.error("Unable to unfollow person at the moment. Please refresh the page and try again.")
+            }
+          } catch (error) {
+            console.log(error);
+            message.error("Unable to unfollow person at the moment. Please refresh the page and try again.")
+          }
+      
+        }
+           
+
     render () { 
       
       let pic =  this.state.user_data.map(data => {
@@ -172,6 +222,7 @@ class Profile extends Component {
       let UploadImageForm = null
       let updateProfileButton = null
       let deleteAccountButton = null
+      let followUnfollow = null
       if (cookie.load('cookie_user') === this.props.match.params.user_id)
       {
         UploadImageForm= <form   style={{"margin-top":"180px"}}  noValidate onSubmit={this.onSubmit}>
@@ -183,6 +234,19 @@ class Profile extends Component {
         </form>
         updateProfileButton=<Button  id="btn_space"   onClick={this.onSubmit1} className="add-button" type="primary"  >Update Profile</Button>
         deleteAccountButton=<Button   onClick={this.onSubmit2} className="add-button" type="primary"  >Delete Account</Button>
+        } else {
+          followUnfollow = <Col style={{ marginLeft: 205 }}>
+          <Row span={3}>
+            <Button size="small" icon="check-circle" shape="round" onClick={() => this.handleFollow(this.props.match.params.user_id)} >
+              Follow
+            </Button>
+          </Row>
+          <Row span={3}>
+            <Button size="small" icon="close-circle" shape="round" onClick={() => this.handleUnfollow(this.props.match.params.user_id)}>
+              Unfollow
+            </Button>
+          </Row>
+        </Col>
         }
       return (
         <div>
@@ -190,12 +254,17 @@ class Profile extends Component {
 
         <div style={{"width":"100%"}}>
         <div  style={{"float":"left","width":"50%"}} >
-     <h2  className="h3 mb-3 font-weight-normal">{firstname} {" "} {lastname}</h2>
+     <h2  className="h3 mb-3 font-weight-normal">{firstname} {" "} {lastname}
+     </h2>
            <div  className="pull-left image">
+           {followUnfollow}
            <img src={pic}  alt="" width="200" height="200"  /> 
+           
          </div>   
+         
         {UploadImageForm}
    </div> 
+   
   
    <div  style={{"float":"right","width":"50%"}} >
 

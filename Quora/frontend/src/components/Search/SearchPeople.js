@@ -22,6 +22,12 @@ class SearchPeople extends Component {
 	
 	}
 
+    handleProfileLinkClick = (key) => {
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
+          pathname: `/main/profile/${key.email}`,
+        })
+      }
+    
 
 
     async handleFollow(email) {
@@ -88,7 +94,7 @@ class SearchPeople extends Component {
               <div className="card" style={{ width: "70%", height: 100, textAlign: "center" }}>
                 <div className="card-body">
                   <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
-                    {key.firstname} {key.lastname}
+                    <href to="#" onClick={() => { this.handleProfileLinkClick(key) }}><font color="#6495ED">{key.firstname} {key.lastname}</font></href>
                   </h5>
                   <br />
                   <Row style={{ marginLeft: 205 }}>
