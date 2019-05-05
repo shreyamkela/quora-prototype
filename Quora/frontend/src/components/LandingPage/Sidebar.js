@@ -22,11 +22,11 @@ import UserContent from "../UserContent/UserContent"
 import QuestionsInTopic from "../Topics/QuestionsInTopic"
 import FollowingList from "../Following/FollowingList";
 import FollowersList from "../Followers/FollowersList";
+import FetchQuestions from "../Question/FetchQuestions";
 import Messages from "../Messages/Messages";
 
 
-const { SubMenu } = Menu;
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content,  Sider } = Layout;
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -227,8 +227,6 @@ class Sidebar extends Component {
           </Sider>
           <Content style={{ padding: "0 24px", minHeight: 280 }}>
             <div className="larger">
-              {/*TEAM ----define your routes here routes that will be shown
-                                    when a tab 2is clicked*/}
               <Switch>
                 <Route exact path="/main/home" component={Questions} />
                 <Route path="/main/profile/updateProfile" component={UpdateProfile} />
@@ -241,6 +239,7 @@ class Sidebar extends Component {
                 <Route exact path="/main/topics/followed" component={Topics} />
                 <Route exact path="/main/followers" component={FollowersList} />
                 <Route exact path="/main/following" component={FollowingList} />
+                <Route exact path="/main/questions" component={FetchQuestions} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
                 <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
                 <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
