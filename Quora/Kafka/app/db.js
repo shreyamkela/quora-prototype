@@ -90,7 +90,7 @@ db.fetchActivity = function (msg, successCallback, failureCallback) {
     { user_id:msg.email },{'question':1, 'type':1, 'timestamp':1, 'year':1},  {sort:'-timestamp' }
   )
   .then(async docs => {
-    console.log(docs)
+    console.log("main doc " + docs)
       let final_doc = await Promise.all(docs.map(async doc => {
         return {
           type: doc.type,
@@ -136,21 +136,6 @@ let addActivityRecord = (type, q_id, user_id) => {
   }).then(() =>{return})
 }
 
-//get user activity
-db.fetchActivity = function (msg, successCallback, failureCallback) {
-  console.log("user activity: " + msg.email)
-  
-   Activity.find(
-     { user_id:msg.email },{'question':1, 'type':1, 'timestamp':1, 'year':1},  {sort:'-timestamp' }
-   ).then((result) => { 
-    console.log("Result activity get: "+JSON.stringify(result)); 
-    successCallback(result) })
-       .catch((error) => {
-         console.log("fetch activity error: " + error)
-           failureCallback(error)
-           return
-       })
-}
 
 // finding if a conversation exists and adding messages to it else create a new conversation
 
