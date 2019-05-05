@@ -366,7 +366,6 @@ let fetchProfileById = function (email_id) {
 }
 
 db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
-  console.log("Hey Question" + q_id)
   try {
     Questions.findOne({
       _id: mongoose.Types.ObjectId(q_id)
@@ -421,18 +420,35 @@ db.getBookmarks = function(email_id, successCallback, failureCallback) {
               $in: [email_id, "$$answer.bookmarks"]
             }
           }
-        }
+        },
+        question: 1,
+        author:1
       }
     }
   ])
     .then(async docs => {
-      console.log(docs);
-      successCallback(docs);
-    })
-    .catch(err => {
-      console.log(err);
-      failureCallback(err);
-    });
+      let final_doc = await Promise.all(docs.map(async doc => {
+        return {
+          ques_id: doc._id,
+          question: doc.question,
+          posted_on: doc.timestamp,
+          profile: await fetchProfileById(doc.author),
+          answers: await Promise.all(
+            doc.answers.map(async ans => {
+              console.log(ans);
+              //ans = ans.toJSON();
+              ans.profile = await fetchProfileById(ans.author);
+              return await ans;
+            })
+          )
+        }
+      }))
+      successCallback(final_doc);
+  })
+  .catch(err => {
+    console.log(err);
+    failureCallback(err);
+  });
 };
 
 db.getTopAnswers = function(email_id, successCallback, failureCallback) {
