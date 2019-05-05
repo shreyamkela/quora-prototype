@@ -36,6 +36,7 @@ credentials: {
 photo: {
     type: String
 },
+views : [Date],
 followers : [String],
 following : [String],
 topicsFollowed : Array,

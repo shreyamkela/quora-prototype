@@ -6,9 +6,13 @@ function handle_request(msg, callback){
     var email = msg.email;
 
     var res = {};
-    Profile.findOne({
+    Profile.findOneAndUpdate({
         email: email
-     })  .select('firstname lastname email city state zipcode education career aboutme credentials')
+     },
+     {
+       $push: { views : Date.now() }
+     }
+     )  .select('firstname lastname email city state zipcode education career aboutme credentials')
          .exec()
          .then(user => {
              if (user) {
