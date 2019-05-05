@@ -22,6 +22,7 @@ import UserContent from "../UserContent/UserContent"
 import QuestionsInTopic from "../Topics/QuestionsInTopic"
 import Following from "../Following/Following";
 import FollowersList from "../Followers/FollowersList";
+import Messages from "../Messages/Messages";
 
 
 const { SubMenu } = Menu;
@@ -33,7 +34,8 @@ class Sidebar extends Component {
   state = {
     collapsed: false,
     // NOTE - searchType is for the dropdown of the search bar - "Q" is for questions, "T" is for topics, and "P" is for people. Default is "Q"
-    searchType: "Q"
+    searchType: "Q",
+    messages : false
   };
 
   onCollapse = collapsed => {
@@ -104,6 +106,11 @@ class Sidebar extends Component {
   handleSearchTypeChange = value => {
     this.setState({ searchType: value });
   };
+
+  navigateMessage = () =>{
+    this.setState({messages : true})
+    console.log("message: "+this.state.messages);
+  }
 
   render() {
     if (!cookie.load("cookie_user")) {
@@ -194,6 +201,9 @@ class Sidebar extends Component {
               <Menu.Item key="9">
                 <Link to="/main/yourcontent">Your Content</Link>
               </Menu.Item>
+              <Menu.Item key="10">
+                    <Link to="/main/message" onClick={this.navigateMessage}>Messages</Link>
+                  </Menu.Item>
             </Menu>
           </Sider>
           <Content style={{ padding: "0 24px", minHeight: 280 }}>
@@ -219,11 +229,14 @@ class Sidebar extends Component {
                 <Route exact path="/main/topics/:topic/questions" render={(props) => <QuestionsInTopic {...props} />} />
 
                 <Route exact path="/main/:question_id" component={Answers} />
+                <Route exact path="/main/message" component={Messages} />
                
               </Switch>
             </div>
           </Content>
         </Layout>
+        {/* Display Message Component */}
+        {this.state.messages && <Messages visible="true"/>}
       </Layout>
     );
   }

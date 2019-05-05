@@ -70,3 +70,23 @@ code {
     line-height: 50px;
     padding: 0;
 }
+
+.table {
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-bottom : 0px;
+    width: 600px;
+    /* height: 800px; */
+    /* overflow: auto; */
+  }
+  .table tr:hover{
+      cursor: pointer;
+      background-color: rgba(218, 214, 214, 0.911)
+  }
+  
+  .scroller {
+    margin-left: 0px;
+    height: 400px;
+    width: 600px;
+    overflow: auto;
+  }
