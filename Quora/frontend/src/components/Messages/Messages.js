@@ -140,9 +140,9 @@ class Messages extends Component {
                 
     render(){ 
 
-        if(this.state.visible==false && this.state.conversation==false){
-            this.props.history.push("/login");
-        }
+        // if(this.state.visible==false && this.state.conversation==false){
+        //     //this.props.history.push("/login");
+        // }
 
         let conversationList = this.state.messageList.map(conv => {
             let noChats = conv.chat.length;
