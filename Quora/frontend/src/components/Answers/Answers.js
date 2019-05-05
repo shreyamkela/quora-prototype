@@ -115,7 +115,7 @@ class Answers extends Component {
             let downvoteOption = <QuoraButton value="downvote" text='' onclick={()=>this.vote(answer._id,0)}></QuoraButton>
             let bookmarkOption = <QuoraButton value="bookmark" text='Bookmark' onclick={()=>this.bookmark(answer._id)}></QuoraButton>
             if (answer.author === cookie.load('cookie_user')) {
-                upvoteOption = <div style={{ display: "inline", float: "left", color: "gray" }}>{answer.votes.length + " Upvotes"}</div>
+                upvoteOption = <div style={{ display: "inline", float: "left", color: "gray" }}>{answer.votes.filter(v=>v.flag===1).length + " Upvotes"}</div>
                 downvoteOption = null
                 bookmarkOption = null
             }

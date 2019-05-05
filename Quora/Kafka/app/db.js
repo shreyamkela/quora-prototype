@@ -314,12 +314,20 @@ db.vote = function(values, successCallback, failureCallback) {
               "votes.user": values.email_id
             }
           }
+
         },
         {
-          $set: { "answers.$.votes.0.flag": values.flag }
+          $set: { "answers.$[outer].votes.$[inner].flag": values.flag }
+        },
+        {
+          "arrayFilters": [
+            { "outer._id": mongoose.Types.ObjectId(values.a_id)},
+            { "inner.user": values.email_id }
+          ]
         }
       )
-        .then(() => {
+        .then((docs) => {
+          console.log(docs)
           successCallback();
         })
         .catch(error => {
