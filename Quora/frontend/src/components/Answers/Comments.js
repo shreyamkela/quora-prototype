@@ -3,9 +3,10 @@ import {Button, Card, Comment, Avatar, Form, List, Input,} from 'antd';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import _ from "lodash";
-import { commentOnAnswer } from '../../actions'
-import { Field, reduxForm } from "redux-form"
-
+import { commentOnAnswer,fetchProfile } from '../../actions'
+import axios from 'axios';
+import cookie from 'react-cookies';
+import API from '../../utils/API'
 const {Meta} = Card;
 
 const TextArea = Input.TextArea;
@@ -51,6 +52,7 @@ class Comments extends Component {
         comments: [],
         submitting: false,
         value: '',
+        photo:''
 
     }
 
@@ -64,7 +66,16 @@ class Comments extends Component {
                 datetime: comment.postedon
             }
         })
-    })
+        })
+        this.props.fetchProfile(cookie.load('cookie_user'))
+        API.get(`profile/pic/?email_id=` + (cookie.load('cookie_user')))
+            .then((response) => {
+                //  alert("The file is successfully uploaded");
+                console.log("printing response" + JSON.stringify(response.data))
+                this.setState({
+                    photo: response.data.photo,
+                });
+            });
     }
 
   
@@ -85,13 +96,14 @@ class Comments extends Component {
                     submitting: false,
                     value: '',
                     comments: [
+                        ...this.state.comments,
                         {
-                            author: 'Han Solo',
-                            avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                            author: this.props.profile.data.firstname + "  "+this.props.profile.data.lastname,
+                            avatar: this.state.photo,
                             content: <p>{this.state.value}</p>,
                             datetime: moment().fromNow(),
                         },
-                        ...this.state.comments,
+                        
                     ],
                 });
             })
@@ -136,8 +148,9 @@ class Comments extends Component {
 //This method is provided by redux and it gives access to centeral store
 function mapStateToProps(state) {
     return {
-        authFlag: state.authFlag
+        authFlag: state.authFlag,
+        profile: state.profile.items
     };
 }
   
-export default connect(mapStateToProps, { commentOnAnswer })(Comments);
+export default connect(mapStateToProps, { commentOnAnswer,fetchProfile })(Comments);
