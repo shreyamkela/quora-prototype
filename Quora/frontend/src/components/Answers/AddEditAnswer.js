@@ -18,11 +18,13 @@ class AddEditAnswer extends Component {
     onSubmit = (values) => {
         if (values.isanonymous) values.isanonymous = 1
         else values.isanonymous = 0
-        values.answer=this.state.content
+        values.answer = this.state.content
+        if(this.props.question_id!==undefined)
         this.props.addAnswer(this.props.question_id, values, () => {
             this.props.displayAddAnswerForm(false);
             this.props.fetchAnswersByQID(this.props.question_id)
         })
+        this.props.displayAddAnswerForm(false);
         
     }
     renderAnswerField = (field) => {
@@ -86,7 +88,7 @@ class AddEditAnswer extends Component {
                     <div style={{ width: "100%" }}>
                     <form onSubmit = {handleSubmit(this.onSubmit.bind(this))}>
                             {/*<Field rows={6} label="Write your Answer" name="answer" component={this.renderAnswerField}></Field>*/}
-                            <RTE placeholder="Write your answer" callChange={(e)=>this.onRTEChange(e)}></RTE>
+                            <RTE content={this.props.content} placeholder="Write your answer" callChange={(e)=>this.onRTEChange(e)}></RTE>
                             {/*<Field name='answer' label='Write your answer' component={this.renderRTE}/>*/}
                             <div style={{ background: "#fafafa", padding: "15px", width: "100%" }}>
                                 <Button type="primary" htmlType="submit">Submit</Button>&nbsp;&nbsp;&nbsp;&nbsp;   

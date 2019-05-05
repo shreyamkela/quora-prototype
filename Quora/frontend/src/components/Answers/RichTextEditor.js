@@ -8,7 +8,14 @@ class RichTextEditor extends Component {
     constructor (props) {
       super(props)
       this.state = { editorHtml: '', theme: 'snow' }
-    }
+  }
+  
+  componentDidMount = () => {
+    if(this.props.content !== undefined)
+    this.setState({
+      editorHtml:this.props.content
+    })
+  }
 
     handleChange = (html) => {
         this.setState({ editorHtml: html });
