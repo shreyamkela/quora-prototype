@@ -4,6 +4,7 @@ import { loginReducer, signupReducer, authReducer } from "./reducer_login"
 import { updateProfileReducer } from "./reducer_updateProfile"
 import { profileReducer } from "./reducer_profile"
 import { fetchAnswersReducer, displayAddAnswerFormReducer, fetchTopDownAnswersReducer, fetchTopUpAnswersReducer, fetchUserAnswersReducer, fetchBookmarksReducer } from "./reducer_answers";
+import { fetchActivityReducer } from "./reducer_userActivity"
 
 const rootReducer = combineReducers({
   login_msg: loginReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   topDownAnswers: fetchTopDownAnswersReducer,
   userAnswers: fetchUserAnswersReducer,
   bookmarked_answers:fetchBookmarksReducer,
+  userActivities: fetchActivityReducer,
   form: formReducer
 });
 

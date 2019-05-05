@@ -16,6 +16,7 @@ export const USER_ANSWERS = "user_answers"
 export const COMMENT_ON_ANSWER = "comment_on_answers"
 export const BOOKMARK_ANSWER = "bookmark_answer"
 export const FETCH_BOOKMARKS = "fetch_bookmarks"
+export const FETCH_ACTIVITY = "fetch_activity"
 
 const ROOT_URL = "http://localhost:3001";
 
@@ -291,5 +292,20 @@ export function editAnswer(a_id,values, callback) {
     return {
       type: ADD_ANSWER,
       payload: response
+    };
+}
+
+export function fetchUserActivity() {
+  axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    const response = axios.get(`${ROOT_URL}/activity`)
+        .then(response =>{
+            return response
+        })
+        .catch(error => { return error.response })
+
+    return {
+        type: FETCH_ACTIVITY,
+        payload: response
     };
 }

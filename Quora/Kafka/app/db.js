@@ -68,10 +68,11 @@ var ConversationSchema = new mongoose.Schema({
 })
 
 var ActivitySchema = new mongoose.Schema({
+  user_id:  { type: String },
   type : { type: String },
   timestamp: { type: Date, default: Date.now },
-  question_id: { type: String },
-  year: String,
+  question: { type: String },
+  year: String
 })
 
 QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
@@ -82,6 +83,24 @@ var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 var Profile = require("../model/profile");
 var Messages = mongoose.model('Message',MessageSchema);
 var Chat = mongoose.model('Chat', ConversationSchema);
+var Activity = mongoose.model('Activity', ActivitySchema);
+
+//get user activity
+db.fetchActivity = function (msg, successCallback, failureCallback) {
+  console.log("user activity: " + msg.email)
+
+
+   Activity.find(
+     { user_id:"user1.last1@gmail.com" },{'question':1, 'type':1, 'timestamp':1, 'year':1},  {sort:'-timestamp' }
+   ).then((result) => { 
+    console.log("Result activity get: "+JSON.stringify(result)); 
+    successCallback(result) })
+       .catch((error) => {
+         console.log("fetch activity error: " + error)
+           failureCallback(error)
+           return
+       })
+}
 
 // finding if a conversation exists and adding messages to it else create a new conversation
 
