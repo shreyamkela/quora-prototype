@@ -151,8 +151,8 @@ class Answers extends Component {
                         <br></br><br></br>
                 </div>
                     <div>
-                    <Comments answer_id={answer._id} comments={answer.comments}></Comments>
-                </div>
+                        <Comments answer_id={answer._id} comments={answer.comments}></Comments>
+                    </div>
             </Card>
             )
         })
