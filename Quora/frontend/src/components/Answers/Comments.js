@@ -4,17 +4,15 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import _ from "lodash";
 import { commentOnAnswer,fetchProfile } from '../../actions'
-import axios from 'axios';
 import cookie from 'react-cookies';
 import API from '../../utils/API'
-const {Meta} = Card;
 
 const TextArea = Input.TextArea;
 
-const CommentList = ({comments}) => (
+const CommentList = (comment) => (
     <List
-        dataSource={comments}
-        header={`${comments.length} ${comments.length > 1 ? 'replies' : 'reply'}`}
+        dataSource={comment.comments}
+        header={<div>{`${comment.allcomments.length} ${comment.allcomments.length > 1 ? 'comments' : 'comment'}`}&nbsp;&nbsp;<a onClick={() => comment.onclick()}>{comment.showText}</a></div>}
         itemLayout="horizontal"
         renderItem={props => <Comment {...props} />}
     />
@@ -50,9 +48,11 @@ class Comments extends Component {
         visible: false,
         topic: '',
         comments: [],
+        commentsShown:' ',
         submitting: false,
         value: '',
-        photo:''
+        photo: '',
+        showText:'Show'
 
     }
 
@@ -60,8 +60,8 @@ class Comments extends Component {
         this.setState({
         comments:_.map(this.props.comments, comment => {
             return {
-                author: 'Han Solo',
-                avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                author: comment.profile.firstname+"  "+comment.profile.lastname,
+                avatar: comment.profile.photo,
                 content: <p>{comment.comment}</p>,
                 datetime: comment.postedon
             }
@@ -79,6 +79,18 @@ class Comments extends Component {
     }
 
   
+    showComments = () => {
+        if(this.state.commentsShown!==this.state.comments)
+        this.setState({
+            commentsShown: this.state.comments,
+            showText:'Hide'
+        })
+        else 
+        this.setState({
+            commentsShown: ' ',
+            showText:'Show'
+        })
+    }
 
     handleSubmit = () => {
         if (!this.state.value) {
@@ -93,8 +105,6 @@ class Comments extends Component {
         setTimeout(() => {
             this.props.commentOnAnswer(this.props.answer_id, this.state.value, () => {
                 this.setState({
-                    submitting: false,
-                    value: '',
                     comments: [
                         ...this.state.comments,
                         {
@@ -106,6 +116,31 @@ class Comments extends Component {
                         
                     ],
                 });
+                if (this.state.commentsShown === ' ')
+                    this.setState({
+                        commentsShown:[ {
+                            author: this.props.profile.data.firstname + "  "+this.props.profile.data.lastname,
+                            avatar: this.state.photo,
+                            content: <p>{this.state.value}</p>,
+                            datetime: moment().fromNow(),
+                        }],
+                        submitting: false,
+                        value: '',
+                    })
+                else
+                this.setState({
+                    commentsShown: [
+                        ...this.state.commentsShown,
+                        {
+                        author: this.props.profile.data.firstname + "  "+this.props.profile.data.lastname,
+                        avatar: this.state.photo,
+                        content: <p>{this.state.value}</p>,
+                        datetime: moment().fromNow(),
+                        }],
+                        submitting: false,
+                        value: '',
+                })
+                    
             })
         }, 1000);
     }
@@ -122,11 +157,11 @@ class Comments extends Component {
         return (
             <div>  
                 <Card style={{background:"#fafafa"}}>
-                    {this.state.comments.length > 0 && <CommentList comments={this.state.comments}/>}
+                    {this.state.comments.length > 0 && <CommentList showText={this.state.showText} comments={this.state.commentsShown} onclick={() => this.showComments()} allcomments={this.state.comments}/>}
                     <Comment
                         avatar={(
                             <Avatar
-                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                                src={this.state.photo}
                                 alt="Han Solo"
                             />
                         )}

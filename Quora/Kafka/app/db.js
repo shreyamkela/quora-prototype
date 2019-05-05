@@ -314,12 +314,20 @@ db.vote = function(values, successCallback, failureCallback) {
               "votes.user": values.email_id
             }
           }
+
         },
         {
-          $set: { "answers.$.votes.0.flag": values.flag }
+          $set: { "answers.$[outer].votes.$[inner].flag": values.flag }
+        },
+        {
+          "arrayFilters": [
+            { "outer._id": mongoose.Types.ObjectId(values.a_id)},
+            { "inner.user": values.email_id }
+          ]
         }
       )
-        .then(() => {
+        .then((docs) => {
+          console.log(docs)
           successCallback();
         })
         .catch(error => {
@@ -417,6 +425,10 @@ let fetchProfileById = function (email_id) {
             docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
             docs.deactivated = true
         }
+        else {
+          docs = docs.toJSON()
+          docs.deactivated = false
+        }
         return docs
     }).catch((err) => {
         console.log(err)
@@ -435,6 +447,7 @@ db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
             ques_id: doc._id,
             question: doc.question,
             posted_on: doc.timestamp,
+            author:doc.author,
             profile: await fetchProfileById(doc.author),
             answers: await Promise.all(
               doc.answers.map(async ans => {
@@ -443,7 +456,6 @@ db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
                 ans.profile = await fetchProfileById(ans.author);
                 ans.comments= await Promise.all(
                   ans.comments.map(async c => {
-                    c = c.toJSON();
                     c.profile = await fetchProfileById(c.author);
                     return await c;
                   }))

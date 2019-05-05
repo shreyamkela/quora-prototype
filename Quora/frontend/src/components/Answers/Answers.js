@@ -46,11 +46,14 @@ class Answers extends Component {
             if (this.props.displayAddAnswer === true)
                 addForm = <AddEditAnswer question_id={this.props.match.params.question_id}></AddEditAnswer>
             else addForm = null
-            /*
+            
             let question_title = <Link to={{
                 pathname: '/main/profile/'+this.props.ques_answers.author
             }} >{this.props.ques_answers.profile.firstname + "  " + this.props.ques_answers.profile.lastname}</Link>
-            */
+            
+            if (this.props.ques_answers.profile.deactivated)
+                question_title = this.props.ques_answers.profile.firstname + "  " + this.props.ques_answers.profile.lastname  
+            
             let answerOption = <QuoraButton value="answer" text="Answer" onclick={() => this.addAnswerClick()}></QuoraButton>
             if (this.props.ques_answers.answers.filter(a => a.author === cookie.load('cookie_user')).length !== 0)
                 answerOption = <div style={{display:"inline",color:"gray"}}>Answered</div>
@@ -60,7 +63,7 @@ class Answers extends Component {
                         <Meta
                             avatar={<Avatar
                                 src={this.props.ques_answers.profile.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                            title={this.props.ques_answers.profile.firstname + "  " + this.props.ques_answers.profile.lastname}//"User's name goes here"
+                            title={question_title}//{this.props.ques_answers.profile.firstname + "  " + this.props.ques_answers.profile.lastname}//"User's name goes here"
                             description={<div>{this.props.ques_answers.profile.credentials}
                                 <div>
                                     {d.toLocaleDateString()}&nbsp;&nbsp;
@@ -88,9 +91,6 @@ class Answers extends Component {
             let d = new Date(answer.answered_on)
             let content = ''
             if (answer.content !== undefined) {
-                /*content = answer.content.split('\n').map(i => {
-                    return <>{i}<br></br></>
-                })*/
                 content = <div dangerouslySetInnerHTML={{__html: answer.content}} />
             }
             let photo = answer.profile.photo
@@ -109,11 +109,13 @@ class Answers extends Component {
                 answer_title=firstname + "  " + lastname
             }
 
+            if(answer.profile.deactivated) answer_title=firstname + "  " + lastname
+
             let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.filter(v=>v.flag===1).length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
             let downvoteOption = <QuoraButton value="downvote" text='' onclick={()=>this.vote(answer._id,0)}></QuoraButton>
             let bookmarkOption = <QuoraButton value="bookmark" text='Bookmark' onclick={()=>this.bookmark(answer._id)}></QuoraButton>
             if (answer.author === cookie.load('cookie_user')) {
-                upvoteOption = <div style={{ display: "inline", float: "left", color: "gray" }}>{answer.votes.length + " Upvotes"}</div>
+                upvoteOption = <div style={{ display: "inline", float: "left", color: "gray" }}>{answer.votes.filter(v=>v.flag===1).length + " Upvotes"}</div>
                 downvoteOption = null
                 bookmarkOption = null
             }
@@ -149,8 +151,8 @@ class Answers extends Component {
                         <br></br><br></br>
                 </div>
                     <div>
-                    <Comments answer_id={answer._id} comments={answer.comments}></Comments>
-                </div>
+                        <Comments answer_id={answer._id} comments={answer.comments}></Comments>
+                    </div>
             </Card>
             )
         })

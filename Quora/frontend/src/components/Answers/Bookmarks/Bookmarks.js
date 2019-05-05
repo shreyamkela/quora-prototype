@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import cookie from 'react-cookies';
 import _ from "lodash";
 import { fetchBookmarkedAnswers } from "../../../actions";
+import { Link } from 'react-router-dom';
 const {Meta} = Card;
 
 
@@ -41,6 +42,18 @@ class Bookmarks extends Component {
             let firstname = answer.profile.firstname
             let lastname = answer.profile.lastname
             let credentials = answer.profile.credentials
+            let answer_title = <Link to={{
+                pathname: '/main/profile/'+answer.author
+            }} >{firstname + "  " + lastname}</Link>
+
+            if (answer.isAnonymous === 1 && answer.author !== cookie.load('cookie_user')) {
+                photo = ""
+                firstname = "Anonymous"
+                lastname = ""
+                credentials = ""
+                answer_title=firstname + "  " + lastname
+            }
+            if(answer.profile.deactivated) answer_title=firstname + "  " + lastname
             return (
                 <>
                 <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
@@ -49,7 +62,7 @@ class Bookmarks extends Component {
                     <Meta
                     avatar={<Avatar
                             src={photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                            title={firstname+"  "+lastname}//"User's name goes here"
+                            title={answer_title}//{firstname+"  "+lastname}//"User's name goes here"
                             description={<div>{credentials}
                                 <div>
                             {d.toLocaleDateString()}&nbsp;&nbsp;
