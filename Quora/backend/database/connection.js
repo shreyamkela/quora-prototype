@@ -71,7 +71,7 @@ var QuestionSchema = new mongoose.Schema({
   question: String,
   author: String,
   answers: [String],
-  followers: [String]
+  followers: Array
 });
 QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
 var Questions = mongoose.model("Questions", QuestionSchema, "Questions");

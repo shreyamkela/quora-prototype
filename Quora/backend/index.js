@@ -30,6 +30,8 @@ var FetchAllTopics = require("./routes/FetchAllTopics")
 var Messages = require('./routes/Messages');
 var FetchQuestions = require('./routes/FetchQuestion');
 var QuestionsInTopic = require('./routes/QuestionsInTopic');
+var QuestionFollowed = require('./routes/QuestionFollowed');
+var QuestionUnfollowed = require('./routes/QuestionUnfollowed')
 
 var passport = require("passport");
 // Set up middleware
@@ -90,6 +92,8 @@ app.use("/searchTopics", SearchTopics);
 app.use("/searchPeople", SearchPeople);
 app.use("/topicsFollowed", TopicsFollowed);
 app.use("/topicsUnfollowed", TopicsUnfollowed);
+app.use("/questionsFollowed",QuestionFollowed );
+app.use("/questionUnfollowed", QuestionUnfollowed);
 app.use("/fetchAllTopics", FetchAllTopics);
 app.use('/message', Messages);
 app.use('/fetchQuestions', FetchQuestions);

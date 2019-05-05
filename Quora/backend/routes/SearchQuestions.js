@@ -11,23 +11,16 @@ router.get("/", function (req, res) {
 
     let searchValue = req.query[0].toLowerCase();
     let searchedQuestions = [];
-    console.log("searchValue###"+searchValue);
-    console.log("searchedQuestions###"+searchedQuestions);
     Model.Questions.find({}, (err, results) => {
-        console.log("###############");
 
         if (err) {
             console.log("Unable to fetch questions", err);
             res.status(400).send("Unable to fetch questions!");
         } else {
             if (results) {
-                console.log("###############in results"+results);
                 for (var key in results) {
-                    console.log("###############in for loop");
 
                     let currentTerm = results[key].question.toLowerCase();
-                    console.log("currentTerm###"+currentTerm);
-
                     if (currentTerm.includes(searchValue)) {
                         searchedQuestions.push(results[key]);
                     }
