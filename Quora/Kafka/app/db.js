@@ -85,6 +85,48 @@ var Messages = mongoose.model('Message',MessageSchema);
 var Chat = mongoose.model('Chat', ConversationSchema);
 var Activity = mongoose.model('Activity', ActivitySchema,'activities');
 
+db.fetchActivity = function (msg, successCallback, failureCallback) {
+  Activity.find(
+    { user_id:msg.email },{'question':1, 'type':1, 'timestamp':1, 'year':1},  {sort:'-timestamp' }
+  )
+  .then(async docs => {
+    console.log(docs)
+      let final_doc = await Promise.all(docs.map(async doc => {
+        return {
+          type: doc.type,
+          timestamp: doc.timestamp,
+          question: await fetchQuestionById(doc.question),
+          year:doc.year
+        }
+      }))
+      successCallback(final_doc);
+  })
+  .catch(err => {
+    console.log(err);
+    failureCallback(err);
+  });
+};
+
+
+let fetchQuestionById = function (question) {
+console.log("fetch question" + JSON.stringify(question))
+return Questions.findOne({
+    _id:  question
+}, {'question':1, _id:0 }).then((docs) => {
+  console.log ("func docs: " + docs)
+    if (docs == null)
+    {
+        docs = {}
+        docs.question = "a question"
+    }
+    return docs.question
+}).catch((err) => {
+    console.log(err)
+    return {}
+})
+}
+
+
 let addActivityRecord = (type, q_id, user_id) => {
   Activity.create({
     type: type,

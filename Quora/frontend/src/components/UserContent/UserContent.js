@@ -81,11 +81,9 @@ details = this.state.activities.map(act => {
         return (
             <div>
             {redirectVar}
-
-            <div style={{"width":"100%"}}>
-       
-      
-       <div  >
+            <font size="4">
+            <b>Your Content</b>
+          </font>
     
               <List
               itemLayout="horizontal"
@@ -103,9 +101,6 @@ details = this.state.activities.map(act => {
               )}
             />
           
-    
-            </div>
-            </div>
               </div>
         )
     }
