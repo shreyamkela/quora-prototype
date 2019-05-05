@@ -60,8 +60,8 @@ class Comments extends Component {
         this.setState({
         comments:_.map(this.props.comments, comment => {
             return {
-                author: 'Han Solo',
-                avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                author: comment.profile.firstname+"  "+comment.profile.lastname,
+                avatar: comment.profile.photo,
                 content: <p>{comment.comment}</p>,
                 datetime: comment.postedon
             }
@@ -126,7 +126,7 @@ class Comments extends Component {
                     <Comment
                         avatar={(
                             <Avatar
-                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                                src={this.state.photo}
                                 alt="Han Solo"
                             />
                         )}

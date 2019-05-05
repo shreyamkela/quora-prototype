@@ -443,7 +443,6 @@ db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
                 ans.profile = await fetchProfileById(ans.author);
                 ans.comments= await Promise.all(
                   ans.comments.map(async c => {
-                    c = c.toJSON();
                     c.profile = await fetchProfileById(c.author);
                     return await c;
                   }))
