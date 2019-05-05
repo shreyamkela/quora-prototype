@@ -5,55 +5,55 @@ import cookie from "react-cookies";
 import Pagination from 'react-bootstrap/Pagination'
 import API from "../../utils/API";
 
-class SearchPeople extends Component {
+class FollowingList extends Component {
 
     constructor(){
         super();
         this.state = {  
+      following: "NO_FOLLOWING_YET",    
 			currentPage: 1,
 			todosPerPage: 5,
         }
 		
     }  
 
+  async componentWillMount() {
+    let data = { my_email: cookie.load("cookie_user") }
+    console.log(data);
+    // GET topicsFollowed backend route is being used here to follow if not already followed. GET topicsFollowed backend route is being used in the Topics.js frontend to GET all topics followed by this user. They type property in data determines which frontend component is calling /topicsFollowed 
+    let response = null;
+    try {
+      response = await API.post("fetchfollowing", data);
+      console.log("Response on following: " + JSON.stringify(response.data))
+      if(response.data.success) {
+        this.setState({
+        following : response.data.following
+        });
+
+      }else{
+
+        message.error("Unable to get following list")
+
+      }
+    } catch (error) {
+      console.log(error);
+      message.error("Unable to get following list")
+    }
+
+  }
+
     handleSelect(number) {
 		console.log('page clicked', number.target.id);
 		this.setState({currentPage : number.target.id});
 	
-	}
+	  }
 
     handleProfileLinkClick = (key) => {
         this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
           pathname: `/main/profile/${key.email}`,
         })
       }
-    
 
-
-    async handleFollow(email) {
-        console.log(email)
-
-        try {
-          let data = { my_email : cookie.load("cookie_user"), target_email : email }
-          console.log(data);
-          // GET topicsFollowed backend route is being used here to follow if not already followed. GET topicsFollowed backend route is being used in the Topics.js frontend to GET all topics followed by this user. They type property in data determines which frontend component is calling /topicsFollowed 
-          let response = null;
-          response = await API.post("follow", data);
-          console.log("Response on follow: "+JSON.stringify(response))
-          if(!response.data.success && response.data.already){
-            message.error("Person Already Followed!")
-          } else if(response.data.success && !response.data.already){
-            message.success("Person Followed!")
-          } else {
-            message.error("Unable to follow person at the moment. Please refresh the page and try again.")
-          }
-        } catch (error) {
-          console.log(error);
-          message.error("Unable to follow person at the moment. Please refresh the page and try again.")
-        }
-    
-      }
-    
       async handleUnfollow(email) {
         console.log(email)
         try {
@@ -76,18 +76,17 @@ class SearchPeople extends Component {
       }
     
       render() {
-        // To access the state passed into this component from parent through this.props.history.push - we use this.props.history.location.state
-        console.log("SearchPeople component: ", this.props.history.location.state);
-        let searchResults = null;
-        if (this.props.history.location.state.searchResults != undefined) {
-          searchResults = this.props.history.location.state.searchResults
+
+        let searchResults = "NO_FOLLOWING_YET";
+        if (this.state.following !== "NO_FOLLOWEING_YET" && this.state.following != null && this.state.following.length !== 0 && this.state.following !== undefined ) {
+          searchResults = this.state.following
         }
         let displayedResults = null;
         let paginationBasic = null;
         let currentTodos = null;
-        if (searchResults === "NO_SUCH_PERSON" || searchResults === null || searchResults.length === 0 || searchResults[0] === undefined) {
-          displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No person found for this search.</div>;
-          currentTodos = <div style={{ textAlign: "center", fontSize: 15 }}>No person found for this search.</div>;
+        if (searchResults === "NO_FOLLOWING_YET" || searchResults === null || searchResults.length === 0 || searchResults[0] === undefined) {
+          displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>No Followings Yet.</div>;
+          currentTodos = <div style={{ textAlign: "center", fontSize: 15 }}>No Followings Yet.</div>;
         } else {
           displayedResults = searchResults.map(key => (
             <div style={{ textAlign: "center" }}>
@@ -95,20 +94,11 @@ class SearchPeople extends Component {
                 <div className="card-body">
                   <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
                     <href to="#" onClick={() => { this.handleProfileLinkClick(key) }}><font color="#6495ED">{key.firstname} {key.lastname}</font></href>
+
                   </h5>
-                  <br />
-                  <Row style={{ marginLeft: 205 }}>
-                    <Col span={6}>
-                      <Button size="small" icon="check-circle" shape="round" onClick={() => this.handleFollow(key.email)} >
-                        Follow
-                      </Button>
-                    </Col>
-                    <Col span={6}>
-                      <Button size="small" icon="close-circle" shape="round" onClick={() => this.handleUnfollow(key.email)}>
+                  <Button size="small" icon="close-circle" shape="round" onClick={() => this.handleUnfollow(key.email)}>
                         Unfollow
                       </Button>
-                    </Col>
-                  </Row>
                 </div>
               </div>
               <br />
@@ -153,7 +143,7 @@ class SearchPeople extends Component {
             <Card>
               <div>
                 <font size="4">
-                  <b>Results:</b>
+                  <b>Following:</b>
                 </font>
                 <br />
                 <br />
@@ -172,4 +162,4 @@ class SearchPeople extends Component {
     function mapStateToProps(state) {
       return;
     }
-export default connect(mapStateToProps)(SearchPeople);
+export default connect(mapStateToProps)(FollowingList);
