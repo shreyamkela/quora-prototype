@@ -4,10 +4,8 @@ import {connect} from 'react-redux';
 import moment from 'moment';
 import _ from "lodash";
 import { commentOnAnswer,fetchProfile } from '../../actions'
-import axios from 'axios';
 import cookie from 'react-cookies';
 import API from '../../utils/API'
-const {Meta} = Card;
 
 const TextArea = Input.TextArea;
 
