@@ -70,7 +70,7 @@ var QuestionSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now() },
   question: String,
   author: String,
-  answers: [String],
+  answers: Array,
   followers: Array
 });
 QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });

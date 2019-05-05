@@ -16,9 +16,8 @@ router.post("/", function (req, res) {
                 if (results.questionsFollowed.includes(req.body.questionId) === false) {
                     res.status(200).send("Already not followed!");
                 } else {
-                    // If the topic is not already followed, update the user profile collection topicsFollowed. Then update the topics collection followers
 
-                    var index = results.questionsFollowed.indexOf(req.body.questionId); // To remove the topicId from followed topics we spice at index. Cannot use pop as pop will remove from the end of the array
+                    var index = results.questionsFollowed.indexOf(req.body.questionId);
                     if (index > -1) {
                         results.questionsFollowed.splice(index, 1);
                     }
