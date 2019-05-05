@@ -34,12 +34,12 @@ class SearchPeople extends Component {
           let response = null;
           response = await API.post("follow", data);
           console.log("Response on follow: "+JSON.stringify(response))
-          //if (response.data.toLowerCase().includes("already")) {
-          //  message.warning("Person already followed!")
-          //} 
-          
-          if(response.data.success){
-            message.success("Person followed!")
+          if(!response.data.success && response.data.already){
+            message.error("Person Already Followed!")
+          } else if(response.data.success && !response.data.already){
+            message.success("Person Followed!")
+          } else {
+            message.error("Unable to follow person at the moment. Please refresh the page and try again.")
           }
         } catch (error) {
           console.log(error);
