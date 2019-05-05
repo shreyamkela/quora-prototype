@@ -9,7 +9,7 @@ class SearchQuestions extends Component {
     async handleFollow(key) {
         //console.log(key)
         try {
-            let data = { email: cookie.load("cookie_user"), type: 2, topicId: key }
+            let data = { email: cookie.load("cookie_user"), type: 2, questionId: key }
             let response = null;
             response = await API.get("questionsFollowed", { params: data });
             if (response.data.toLowerCase().includes("already")) {
@@ -28,9 +28,9 @@ class SearchQuestions extends Component {
     async handleUnfollow(key) {
         //console.log(key)
         try {
-            let data = { email: cookie.load("cookie_user"), topicId: key }
+            let data = { email: cookie.load("cookie_user"), questionId: key }
             let response = null;
-            response = await API.post("questionsUnfollowed", data);
+            response = await API.post("questionUnfollowed", data);
             if (response.data.toLowerCase().includes("already")) {
                 message.warning("Question is not followed!")
             } else {

@@ -8,7 +8,6 @@ router.get("/", function (req, res) {
 
     Model.profile.findOne({ email: req.query.email }, (err, results) => {
         if (err) {
-            console.log("***************");
             console.log("Unable to fetch user profile", err);
             res.status(400).send("Unable to fetch user profile!");
         } else {
