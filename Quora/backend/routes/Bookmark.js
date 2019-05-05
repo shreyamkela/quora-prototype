@@ -17,7 +17,7 @@ router.post('/',function(req,response){
 //Route to get All bookmarks for a user
 router.get('/', function (req, res) {
     console.log("Inside get bookmarks");
-    db.getBookmarks(req.body.email_id, function (results) {
+    db.getBookmarks(req.cookies.cookie_user, function (results) {
         res.writeHead(200, {
             'Content-Type': 'application/json'
         })
