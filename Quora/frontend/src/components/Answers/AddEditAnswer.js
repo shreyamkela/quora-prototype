@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import {Card,Avatar,Icon,Input,Button} from 'antd';
 import { connect } from 'react-redux';
-import { displayAddAnswerForm,addAnswer,fetchAnswersByQID } from "../../actions";
+import { displayAddAnswerForm,addAnswer,fetchAnswersByQID ,editAnswer,fetchUserAnswers} from "../../actions";
 import { Field, reduxForm } from "redux-form"
 import RTE from './RichTextEditor'
 const { Meta } = Card;
@@ -23,6 +23,11 @@ class AddEditAnswer extends Component {
         this.props.addAnswer(this.props.question_id, values, () => {
             this.props.displayAddAnswerForm(false);
             this.props.fetchAnswersByQID(this.props.question_id)
+        })
+        else if (this.props.answer_id!==undefined)
+        this.props.editAnswer(this.props.answer_id, values, () => {
+            this.props.displayAddAnswerForm(false);
+            this.props.fetchUserAnswers()
         })
         this.props.displayAddAnswerForm(false);
         
@@ -120,7 +125,7 @@ AddEditAnswer = reduxForm({
 
 AddEditAnswer = connect(
     mapStateToProps,
-    { displayAddAnswerForm ,addAnswer,fetchAnswersByQID }  
+    { displayAddAnswerForm ,addAnswer,fetchAnswersByQID ,editAnswer,fetchUserAnswers}  
 )(AddEditAnswer)
 
 

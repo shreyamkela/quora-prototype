@@ -276,3 +276,20 @@ export function fetchBookmarkedAnswers() {
         payload: response
     };
 }
+
+export function editAnswer(a_id,values, callback) {
+  //set the with credentials to true
+  axios.defaults.withCredentials = true;
+  //make a post request with the user data
+  const response = axios.post(`${ROOT_URL}/updateanswer?answer_id=`+a_id,values)
+      .then(response => {
+        callback()
+        return response
+      })
+    .catch(error => { return error.response })
+  
+    return {
+      type: ADD_ANSWER,
+      payload: response
+    };
+}
