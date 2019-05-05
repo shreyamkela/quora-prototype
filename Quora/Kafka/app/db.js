@@ -166,7 +166,7 @@ db.addFollower = function(values, successCallback, failureCallback) {
       email: values.target_email
     },
     {
-      $push: { followers: values.my_email }
+      $push: { followers: values.my_email },
     }
   )
     .then(() => {

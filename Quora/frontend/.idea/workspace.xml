@@ -14,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SearchQuestions.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SearchQuestions.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Search/SearchQuestions.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="191">
@@ -41,8 +41,8 @@
       <file leaf-file-name="Followers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Followers/Followers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1679">
-              <caret line="73" column="49" lean-forward="false" selection-start-line="73" selection-start-column="49" selection-end-line="73" selection-end-column="49" />
+            <state relative-caret-position="322">
+              <caret line="14" column="13" lean-forward="true" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -75,11 +75,19 @@
       <file leaf-file-name="SearchTopics.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/Search/SearchTopics.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
+            <state relative-caret-position="138">
               <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SearchPeople.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/Search/SearchPeople.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1035">
+              <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -97,7 +105,6 @@
       <find>display_add_answer</find>
       <find>SearchTopics</find>
       <find>bookm</find>
-      <find>topic</find>
       <find>avatar</find>
       <find>moda</find>
       <find>includes</find>
@@ -112,10 +119,11 @@
       <find>handleSearch</find>
       <find>topics</find>
       <find>handleTopicLinkClick</find>
-      <find>Card</find>
       <find>search</find>
       <find>/main/topics/followed</find>
+      <find>topic</find>
       <find>content</find>
+      <find>Card</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -129,7 +137,6 @@
         <option value="$PROJECT_DIR$/src/components/SignUp/Signup.js" />
         <option value="$PROJECT_DIR$/src/reducers/reducer_addQuestion.js" />
         <option value="$PROJECT_DIR$/src/actions/index.js" />
-        <option value="$PROJECT_DIR$/src/components/Search/SearchPeople.js" />
         <option value="$PROJECT_DIR$/src/components/Question/Questions.js" />
         <option value="$PROJECT_DIR$/src/index.css" />
         <option value="$PROJECT_DIR$/src/components/Profile/Profile.js" />
@@ -139,6 +146,7 @@
         <option value="$PROJECT_DIR$/src/components/LandingPage/Sidebar.js" />
         <option value="$PROJECT_DIR$/src/components/Followers/Followers.js" />
         <option value="$PROJECT_DIR$/src/components/Search/SearchQuestions.js" />
+        <option value="$PROJECT_DIR$/src/components/Search/SearchPeople.js" />
       </list>
     </option>
   </component>
@@ -160,8 +168,8 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="344" />
-    <option name="width" value="1096" />
+    <option name="x" value="646" />
+    <option name="width" value="794" />
     <option name="height" value="900" />
   </component>
   <component name="ProjectView">
@@ -219,6 +227,13 @@
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="Following" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="frontend" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="components" type="462c0819:PsiDirectoryNode" />
+              <item name="Search" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -268,15 +283,16 @@
       <workItem from="1555802098485" duration="1669000" />
       <workItem from="1555957871687" duration="14881000" />
       <workItem from="1556782230558" duration="1392000" />
-      <workItem from="1556867505007" duration="23155000" />
+      <workItem from="1556867505007" duration="24274000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45671000" />
+    <option name="totallyTimeSpent" value="46790000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14799154" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -614,14 +630,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Search/SearchPeople.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1703">
-          <caret line="74" column="73" lean-forward="false" selection-start-line="74" selection-start-column="60" selection-end-line="74" selection-end-column="73" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Answers/Answers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -674,16 +682,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Search/SearchTopics.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/LandingPage/Navbar.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-128">
@@ -702,6 +700,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Search/SearchQuestions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="75" column="103" lean-forward="false" selection-start-line="75" selection-start-column="103" selection-end-line="75" selection-end-column="103" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Following/Following.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -714,21 +722,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Followers/Followers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1679">
-          <caret line="73" column="49" lean-forward="false" selection-start-line="73" selection-start-column="49" selection-end-line="73" selection-end-column="49" />
+        <state relative-caret-position="322">
+          <caret line="14" column="13" lean-forward="true" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Search/SearchQuestions.js">
+    <entry file="file://$PROJECT_DIR$/src/components/Search/SearchTopics.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="75" column="103" lean-forward="false" selection-start-line="75" selection-start-column="103" selection-end-line="75" selection-end-column="103" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="138">
+          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Search/SearchPeople.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>

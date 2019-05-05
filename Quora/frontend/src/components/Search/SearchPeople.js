@@ -48,24 +48,7 @@ class SearchPeople extends Component {
     
       }
     
-      async handleUnfollow(email) {
-        console.log(email)
-        try {
-          let data = { my_email: cookie.load("cookie_user"), target_email : email }
-          let response = null;
-          response = await API.post("unfollow", data);
-          console.log("Response on unfollow: "+JSON.stringify(response))
-          if (response.data.toLowerCase().includes("already")) {
-            message.warning("Person is not followed!")
-          } else {
-            message.success("Person Unfollowed!")
-          }
-        } catch (error) {
-          console.log(error);
-          message.error("Unable to unfollow person at the moment. Please refresh the page and try again.")
-        }
-    
-      }
+
     
       render() {
         // To access the state passed into this component from parent through this.props.history.push - we use this.props.history.location.state
