@@ -415,6 +415,7 @@ let fetchProfileById = function (email_id) {
             docs.lastname = "User"
             docs.credentials = ""
             docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
+            docs.deactivated = true
         }
         return docs
     }).catch((err) => {
@@ -440,6 +441,12 @@ db.getAnswersByQuestionId = function (q_id, successCallback, failureCallback) {
                 console.log(ans);
                 ans = ans.toJSON();
                 ans.profile = await fetchProfileById(ans.author);
+                ans.comments= await Promise.all(
+                  ans.comments.map(async c => {
+                    c = c.toJSON();
+                    c.profile = await fetchProfileById(c.author);
+                    return await c;
+                  }))
                 return await ans;
               })
             )
