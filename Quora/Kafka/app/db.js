@@ -209,13 +209,14 @@ db.addAnswer = function (values, successCallback, failureCallback) {
 }
 
 //update  an answer
-db.updateAnswer = function(values, successCallback, failureCallback) {
+db.updateAnswer = function (values, successCallback, failureCallback) {
+  console.log(values)
   Questions.findOneAndUpdate(
     {
       "answers._id": mongoose.Types.ObjectId(values.a_id)
     },
     {
-      $set: { "answers.$.content": values.answer }
+      $set: { "answers.$.content": values.answer ,"answers.$.isAnonymous":values.isanonymous}
     }
   )
     .then(() => {
