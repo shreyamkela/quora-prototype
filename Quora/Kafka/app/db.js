@@ -166,7 +166,7 @@ db.addFollower = function(values, successCallback, failureCallback) {
       email: values.target_email
     },
     {
-      $push: { followers: values.my_email },
+      $push: { followers: values.my_email }
     }
   )
     .then(() => {
@@ -296,28 +296,28 @@ db.comment = function(values, successCallback, failureCallback) {
 
 //get retrieve all the answers of a user
 db.getAnswersByUserId= function (email_id, successCallback, failureCallback) {
-  Questions.findOne({
+  Questions.find({
     "answers.author": email_id
   },'answers.$ _id question timestamp author')
-    .then(async doc => {
-      if (doc !== null) {
-        let final_doc = await {
-          ques_id: doc._id,
-          question: doc.question,
-          posted_on: doc.timestamp,
-          profile: await fetchProfileById(doc.author),
-          answers: await Promise.all(
-            doc.answers.map(async ans => {
-              console.log(ans);
-              ans = ans.toJSON();
-              ans.profile = await fetchProfileById(ans.author);
-              return await ans;
-            })
-          )
-        };
+    .then(async docs => {
+      console.log(docs)
+        let final_doc = await Promise.all(docs.map(async doc => {
+          return {
+            ques_id: doc._id,
+            question: doc.question,
+            posted_on: doc.timestamp,
+            profile: await fetchProfileById(doc.author),
+            answers: await Promise.all(
+              doc.answers.map(async ans => {
+                console.log(ans);
+                ans = ans.toJSON();
+                ans.profile = await fetchProfileById(ans.author);
+                return await ans;
+              })
+            )
+          }
+        }))
         successCallback(final_doc);
-      }
-      else successCallback(doc)
     })
     .catch(err => {
       console.log(err);
