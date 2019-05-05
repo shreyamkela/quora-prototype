@@ -88,10 +88,9 @@ var Activity = mongoose.model('Activity', ActivitySchema);
 //get user activity
 db.fetchActivity = function (msg, successCallback, failureCallback) {
   console.log("user activity: " + msg.email)
-
-
+  
    Activity.find(
-     { user_id:"user1.last1@gmail.com" },{'question':1, 'type':1, 'timestamp':1, 'year':1},  {sort:'-timestamp' }
+     { user_id:msg.email },{'question':1, 'type':1, 'timestamp':1, 'year':1},  {sort:'-timestamp' }
    ).then((result) => { 
     console.log("Result activity get: "+JSON.stringify(result)); 
     successCallback(result) })
