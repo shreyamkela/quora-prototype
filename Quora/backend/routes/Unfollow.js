@@ -23,39 +23,43 @@ const Model = require("../database/connection");
 //Step2: Add target_email to following array of my_email
 
 router.post('/', function (req, response) {
-    console.log("Inside follow post Request");
+    console.log("Inside unfollow post Request");
     console.log(req.body)
     Model.profile.findOne({ email: req.body.target_email }, (err, results) => {
         if (err) {
             console.log("Unable to fetch user profile", err);
-            return response.status(400).json({ success: false, already: false, message: "Unable to follow" });
+            return response.status(400).json({ success: false, already: false, message: "Unable to unfollow" });
         } else {
 
-            if (results && results.followers.includes(req.body.my_email)) {
-                console.log("Already Following");
-                return response.status(200).json({ success: false, already: true, message: "already following" });
+            if (results && !results.followers.includes(req.body.my_email)) {
+                console.log("Not Following Person. Can't Unfollow");
+                return response.status(200).json({ success: false, already: true, message: "already not following" });
 
             }
             else if(results) {
                 //step1:
-                results.followers.push(req.body.my_email)
+                //results.followers.push(req.body.my_email)
+                var index = results.followers.indexOf(req.body.my_email);
+                if (index > -1) {
+                      results.followers.splice(index, 1);
+                }
                 results.save().then( 
                     doc => {
                         //step2:
-                        Model.profile.findOneAndUpdate(
+                        Model.profile.update(
                             {
                                 email: req.body.my_email
                             },
                             {
-                                $push: { following: req.body.target_email }
+                                $pull: { following: req.body.target_email }
                             }
                         )
                             .then(() => {
-                                return response.status(200).json({ success: true, already: false, message: "Successfully Added Follower" });
+                                return response.status(200).json({ success: true, already: false, message: "Successfull Unfollow" });
                             })
                             .catch(error => {
                                 console.log(error)
-                                response.status(400).json({ success: false, already: false, message: "Unable to follow" });
+                                response.status(400).json({ success: false, already: false, message: "Unable to unfollow" });
                                 return;
                             });
 
@@ -63,12 +67,12 @@ router.post('/', function (req, response) {
                     },
                     err1 => {
                         console.log("Unable to save profile details!", err1);
-                        return response.status(400).json({ success: false, already: false, message: "Unable to follow" });
+                        return response.status(400).json({ success: false, already: false, message: "Unable to unfollow" });
                     }
                 );
             } else {
                 console.log("user not found in profile table");
-                return response.status(400).json({ success: false, already: false, message: "Unable to follow" });
+                return response.status(400).json({ success: false, already: false, message: "Unable to unfollow" });
             }
         }//big else
 

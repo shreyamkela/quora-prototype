@@ -55,10 +55,12 @@ class SearchPeople extends Component {
           let response = null;
           response = await API.post("unfollow", data);
           console.log("Response on unfollow: "+JSON.stringify(response))
-          if (response.data.toLowerCase().includes("already")) {
-            message.warning("Person is not followed!")
-          } else {
+          if(!response.data.success && response.data.already){
+            message.error("Not Following Person. Can't Unfollow!")
+          } else if(response.data.success && !response.data.already){
             message.success("Person Unfollowed!")
+          } else {
+            message.error("Unable to unfollow person at the moment. Please refresh the page and try again.")
           }
         } catch (error) {
           console.log(error);
