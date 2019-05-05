@@ -16,30 +16,28 @@ class UserAnswers extends Component {
     }
 
     renderQuestion = () => {
-        if (this.props.userAnswers.question !== undefined) {
+        return _.map(this.props.userAnswers, question => {
             return (
                 <Card>
                     <div>
-                        <h3><b> {this.props.userAnswers.question}</b></h3>
+                        <h3><b> {question.question}</b></h3>
+                            <QuoraButton value="answer" text="Edit Answer"></QuoraButton>
                     </div>
 
-                    {this.renderAnswers()}
+                    {this.renderAnswers(question.answers)}
                 
                 </Card>
             )
-        }
-        else return null
+        })
     }
 
-    renderAnswers=()=> {
+    renderAnswers=(answers)=> {
        
-        return _.map(this.props.userAnswers.answers, answer => {
+        return _.map(answers, answer => {
             let d = new Date(answer.answered_on)
             let content = ''
             if (answer.content !== undefined) {
-                content = answer.content.split('\n').map(i => {
-                    return <>{i}<br></br></>
-                })
+                content = content = <div dangerouslySetInnerHTML={{__html: answer.content}} />
             }
             let photo = answer.profile.photo
             let firstname = answer.profile.firstname
@@ -62,10 +60,10 @@ class UserAnswers extends Component {
                             </div>}//"User credentials goes here"
                      />
                 <br></br>
-                        <div>
+                    <div className='answer_content'>
                         
-                            {content}
-                        </div>  
+                        {content}
+                    </div>  <br></br><br></br>
                     </div>
                     
                 </Card>
