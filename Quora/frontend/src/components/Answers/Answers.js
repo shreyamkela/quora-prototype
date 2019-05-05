@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Card,Avatar} from 'antd';
+import {Card,Avatar, Empty} from 'antd';
 import {connect} from 'react-redux';
 import {fetchAnswersByQID,displayAddAnswerForm,voteAnswer,bookmarkAnAnswer} from "../../actions";
 import cookie from 'react-cookies';
@@ -8,6 +8,7 @@ import Comments from "./Comments"
 import QuoraButton from "../QuoraButton"
 import AddEditAnswer from './AddEditAnswer';
 import { Link } from 'react-router-dom';
+import NoData from './NoData';
 const {Meta} = Card;
 
 
@@ -86,76 +87,82 @@ class Answers extends Component {
     }
 
     renderAnswers=()=> {
-       
-        return _.map(this.props.ques_answers.answers, answer => {
-            let d = new Date(answer.answered_on)
-            let content = ''
-            if (answer.content !== undefined) {
-                content = <div dangerouslySetInnerHTML={{__html: answer.content}} />
-            }
-            let photo = answer.profile.photo
-            let firstname = answer.profile.firstname
-            let lastname = answer.profile.lastname
-            let credentials = answer.profile.credentials
-            let answer_title = <Link to={{
-                pathname: '/main/profile/'+answer.author
-            }} >{firstname + "  " + lastname}</Link>
+        if (this.props.ques_answers.answers.length > 0) {
+            return _.map(this.props.ques_answers.answers, answer => {
+                let d = new Date(answer.answered_on)
+                let content = ''
+                if (answer.content !== undefined) {
+                    content = <div dangerouslySetInnerHTML={{ __html: answer.content }} />
+                }
+                let photo = answer.profile.photo
+                let firstname = answer.profile.firstname
+                let lastname = answer.profile.lastname
+                let credentials = answer.profile.credentials
+                let answer_title = <Link to={{
+                    pathname: '/main/profile/' + answer.author
+                }} >{firstname + "  " + lastname}</Link>
 
-            if (answer.isAnonymous === 1 && answer.author !== cookie.load('cookie_user')) {
-                photo = ""
-                firstname = "Anonymous"
-                lastname = ""
-                credentials = ""
-                answer_title=firstname + "  " + lastname
-            }
+                if (answer.isAnonymous === 1 && answer.author !== cookie.load('cookie_user')) {
+                    photo = ""
+                    firstname = "Anonymous"
+                    lastname = ""
+                    credentials = ""
+                    answer_title = firstname + "  " + lastname
+                }
 
-            if(answer.profile.deactivated) answer_title=firstname + "  " + lastname
+                if (answer.profile.deactivated) answer_title = firstname + "  " + lastname
 
-            let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.filter(v=>v.flag===1).length} onclick={()=>this.vote(answer._id,1)}></QuoraButton>
-            let downvoteOption = <QuoraButton value="downvote" text='' onclick={()=>this.vote(answer._id,0)}></QuoraButton>
-            let bookmarkOption = <QuoraButton value="bookmark" text='Bookmark' onclick={()=>this.bookmark(answer._id)}></QuoraButton>
-            if (answer.author === cookie.load('cookie_user')) {
-                upvoteOption = <div style={{ display: "inline", float: "left", color: "gray" }}>{answer.votes.filter(v=>v.flag===1).length + " Upvotes"}</div>
-                downvoteOption = null
-                bookmarkOption = null
-            }
-            if (answer.bookmarks.includes(cookie.load('cookie_user')))
-                bookmarkOption = <div style={{display:"inline",color:"gray"}}>Bookmarked</div>
-            return (
-                <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
+                let upvoteOption = <QuoraButton value="upvote" text={"Upvote " + answer.votes.filter(v => v.flag === 1).length} onclick={() => this.vote(answer._id, 1)}></QuoraButton>
+                let downvoteOption = <QuoraButton value="downvote" text='' onclick={() => this.vote(answer._id, 0)}></QuoraButton>
+                let bookmarkOption = <QuoraButton value="bookmark" text='Bookmark' onclick={() => this.bookmark(answer._id)}></QuoraButton>
+                if (answer.author === cookie.load('cookie_user')) {
+                    upvoteOption = <div style={{ display: "inline", float: "left", color: "gray" }}>{answer.votes.filter(v => v.flag === 1).length + " Upvotes"}</div>
+                    downvoteOption = null
+                    bookmarkOption = null
+                }
+                if (answer.bookmarks.includes(cookie.load('cookie_user')))
+                    bookmarkOption = <div style={{ display: "inline", color: "gray" }}>Bookmarked</div>
+                return (
+                    <Card bordered={false} style={{ borderTop: "1px solid #e2e2e2" }}>
                  
-                    <div>
-                    <Meta
-                    avatar={<Avatar
-                            src={photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                            title={answer_title}//"User's name goes here"
-                            description={<div>{credentials}
-                                <div>
-                            {d.toLocaleDateString()}&nbsp;&nbsp;
-                            {d.toLocaleTimeString()}
-                            </div>
-                            </div>}//"User credentials goes here"
-                     />
-                <br></br>
-                        <div className='answer_content'>
-                        
-                            {content}
-                        </div>  <br></br><br></br>
                         <div>
-                            {upvoteOption}
-                            <div style={{ float: "right" }}>
-                                {downvoteOption}
-                                {bookmarkOption}
+                            <Meta
+                                avatar={<Avatar
+                                    src={photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                                title={answer_title}//"User's name goes here"
+                                description={<div>{credentials}
+                                    <div>
+                                        {d.toLocaleDateString()}&nbsp;&nbsp;
+                            {d.toLocaleTimeString()}
+                                    </div>
+                                </div>}//"User credentials goes here"
+                            />
+                            <br></br>
+                            <div className='answer_content'>
+                        
+                                {content}
+                            </div>  <br></br><br></br>
+                            <div>
+                                {upvoteOption}
+                                <div style={{ float: "right" }}>
+                                    {downvoteOption}
+                                    {bookmarkOption}
+                                </div>
                             </div>
+                            <br></br><br></br>
                         </div>
-                        <br></br><br></br>
-                </div>
-                    <div>
-                        <Comments answer_id={answer._id} comments={answer.comments}></Comments>
-                    </div>
-            </Card>
+                        <div>
+                            <Comments answer_id={answer._id} comments={answer.comments}></Comments>
+                        </div>
+                    </Card>
+                )
+            })
+        }
+        else {
+            return(
+                <NoData image="https://qsf.fs.quoracdn.net/-3-images.question_prompt.answer.svg-26-c8e51e98fe29ee96.svg" description="No Answers Yet" left='350px'/>
             )
-        })
+        }
     }
 
    

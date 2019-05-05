@@ -6,6 +6,7 @@ import _ from "lodash";
 import { fetchUserAnswers,displayAddAnswerForm } from "../../../actions";
 import QuoraButton from "../../QuoraButton"
 import AddEditAnswer from '../AddEditAnswer';
+import NoData from '../NoData';
 const {Meta} = Card;
 
 
@@ -30,6 +31,7 @@ class UserAnswers extends Component {
     }
 
     renderQuestion = () => {
+        if(this.props.userAnswers.length>0)
         return _.map(this.props.userAnswers, question => {
             let addForm = null
            
@@ -48,6 +50,11 @@ class UserAnswers extends Component {
                 </Card>
             )
         })
+        else {
+            return(
+                <NoData image="https://qsf.fs.quoracdn.net/-3-images.question_prompt.answer.svg-26-c8e51e98fe29ee96.svg" description="You haven't answered any questions yet" left='300px' />
+            )
+        }
     }
 
     renderAnswers=(answers)=> {

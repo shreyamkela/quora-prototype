@@ -5,6 +5,7 @@ import cookie from 'react-cookies';
 import _ from "lodash";
 import { fetchBookmarkedAnswers } from "../../../actions";
 import { Link } from 'react-router-dom';
+import NoData from "../NoData"
 const {Meta} = Card;
 
 
@@ -16,6 +17,7 @@ class Bookmarks extends Component {
     }
 
     renderQuestion = () => {
+        if(this.props.bookmarked_answers.length>0)
         return _.map(this.props.bookmarked_answers, question => {
             return (
                 <Card>
@@ -28,6 +30,11 @@ class Bookmarks extends Component {
                 </Card>
             )
         })
+        else {
+            return(
+                <NoData image="https://qsf.fs.quoracdn.net/-3-images.question_prompt.answer.svg-26-c8e51e98fe29ee96.svg" description="No Bookmarked Answers" left='350px' />
+            )
+        }
     }
 
     renderAnswers=(answers)=> {
