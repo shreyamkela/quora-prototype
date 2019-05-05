@@ -33,6 +33,7 @@ var FetchQuestions = require('./routes/FetchQuestion');
 var QuestionsInTopic = require('./routes/QuestionsInTopic');
 var QuestionFollowed = require('./routes/QuestionFollowed');
 var QuestionUnfollowed = require('./routes/QuestionUnfollowed');
+var FetchFollowers = require('./routes/FetchFollowers');
 
 var passport = require("passport");
 // Set up middleware
@@ -102,6 +103,7 @@ app.use('/fetchQuestions', FetchQuestions);
 app.use('/useranswers', UserAnswers);
 app.use('/comment', Comment);
 app.use('/questionsInTopic', QuestionsInTopic);
+app.use('/fetchfollowers',FetchFollowers);
 
 module.exports = app;
 //start your server on port 3001
