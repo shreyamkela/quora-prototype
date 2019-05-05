@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Layout, Menu, Select, message, Avatar } from "antd";
+import { Input, Layout, Menu, Select, message, Badge, Icon, Button,notification } from "antd";
 import { Link } from "react-router-dom";
 import { Router, Route, Switch } from "react-router-dom";
 import Questions from "../Question/Questions";
@@ -30,6 +30,17 @@ const { Header, Content, Footer, Sider } = Layout;
 const Search = Input.Search;
 const Option = Select.Option;
 
+const openNotification = () => {
+    notification.open({
+        message: 'Notification Title',
+        description: 'A Quora user just answered a question you followed',
+        onClick: () => {
+            console.log('Notification Clicked!');
+        },
+    });
+};
+
+
 class Sidebar extends Component {
   state = {
     collapsed: false,
@@ -38,10 +49,14 @@ class Sidebar extends Component {
     messages : false
   };
 
+
+
   onCollapse = collapsed => {
     console.log(collapsed);
     this.setState({ collapsed });
   };
+
+
 
   //handle logout to destroy the cookie
   handleLogout = () => {
@@ -156,10 +171,14 @@ class Sidebar extends Component {
                 addonBefore={selectBefore}
               />
             </Menu.Item>
-            {/*<Menu.Item key="5" style={{ marginLeft: 90 }}>*/}
-            {/*<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />*/}
-            {/*</Menu.Item>*/}
-            <Menu.Item key="1" style={{ marginLeft: 90 }}>
+              <Menu.Item key="5" >
+                  <Badge count={5}>
+                      <a href="#" className="head-example" />  <Button type="primary" onClick={openNotification}><Icon type="bell" /></Button>
+
+                  </Badge>
+              </Menu.Item>
+
+            <Menu.Item key="1" style={{ marginLeft: 30 }}>
               <Link to={"/main/profile/" + cookie.load('cookie_user')}> Profile</Link>
             </Menu.Item>
             <Menu.Item key="3">
