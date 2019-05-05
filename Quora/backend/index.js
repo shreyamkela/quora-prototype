@@ -32,7 +32,6 @@ var FetchQuestions = require('./routes/FetchQuestion');
 var QuestionsInTopic = require('./routes/QuestionsInTopic');
 var QuestionFollowed = require('./routes/QuestionFollowed');
 var QuestionUnfollowed = require('./routes/QuestionUnfollowed');
-var Unfollow = require('./routes/Unfollow');
 
 var passport = require("passport");
 // Set up middleware
