@@ -17,6 +17,7 @@ export const COMMENT_ON_ANSWER = "comment_on_answers"
 export const BOOKMARK_ANSWER = "bookmark_answer"
 export const FETCH_BOOKMARKS = "fetch_bookmarks"
 export const FETCH_ACTIVITY = "fetch_activity"
+export const FETCH_QUESTIONS = 'fetch_questions'
 
 const ROOT_URL = "http://localhost:3001";
 
@@ -306,6 +307,22 @@ export function fetchUserActivity() {
 
     return {
         type: FETCH_ACTIVITY,
+        payload: response
+    };
+}
+
+
+export function fetchQuestions() {
+    axios.defaults.withCredentials = true;
+    //make a post request with the user data
+    const response = axios.get(`${ROOT_URL}/fetchQuestions`)
+        .then(response =>{
+            return response
+        })
+        .catch(error => { return error.response })
+
+    return {
+        type: FETCH_QUESTIONS,
         payload: response
     };
 }

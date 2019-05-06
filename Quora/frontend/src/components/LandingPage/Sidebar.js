@@ -22,7 +22,7 @@ import UserContent from "../UserContent/UserContent"
 import QuestionsInTopic from "../Topics/QuestionsInTopic"
 import FollowingList from "../Following/FollowingList";
 import FollowersList from "../Followers/FollowersList";
-import FetchQuestions from "../Question/FetchQuestions";
+import MyQuestions from "../Question/MyQuestions";
 import Messages from "../Messages/Messages";
 
 
@@ -250,7 +250,7 @@ class Sidebar extends Component {
                 <Route exact path="/main/topics/followed" component={Topics} />
                 <Route exact path="/main/followers" component={FollowersList} />
                 <Route exact path="/main/following" component={FollowingList} />
-                <Route exact path="/main/questions" component={FetchQuestions} />
+                <Route exact path="/main/questions" component={MyQuestions} />
                 <Route exact path="/main/message" component={Messages} />
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
                 <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
