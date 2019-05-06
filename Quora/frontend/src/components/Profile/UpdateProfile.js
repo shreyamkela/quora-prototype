@@ -7,6 +7,10 @@ import { connect } from "react-redux";
 import _ from "lodash";
 
 
+const zipcode = value =>
+value && !/^\d{5}(?:[-\s]\d{4})?$/i.test(value) ?
+'Invalid zipcode' : undefined
+
 class UpdateProfile extends Component {
 
   constructor() {
@@ -83,6 +87,7 @@ let credentials = _.map(this.props.profile, prof => {  return  prof.credentials 
     render () {
         const { handleSubmit } = this.props;
 
+
         let firstname =  _.map(this.props.profile, prof => {  return  prof.firstname  })
         let lastname =  _.map(this.props.profile, prof => { return  prof.lastname    }) 
 
@@ -118,6 +123,7 @@ let credentials = _.map(this.props.profile, prof => {  return  prof.credentials 
       name="zipcode"
       label="Your Zipcode"
       component={this.renderField}
+      validate={zipcode}
     />
     <Field
     name="education"
