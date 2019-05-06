@@ -14,12 +14,14 @@ router.get('/',function(request,response){
             // console.log("person2: "+a.person2);
             // console.log("no of chats: "+a.chat.length);
             if(a.person1 === email_id){
-                chats.push({chatWith : a.person2Name,
+                chats.push({chatWithName : a.person2Name,
+                            chatWith : a.person2,
                             chat : a.chat
                 })
             }
             else if(a.person2 === email_id){
-                chats.push({chatWith : a.person1Name,
+                chats.push({chatWithName : a.person1Name,
+                            chatWith : a.person1,
                             chat : a.chat
                 })
             }

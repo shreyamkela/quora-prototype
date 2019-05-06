@@ -29,6 +29,7 @@ class Messages extends Component {
         console.log("in constructor. visible Messages: "+this.state.visible);
         var chatWith = "";
         var chatMessages = "";
+        var chatWithName = "";
     }
     showModal = () => {
         this.setState({
@@ -86,6 +87,9 @@ class Messages extends Component {
         console.log("chats: "+JSON.stringify(conv.chat));
         this.setState({conversation :true},() => console.log("state conversation: "+this.state.conversation))       
         this.chatWith = conv.chatWith;
+        console.log("chatWithg: "+this.chatWith);
+        this.chatWithName = conv.chatWithName;
+        console.log("chatWithName: "+this.chatWithName);
         this.chatMessages = conv.chat.map(cm => {
             let noChats = cm.length;
             console.log("no of mesgs: "+noChats);
@@ -94,7 +98,7 @@ class Messages extends Component {
                 
                 <tr>
                     <td>
-                        <p><b>{!(cookie.load('cookie_user') === cm.senderName) ? 'You' : cm.senderName}</b><h6>{date}</h6></p>
+                        <p><b>{(cookie.load('cookie_user') === cm.sender) ? 'You' : cm.senderName}</b><h6>{date}</h6></p>
                         <p>{cm.message}</p>
                     </td>
                     
@@ -124,6 +128,7 @@ class Messages extends Component {
         let response = null;
         let email_id = cookie.load('cookie_user');
         console.log("email_id: "+cookie.load('cookie_user'))
+        console.log("Receiver in reply to msg: "+receiver);
         let data = {
             sender : email_id,
             receiver : receiver,
@@ -157,7 +162,7 @@ class Messages extends Component {
                 <tr onClick = {this.viewConv.bind(this, conv)}>
                     
                     <td>
-                        <p><b>{conv.chatWith}</b>&emsp;&emsp;<h6>{date}</h6></p>
+                        <p><b>{conv.chatWithName}</b>&emsp;&emsp;<h6>{date}</h6></p>
                         <p>{conv.chat[noChats-1].message}</p>
                     </td>
                     
@@ -196,7 +201,7 @@ class Messages extends Component {
                 {/* TO DISPLAY CHAT MESSAGES */}
                 <Modal
                         
-                        title={this.chatWith}
+                        title={this.chatWithName}
                         visible={this.state.conversation}
                         onOk={this.handleOk}
                         onCancel={this.handleCancel}
