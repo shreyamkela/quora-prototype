@@ -208,7 +208,7 @@ class NewMessages extends Component {
                     />
                     <div>
                     
-                    <select onChange={this.personSelect} value={this.state.sendTo} >
+                    <select onChange={this.personSelect} value={this.state.sendTo} required="true">
                     {this.state.people.map((person) => <option key={person.display} value={person.value}>{person.display}</option>)}
                     </select><br></br><br></br><br></br>
                     <textarea onChange={this.handleChange}></textarea>

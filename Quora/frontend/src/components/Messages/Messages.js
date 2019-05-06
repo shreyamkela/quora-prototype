@@ -61,10 +61,10 @@ class Messages extends Component {
             newMessage : "",
             inputValue:""
         });
-        this.componentWillMount();   //re-mount the component to see updated list of conversations
+        this.componentDidMount();   //re-mount the component to see updated list of conversations
     }
     
-    async componentWillMount(){
+    async componentDidMount(){
         let response = null;
         let email_id = cookie.load('cookie_user');
         this.setState({visible : true});
