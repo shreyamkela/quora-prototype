@@ -243,7 +243,7 @@ class Questions extends Component {
                                     avatar={(
                                         <Avatar
                                             src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                            alt="Han Solo"
+                                            // alt="Han Solo"
                                         />
                                     )}
                                     content={(

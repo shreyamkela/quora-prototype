@@ -58,7 +58,7 @@ class SearchQuestions extends Component {
 
     render() {
         // To access the state passed into this component from parent through this.props.history.push - we use this.props.history.location.state
-        console.log("SearchQuestions component:####### ", this.props.history.location.state);
+        console.log("SearchQuestions component:", this.props.history.location.state);
         let searchResults = null;
         if (this.props.history.location.state !== undefined) {
             if (this.props.history.location.state.searchResults !== undefined) {

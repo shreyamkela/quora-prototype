@@ -6,7 +6,7 @@ import Pagination from 'react-bootstrap/Pagination'
 import API from "../../utils/API";
 
 
-class FetchQuestionsgList extends Component {
+class FetchQuestionsList extends Component {
 
     constructor(){
         super();
@@ -132,4 +132,4 @@ class FetchQuestionsgList extends Component {
 function mapStateToProps(state) {
     return;
 }
-export default connect(mapStateToProps)(FetchQuestionsgList);
+export default connect(mapStateToProps)(FetchQuestionsList);
