@@ -17,6 +17,7 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.1.1-alpha.3",
     "express-session": "^1.15.6",
+    "firebase": "^5.11.1",
     "kafka-node": "^2.5.0",
     "lodash": "^4.17.11",
     "mongodb": "^3.2.2",
@@ -25,7 +26,9 @@
     "multer": "^1.4.1",
     "nodemon": "^1.18.11",
     "passport": "^0.3.2",
-    "passport-jwt": "^2.2.1"
+    "passport-jwt": "^2.2.1",
+    "uuid": "^3.3.2",
+    "xhr2": "^0.1.4"
   },
   "devDependencies": {
     "chai": "^4.2.0",

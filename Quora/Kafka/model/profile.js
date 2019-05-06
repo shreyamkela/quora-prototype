@@ -43,6 +43,6 @@ topicsFollowed : Array,
 questionsFollowed : Array
 });
 
-Profile = module.exports = mongoose.model('profile',profileSchema);
+Profile = module.exports = mongoose.model('profile',profileSchema,'profiles');
 
 module.exports = Profile;

@@ -1,30 +1,28 @@
+var firebase =require('firebase/app')
+require('firebase/storage')
 var express = require('express')
 var router = express.Router();
 var kafka = require('../kafka/client');
-const multer  = require('multer')
+global.XMLHttpRequest = require("xhr2");
+const multer = require('multer')
+const uuidv1 = require('uuid/v1')
+
 var Profile = require("../../Kafka/model/profile");
 
-const file_storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        console.log("in cb file destination : ",file.originalname);
-        cb(null, './profile_uploads/')
-    },
-    filename: function (req, file, cb) {
-        console.log("in cb file Body : ",file.originalname);
-      cb(null, new Date().toISOString().replace(/\:/g,'_') + file.originalname)
-    }
-  })
 
-  const fileFilter = (req,file,cb) => {
-      //store a file
-      if(file.mimetype==='image/jpeg' || file.mimetype==='image/png' || file.mimetype==='application/pdf')
-      cb(null,true)
-else 
-      //reject a file
-      cb(null,false)
-  }
+var firebaseConfig = {
+    apiKey: "AIzaSyAHRjo9d8DJR8GqW8DcsxXTWlqHZU274Vw",
+    authDomain: "quora-c0359.firebaseapp.com",
+    databaseURL: "https://quora-c0359.firebaseio.com",
+    projectId: "quora-c0359",
+    storageBucket: "quora-c0359.appspot.com",
+    messagingSenderId: "898197570581",
+    appId: "1:898197570581:web:c7bcf7c488b14b2e"
+};
 
-  const upload = multer({ storage: file_storage ,fileFilter:fileFilter});
+firebase.initializeApp(firebaseConfig)
+const storage = firebase.storage();
+upload=multer()
 
 router.get('/', function (req, res) {
     console.log('in Get profile before kafka: ',req.query.email_id);
@@ -84,39 +82,41 @@ router.post('/', function (req, res) {
     )}
     )
 
-    router.post('/pic',upload.single('photo'),function (req, res) {
- 
-        console.log("stringify req.file : " + req.file)
-       // console.log("stringify req : " + JSON.stringify(req))
-        console.log("req.files : " + req.files )
-        console.log("Req Body : ",JSON.stringify(req.body));
+router.post('/pic', upload.single('photo'), async function (req, res) {
+    console.log("Upload pic")
+    console.log("stringify req.file : " + req.file)
+    console.log("Req Body : ", JSON.stringify(req.body));
+        
+    console.log("Done1")
+    let id = uuidv1()
+    const uploadtask = storage.ref(`images/${id}`).put(req.file.buffer)
+    console.log("Done2")
     
-        var fullpath = ''
-        fullpath = 'http://localhost:3001/'+ req.file.path
-        console.log("fullpath: " + fullpath)
+    await uploadtask.on('state_changed', (snapshot) => { },
+        (error) => { console.log("Error:"+error) }, async () => {
+             storage.ref('images').child(id).getDownloadURL()
+                .then((url) =>
+                {
+                    console.log("Fullpath:",url)
+                        Profile.findOneAndUpdate({email: req.cookies.cookie_user},
+                            {
+                                $set: {
+                                    photo: url
+                                }
+                            })
+                      .then( result => {
+                          console.log("updated profile photo is: " + result)
+                        res.status(200).send("User Photo successfully updated");
+                      })
+                      .catch(err => {
+                         
+                        console.log("inside error" + err);
+                        res.status(500).json({ error: err })
+                     })   
+                })
+        }
+    )
     
-           Profile.findOneAndUpdate({email: req.session.user},
-            {
-              photo: fullpath 
-      //      user_gender: req.body.user_gender,user_photo: req.file.path
-        },
-        { upsert: true})
-        .exec()
-         .then( result => {
-             console.log("updated profile photo is: " + result)
-           res.status(200).send("User Photo successfully updated");
-         })
-         .catch(err => {
-            if (err instanceof multer.MulterError) {
-                // A Multer error occurred when uploading.
-                console.log("an error1" + err)
-            } else if (err) {
-                // An unknown error occurred when uploading.
-                console.log("an error2" + err)
-            }
-           console.log("inside error" + err);
-           res.status(500).json({ error: err })
-        })
     }
     )
     
