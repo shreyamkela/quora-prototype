@@ -78,9 +78,7 @@ QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
 var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 
 let fetchProfileById = function (email_id) {
-    console.log("-------------FIND ME");
-    console.log(email_id);
-    console.log("-------------FIND ME");
+
 
     return profile.findOne({
         email: email_id
@@ -116,6 +114,7 @@ getQuestionByEmail = function (email_id, successCallback, failureCallback) {
 
                 return {
                     question: doc.question,
+                    _id: doc._id,
                     profile: await fetchProfileById(doc.author),
                     answers: await Promise.all(
                         doc.answers.map(async ans => {
@@ -128,9 +127,6 @@ getQuestionByEmail = function (email_id, successCallback, failureCallback) {
                 }
             }));
 
-            console.log("FIND ME");
-            console.log(final_doc);
-            console.log("FIND ME");
             successCallback(final_doc);
         })
         .catch(err => {

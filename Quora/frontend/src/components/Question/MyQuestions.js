@@ -38,16 +38,19 @@ class MyQuestions extends Component {
 
     }
 
-    editAnswerClick = (a_id) => {
-        this.setState({
-            currentAnswer:a_id
-        })
-        this.props.displayAddAnswerForm(true)
+    handleQuestionLinkClick = (key) => {
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions,
+            // using the history.push. This will change the route, render new component, and also pass data into the component.
+            // Passed data can be accessed in the child component through this.props.history.location.state.
+            // To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
+            pathname: `/main/${key._id}`,
+            state: {
+                selectedQuestion: key
+            }
+        }) // TODO - Complete the page `/main/${key._id}`
     }
 
-
     renderQuestion = () => {
-
         const { questionArray } = this.state;
 
         if(questionArray.length>0)
@@ -61,11 +64,12 @@ class MyQuestions extends Component {
                     <Card>
                         <div>
                             <h3><b> {question.question}</b></h3>
-                            <QuoraButton value="answer" text="Edit Answer" onclick={()=>this.editAnswerClick(question.answers[0]._id)}></QuoraButton>
+                                <href to="#" onClick={() => { this.handleQuestionLinkClick(question) }}>
+                                    <QuoraButton value="answer" text="Add Answer">   </QuoraButton>
+                                </href>
                         </div>
                         {addForm}
                         {this.renderAnswers(question.answers)}
-
                     </Card>
                 )
             })
