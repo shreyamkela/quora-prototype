@@ -9,7 +9,11 @@ import _ from "lodash";
 
 const zipcode = value =>
 value && !/^\d{5}(?:[-\s]\d{4})?$/i.test(value) ?
-'Invalid zipcode' : undefined
+'Invalid Zipcode' : undefined
+
+const state = value =>
+value && !/^(?:(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|P[AR]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY]))$/i.test(value) ?
+'Invalid State abbreviation' : undefined
 
 class UpdateProfile extends Component {
 
@@ -118,6 +122,7 @@ let credentials = _.map(this.props.profile, prof => {  return  prof.credentials 
         name="state"
         label="Your State"
         component={this.renderField}
+        validate={state}
       />  
       <Field
       name="zipcode"
