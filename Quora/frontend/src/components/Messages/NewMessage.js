@@ -10,6 +10,8 @@ import { Input, Layout, Menu, Select, message } from "antd";
 import { Link } from "react-router-dom";
 import {Redirect} from 'react-router';
 import moment from 'moment';
+import Messages from "../Messages/Messages";
+
 const Search = Input.Search;
 const Option = Select.Option;
 
@@ -22,7 +24,10 @@ class NewMessages extends Component {
             visible : this.props.visible,
             messageList: [],
             inputValue : "",
-            newMessage:""
+            newMessage:"",
+            people:[],
+            sendTo:"",
+            msgList : false
         }
         console.log("visible: "+this.state.visible);
         var chatWith = "";
@@ -45,9 +50,10 @@ class NewMessages extends Component {
         this.setState({
             visible: false,
             conversation : false,
-            newMessage : ""
+            newMessage : "",
+            msgList : true            
         });
-        //this.props.history.push("/login");
+        
     } ;    
 
     handleReturn = ()=>{
@@ -57,7 +63,7 @@ class NewMessages extends Component {
             newMessage : "",
             inputValue:""
         });
-        this.componentWillMount();   //re-mount the component to see updated list of conversations
+     //   this.componentWillMount();   //re-mount the component to see updated list of conversations
     }
     
     // async componentWillMount(){
@@ -104,8 +110,19 @@ class NewMessages extends Component {
     }
     handleChange = (e) => {
         //TO HANDLE MULTIPLE CHANGES
-        this.setState({ [e.target.name]: e.target.value });
+        this.setState({ newMessage: e.target.value });
         console.log("newMessage: "+this.state.newMessage)
+    }
+
+    personSelect=(e) =>{
+        console.log("Inside Category select");
+        this.setState({
+            receiverName: e.target.name,
+            sendTo: e.target.value
+            
+        }, () => console.log("Receiver Name: "+this.state.receiverName+" SendTo: "+this.state.sendTo));
+        
+
     }
 
     handleSearch = async searchTerm => {
@@ -121,12 +138,11 @@ class NewMessages extends Component {
             }
             response = await API.get("searchPeople", { params: searchTerm });
             console.log("Search results: ", response.data);
-            this.props.history.push({
-              pathname: "/main/people/search",
-              state: {
-                searchResults: response.data
-              }
-            })
+
+            let person = response.data.map(p => { return {value: p.email, display: p.firstname+" "+p.lastname} });
+            console.log("person")
+            this.setState({ people: [{value: '', display: '(Select the person you want to message)'}].concat(person) });
+            
           
         } catch (error) {
           console.log(error);
@@ -136,25 +152,29 @@ class NewMessages extends Component {
 
 
 
-    // async sendMessage(receiver,newMessage,e){
-    //     let response = null;
-    //     let email_id = cookie.load('cookie_user');
-    //     console.log("email_id: "+cookie.load('cookie_user'))
-    //     let data = {
-    //         sender : email_id,
-    //         receiver : receiver,
-    //         message : newMessage
-    //     }
-    //     try{
-    //     response = await API.post("message",data)
-    //     message.success("Message sent successfully!");
-    //     this.setState({ newMessage: "" });
+        sendMessage = () =>{
+        let response = null;
+        let email_id = cookie.load('cookie_user');
+        let receiver = this.state.sendTo;
+        console.log("email_id: "+cookie.load('cookie_user'));
+        console.log("receiver: "+receiver);
+        console.log("message: "+this.state.newMessage);
+        let data = {
+            sender : email_id,
+            receiver : this.state.sendTo,
+            message : this.state.newMessage
+            // receiverName : this.state.receiverName
+        }
+        try{
+        response = API.post("message",data)
+        message.success("Message sent successfully!");
+        this.setState({ msgList : true });
         
-    //     console.log("this.state.inputValue: "+this.state.inputValue)
-    //     }catch(error){
-    //         message.error("Unable to send message. Please refresh the page.");
-    //     }
-    // }
+        console.log("this.state.inputValue: "+this.state.inputValue)
+        }catch(error){
+            message.error("Unable to send message. Please refresh the page.");
+        }
+    }
                 
                 
     render(){ 
@@ -163,6 +183,7 @@ class NewMessages extends Component {
         return(        
             <div>  
                  {/*TO DISPLAY LIST OF CONVERSATIONS  */}
+                {this.state.msgList && <Messages visible="true"/>}
                 <Modal
                         title="New Message"
                         visible={this.state.visible}
@@ -171,7 +192,9 @@ class NewMessages extends Component {
                         bodyStyle={{ padding: '0' }}
                         style={{ top: '20' ,bottom:'20'}}
                         width={600}
-                        // height={800}
+                        footer={[
+                            <Button key="send" onClick={this.sendMessage}>Send</Button>
+                          ]}
                 >
                     <div class="scroller">
                     <Search
@@ -183,11 +206,17 @@ class NewMessages extends Component {
                             this.handleSearch(value);
                         }}
                     />
-
+                    <div>
+                    
+                    <select onChange={this.personSelect} value={this.state.sendTo} >
+                    {this.state.people.map((person) => <option key={person.display} value={person.value}>{person.display}</option>)}
+                    </select><br></br><br></br><br></br>
+                    <textarea onChange={this.handleChange}></textarea>
+                    </div>
                     </div>
                 
                 </Modal>
-                }
+                
         </div>
         )
     }

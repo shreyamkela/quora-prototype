@@ -19,13 +19,14 @@ class Messages extends Component {
     {
         super(props);
         this.state = {
+            // visible : this.props.history.location.state.visible || true,
             visible : this.props.visible,
             messageList: [],
             inputValue : "",
             newMessage:"",
             composeNew : ""
         }
-        console.log("visible: "+this.state.visible);
+        console.log("in constructor. visible Messages: "+this.state.visible);
         var chatWith = "";
         var chatMessages = "";
     }
@@ -46,9 +47,11 @@ class Messages extends Component {
         this.setState({
             visible: false,
             conversation : false,
-            newMessage : ""
-        });
-        //this.props.history.push("/login");
+            newMessage : "",
+            redirectVar : <Redirect to= "/main/home"/>
+        })
+        // ,() => this.props.history.push("/main/home"));
+        
     } ;    
 
     handleReturn = ()=>{
@@ -64,7 +67,8 @@ class Messages extends Component {
     async componentWillMount(){
         let response = null;
         let email_id = cookie.load('cookie_user');
-        console.log("email_id: "+cookie.load('cookie_user'))
+        this.setState({visible : true});
+        console.log("Inside Message Component will mount.  email_id: "+cookie.load('cookie_user'))
         try{
         response = await API.get("message",{params : {email_id:email_id}})
         //console.log("Response.data messages:  "+JSON.stringify(response.data));
@@ -80,8 +84,7 @@ class Messages extends Component {
     viewConv=(conv,e) =>
     {
         console.log("chats: "+JSON.stringify(conv.chat));
-        this.setState({conversation :true})
-        console.log("state conversation: "+this.state.conversation)
+        this.setState({conversation :true},() => console.log("state conversation: "+this.state.conversation))       
         this.chatWith = conv.chatWith;
         this.chatMessages = conv.chat.map(cm => {
             let noChats = cm.length;
@@ -91,7 +94,7 @@ class Messages extends Component {
                 
                 <tr>
                     <td>
-                        <p><b>{cm.sender}</b><h6>{date}</h6></p>
+                        <p><b>{cm.senderName}</b><h6>{date}</h6></p>
                         <p>{cm.message}</p>
                     </td>
                     
@@ -129,9 +132,10 @@ class Messages extends Component {
         try{
         response = await API.post("message",data)
         message.success("Message sent successfully!");
-        this.setState({ newMessage: "" });
+        this.setState({ newMessage: "",visible:"true" });
         
-        console.log("this.state.inputValue: "+this.state.inputValue)
+        console.log("this.state.inputValue: "+this.state.inputValue);
+        
         }catch(error){
             message.error("Unable to send message. Please refresh the page.");
         }
@@ -139,9 +143,9 @@ class Messages extends Component {
                 
                 
     render(){ 
-
+        // let redirectVar = null;
         // if(this.state.visible==false && this.state.conversation==false){
-        //     //this.props.history.push("/login");
+        //     redirectVar = <Redirect to= "/main/home"/>;
         // }
 
         let conversationList = this.state.messageList.map(conv => {
@@ -151,6 +155,7 @@ class Messages extends Component {
             return(
                 
                 <tr onClick = {this.viewConv.bind(this, conv)}>
+                    
                     <td>
                         <p><b>{conv.chatWith}</b>&emsp;&emsp;<h6>{date}</h6></p>
                         <p>{conv.chat[noChats-1].message}</p>
@@ -166,6 +171,7 @@ class Messages extends Component {
 
         return(        
             <div>  
+                {this.state.redirectVar}
                  {/*TO DISPLAY LIST OF CONVERSATIONS  */}
                  {this.state.composeNew && <NewMessage visible={true}/>}
                 <Modal
@@ -212,7 +218,7 @@ class Messages extends Component {
                     </div>
                 
                 </Modal>
-                }
+                
         </div>
         )
     }
