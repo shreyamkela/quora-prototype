@@ -94,7 +94,7 @@ class Messages extends Component {
                 
                 <tr>
                     <td>
-                        <p><b>{cm.senderName}</b><h6>{date}</h6></p>
+                        <p><b>{!(cookie.load('cookie_user') === cm.senderName) ? 'You' : cm.senderName}</b><h6>{date}</h6></p>
                         <p>{cm.message}</p>
                     </td>
                     
