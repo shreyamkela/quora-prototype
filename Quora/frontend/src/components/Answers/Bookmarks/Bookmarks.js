@@ -86,7 +86,7 @@ class Bookmarks extends Component {
                     
                 </Card>
                 <br></br>
-                <font color="gray">{answer.votes.length + " Upvotes"}</font>
+                <font color="gray">{answer.votes.filter(v => v.flag === 1).length + " Upvotes"}</font>
                 <br></br>
                 </>
             )
