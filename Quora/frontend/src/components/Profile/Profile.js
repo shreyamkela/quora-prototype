@@ -28,23 +28,29 @@ class Profile extends Component {
     onChange (e) {
       this.setState({photo: e.target.files[0]});
   }
-    componentWillMount() {
-        //call to action
-      console.log(this.props.match.params.user_id)
-        this.props.fetchProfile(this.props.match.params.user_id);
-        axios.get(`${ROOT_URL}/profile/pic/?email_id=`+this.props.match.params.user_id)
-        .then((response) => {
-          //  alert("The file is successfully uploaded");
-            console.log("printing response" + JSON.stringify(response.data))
-            this.setState({
-             user_data : this.state.user_data.concat(response.data),
-         });
-         console.log("userdata:" + JSON.stringify(this.state.user_data))
-      })
-          .catch(err => {
-              console.log(err)
-          })
-      }
+  async componentWillMount() {
+    //call to action
+  console.log(this.props.match.params.user_id)
+
+try{
+let response = null;
+    this.props.fetchProfile(this.props.match.params.user_id);
+
+response = await  API.get('profile/pic/?email_id='+this.props.match.params.user_id)
+
+        console.log("printing response" + JSON.stringify(response.data))
+        this.setState({
+         user_data : this.state.user_data.concat(response.data),
+     });
+     console.log("userdata:" + JSON.stringify(this.state.user_data))
+  
+}
+catch (error) {
+  console.log(error);
+  message.error("Unable to get followers list")
+}
+
+}
       componentWillReceiveProps(nextProps) {
         if (nextProps.newPost) {
           this.props.posts.unshift(nextProps.newPost);
