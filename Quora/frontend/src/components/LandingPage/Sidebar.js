@@ -147,6 +147,17 @@ class Sidebar extends Component {
       </Select>
     );
 
+    let selectedKey = window.location.pathname.includes("/main/home") ? "1" :
+      window.location.pathname.includes("/main/question") ? "2" :
+        window.location.pathname.includes("/main/useranswers") ? "3" :
+          window.location.pathname.includes("/main/followers") ? "4" :
+            window.location.pathname.includes("/main/following") ? "5" :
+              window.location.pathname.includes("/main/topics/followed") ? "6" :
+                window.location.pathname.includes("/main/bookmarks") ? "7" :
+                  window.location.pathname.includes("/main/stats") ? "8" :
+                    window.location.pathname.includes("/main/yourcontent") ? "9" :
+                      window.location.pathname.includes("/main/message") ? "10" : "1";                 
+
     return (
       <Layout>
         <Header className="topbar" style={{ background: "#fff" }}>
@@ -191,7 +202,7 @@ class Sidebar extends Component {
 
         <Layout style={{ padding: "24px 0", background: "#fafafa" }}>
           <Sider width={200} style={{ background: "#fafafa" }}>
-            <Menu mode="inline" defaultSelectedKeys={["1"]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
+            <Menu mode="inline" defaultSelectedKeys={[selectedKey]} defaultOpenKeys={["sub1"]} style={{ height: "100%" }}>
               {/*Team --- Add your routes over here for each corresponding Tab*/}
               <Menu.Item key="1">
                 <Link to="/main/home">Feed</Link>
@@ -246,7 +257,7 @@ class Sidebar extends Component {
                 <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
                 <Route exact path="/main/people/search" render={(props) => <SearchPeople {...props} />} />
                 <Route exact path="/main/topics/:topic/questions" render={(props) => <QuestionsInTopic {...props} />} />
-
+ 
                 <Route exact path="/main/:question_id" component={Answers} />
                 
                
