@@ -2,9 +2,11 @@
 import React, { Component } from 'react'
 import {Card,Avatar,Icon,Input,Button} from 'antd';
 import { connect } from 'react-redux';
-import { displayAddAnswerForm,addAnswer,fetchAnswersByQID ,editAnswer,fetchUserAnswers} from "../../actions";
+import { displayAddAnswerForm,addAnswer,fetchAnswersByQID ,editAnswer,fetchUserAnswers,fetchProfile} from "../../actions";
 import { Field, reduxForm } from "redux-form"
 import RTE from './RichTextEditor'
+import cookie from 'react-cookies';
+import API from '../../utils/API'
 const { Meta } = Card;
 
 const TextArea = Input.TextArea;
@@ -12,7 +14,19 @@ const TextArea = Input.TextArea;
 class AddEditAnswer extends Component {
     constructor (props) {
         super(props)
-        this.state = { content:''}
+        this.state = { content:'',photo:''}
+    }
+
+    componentDidMount = () => {
+        this.props.fetchProfile(cookie.load('cookie_user'))
+        API.get(`profile/pic/?email_id=` + (cookie.load('cookie_user')))
+            .then((response) => {
+                //  alert("The file is successfully uploaded");
+                console.log("printing response" + JSON.stringify(response.data))
+                this.setState({
+                    photo: response.data.photo,
+                });
+            });
     }
     
     onSubmit = (values) => {
@@ -82,9 +96,9 @@ class AddEditAnswer extends Component {
                 <Card
                     title={<Meta
                         avatar={<Avatar
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                        title="User's name goes here"
-                        description="credentials"        
+                            src={this.state.photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                        title={this.props.profile.data.firstname + "  " + this.props.profile.data.lastname}
+                        description={this.props.profile.data.credentials}        
                     />}
                     style={{ width: "90%", marginTop: 16,marginLeft:20,marginRight:40 }}
                     
@@ -112,6 +126,7 @@ class AddEditAnswer extends Component {
 function mapStateToProps(state) {
     return {
         authFlag: state.authFlag,
+        profile: state.profile.items,
         initialValues: {
             isanonymous:false
         }
@@ -120,12 +135,13 @@ function mapStateToProps(state) {
   
 AddEditAnswer = reduxForm({
     form: 'AddEditAnswerForm',
-    enableReinitialize:true
+    enableReinitialize:true,
+    
 })(AddEditAnswer)
 
 AddEditAnswer = connect(
     mapStateToProps,
-    { displayAddAnswerForm ,addAnswer,fetchAnswersByQID ,editAnswer,fetchUserAnswers}  
+    { displayAddAnswerForm ,addAnswer,fetchAnswersByQID ,editAnswer,fetchUserAnswers,fetchProfile}  
 )(AddEditAnswer)
 
 

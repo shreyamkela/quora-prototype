@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Card,Avatar, Empty} from 'antd';
+import {Card,Avatar} from 'antd';
 import {connect} from 'react-redux';
 import {fetchAnswersByQID,displayAddAnswerForm,voteAnswer,bookmarkAnAnswer} from "../../actions";
 import cookie from 'react-cookies';

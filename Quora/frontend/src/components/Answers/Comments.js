@@ -58,12 +58,16 @@ class Comments extends Component {
 
     componentDidMount=()=>{
         this.setState({
-        comments:_.map(this.props.comments, comment => {
+            comments: _.map(this.props.comments, comment => {
+                let d = new Date(comment.postedon)
             return {
                 author: comment.profile.firstname+"  "+comment.profile.lastname,
                 avatar: comment.profile.photo,
                 content: <p>{comment.comment}</p>,
-                datetime: comment.postedon
+                datetime: <div>
+                {d.toLocaleDateString()}&nbsp;&nbsp;
+                {d.toLocaleTimeString()}
+            </div>
             }
         })
         })
