@@ -54,17 +54,21 @@ var QuestionSchema = new mongoose.Schema({
 });
 
 var MessageSchema = new mongoose.Schema({
-    sender : String,
-    receiver : String,
-    message : String, 
-    time : {type :Date, default: Date.now()}, 
-    isRead : Boolean
+  sender : String,
+  senderName : String,
+  receiver : String,
+  receiverName : String,
+  message : String, 
+  time : {type :Date, default: Date.now()}, 
+  isRead : Boolean
 })
 
 var ConversationSchema = new mongoose.Schema({
-    person1 : String,
-    person2 : String,
-    chat : [MessageSchema]
+  person1 : String,
+  person1Name : String,
+  person2 : String,
+  person2Name : String,
+  chat : [MessageSchema]
 })
 
 var ActivitySchema = new mongoose.Schema({
@@ -139,34 +143,43 @@ let addActivityRecord = (type, q_id, user_id) => {
 
 // finding if a conversation exists and adding messages to it else create a new conversation
 
-db.sendMessage = function(values, successCallback, failureCallback){
+db.sendMessage = async function(values, successCallback, failureCallback){
 
-    console.log("values: "+JSON.stringify(values));
-    var options = {useFindAndModify:false, upsert:true};
-    var addMessage = new Messages({"sender":values.sender,"receiver":values.receiver,"message":values.message,"isRead":false})
-    console.log("addMessage: "+JSON.stringify(addMessage));
-    var conversation = {"person1":values.sender,"person2":values.receiver,$push:{"chat":addMessage}};
-    console.log("conversation: "+JSON.stringify(conversation));
-    Chat.findOneAndUpdate({$or:[{$and:[{person1:values.sender},{person2:values.receiver}]},{$and:[{person1:values.receiver},{person2:values.sender}]}]},conversation, options)
-       
-    .then(() => {successCallback()})
-        .catch((error) => {
-            failureCallback(error)
-            return
-        })
+  console.log("values: "+JSON.stringify(values));
+
+  let senderProfile= await fetchProfileById(values.sender);
+  // console.log("senderProfile: "+JSON.stringify(senderProfile));
+  let receiverProfile = await fetchProfileById(values.receiver);
+  // console.log("ReceiverProfile: "+JSON.stringify(receiverProfile));
+  var options = {useFindAndModify:false, upsert:true};
+  var senderName = senderProfile.firstname+ " "+ senderProfile.lastname;
+  // console.log("senderName: "+senderName);
+  var receiverName = receiverProfile.firstname + " " + receiverProfile.lastname;
+  var addMessage = new Messages({"sender":values.sender,"senderName":senderName,"receiver":values.receiver,"receiverName":receiverName,"message":values.message,"isRead":false})
+  // console.log("addMessage: "+JSON.stringify(addMessage));
+  var conversation = {"person1":values.sender,"person1Name":senderName,"person2":values.receiver,"person2Name":receiverName,$push:{"chat":addMessage}};
+  console.log("conversation: "+JSON.stringify(conversation));
+  
+  Chat.findOneAndUpdate({$or:[{$and:[{person1:values.sender},{person2:values.receiver}]},{$and:[{person1:values.receiver},{person2:values.sender}]}]},conversation, options)
+     
+  .then(() => {successCallback()})
+      .catch((error) => {
+          failureCallback(error)
+          return
+      })
 }
 
 // show message box
 db.showMessages = function(email_id, successCallback, failureCallback){
-    Chat.find({$or:[{person1:email_id},{person2:email_id}]},{_id:0})
-        .then((result) => {
-            console.log("Result message get: "+JSON.stringify(result));
-            successCallback(result)
-        })
-        .catch((error) => {
-            failureCallback(error);
-        })
-        
+  Chat.find({$or:[{person1:email_id},{person2:email_id}]},{_id:0})
+      .then((result) => {
+          console.log("Result message get: "+JSON.stringify(result));
+          successCallback(result)
+      })
+      .catch((error) => {
+          failureCallback(error);
+      })
+      
 }
 
 // Creating a new User and creating profile for the user
