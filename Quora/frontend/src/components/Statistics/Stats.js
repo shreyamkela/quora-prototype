@@ -3,7 +3,7 @@ import {Card} from 'antd';
 import {connect} from 'react-redux';
 import cookie from 'react-cookies';
 import _ from "lodash";
-import ReactChartkick, { PieChart, ColumnChart } from 'react-chartkick'
+import ReactChartkick, {ColumnChart } from 'react-chartkick'
 import Chart from 'chart.js'
 import { getTopDownAnswers,getTopUpAnswers} from "../../actions";
 import API from "../../utils/API";
@@ -116,10 +116,6 @@ class Stats extends Component {
     profileviewchart = () => {
         return <ColumnChart data={this.getViewsData()} width="400px" height="300px" label='Votes' xtitle='Last 30 Days (Day0 is today)' ytitle="Profile View Count"/>
     }
-
-    piechart = () => {
-        return <PieChart data={[["Blueberry", 44], ["Strawberry", 23],["Apple",0]]} width="300px" height="300px"/>
-    }
     render() {
         if(!cookie.load('cookie_user')){
             this.props.history.push("/login");
@@ -132,7 +128,6 @@ class Stats extends Component {
                     <div className="wrapper">
                         {this.columnupchart()}
                         {this.columndownchart()}
-                        {this.piechart()}
                         {this.profileviewchart()}
                     </div>
                 </div>
