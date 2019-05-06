@@ -52,28 +52,32 @@ class MyQuestions extends Component {
 
     renderQuestion = () => {
         const { questionArray } = this.state;
-
-        if(questionArray.length>0)
+    if(questionArray !== undefined) {
+        if (questionArray.length > 0)
             return _.map(questionArray, question => {
                 let addForm = null;
 
                 if (this.props.displayAddAnswer === true && this.state.currentAnswer === question.answers[0]._id)
-                    addForm = <AddEditAnswer answer_id={this.state.currentAnswer} content={question.answers[0].content}></AddEditAnswer>
+                    addForm = <AddEditAnswer answer_id={this.state.currentAnswer}
+                                             content={question.answers[0].content}></AddEditAnswer>
                 else addForm = null
                 return (
                     <Card>
                         <div>
                             <h3><b> {question.question}</b></h3>
-                                <href to="#" onClick={() => { this.handleQuestionLinkClick(question) }}>
-                                    <QuoraButton value="answer" text="Add Answer">   </QuoraButton>
-                                </href>
+                            <href to="#" onClick={() => {
+                                this.handleQuestionLinkClick(question)
+                            }}>
+                                <QuoraButton value="answer" text="Add Answer"> </QuoraButton>
+                            </href>
                         </div>
                         {addForm}
                         {this.renderAnswers(question.answers)}
                     </Card>
                 )
             })
-        else {
+    }
+    else {
             return(
                 <NoData image="https://qsf.fs.quoracdn.net/-3-images.question_prompt.answer.svg-26-c8e51e98fe29ee96.svg" description="You haven't answered any questions yet" left='300px' />
             )
