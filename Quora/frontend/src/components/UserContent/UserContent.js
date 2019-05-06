@@ -94,17 +94,6 @@ class UserContent extends Component {
 
     console.log("activites :" + JSON.stringify((this.props.userActivities)))
 
-    this.setState({
-        activities:_.map(this.props.userActivities, activity => {
-            return {
-                type: activity.type,
-                question: activity.question,
-                timestamp: activity.timestamp,
-                year: activity.year
-            }
-        })
-    })
-
   }
    
 
@@ -122,14 +111,15 @@ class UserContent extends Component {
           };
 
 let details = [];
-details = this.state.activities.map(act => {
-    return({
-        type:  act.type,
-            question: act.question,
-            timestamp: act.timestamp,
-            year: act.year
-     } )
-    })
+
+details=_.map(this.props.userActivities, activity => {
+    return {
+        type: activity.type,
+        question: activity.question,
+        timestamp: activity.timestamp,
+        year: activity.year
+    }
+})
 
 
     if (this.state.rvalue===2 ) {
