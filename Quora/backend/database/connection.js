@@ -1,6 +1,6 @@
 // Mongoose Setup - MongoDB - ORM
 const mongoose = require("mongoose");
-
+var db = {};
 //mongoose.Promise = global.Promise;
 let uri = "mongodb+srv://canvas_user:2407Rakhee%21@cluster0-jjkgt.mongodb.net/quoradb?poolSize=10?retryWrites=true";
 mongoose.Promise = global.Promise;
@@ -60,7 +60,8 @@ var profile = mongoose.model("profile", {
   followers: [String],
   following: [String],
   topicsFollowed: Array,
-  questionsFollowed: Array
+  questionsFollowed: Array,
+    questionAdded: Array
 });
 
 
@@ -76,9 +77,59 @@ var QuestionSchema = new mongoose.Schema({
 QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
 var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 
+let fetchProfileById = function (email_id) {
+    console.log(email_id)
+    return profile.findOne({
+        email: email_id
+    }, 'firstname lastname credentials photo').then((docs) => {
+        if (docs == null)
+        {
+            docs = {}
+            docs.firstname = "Quora"
+            docs.lastname = "User"
+            docs.credentials = ""
+            docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
+            docs.deactivated = true
+        }
+        else {
+            docs = docs.toJSON()
+            docs.deactivated = false
+        }
+        return docs
+    }).catch((err) => {
+        console.log(err)
+        return {}
+    })
+}
+
+
+getQuestionByEmail = function (email_id, successCallback, failureCallback) {
+    console.log("M HERE:"  + email_id);
+    Questions.find({
+        author: email_id
+    })
+        .then(async questionByMeArr => {
+            if (questionByMeArr !== null) {
+
+                console.log("CHECK THIS");
+                console.log(questionByMeArr);
+                console.log("CHECK THIS");
+
+
+                successCallback(questionByMeArr);
+            }
+            else successCallback(null);
+        })
+        .catch(err => {
+            console.log(err);
+            failureCallback(err);
+        });
+};
+
 
 module.exports = {
   topics,
   Questions,
+    getQuestionByEmail,
   profile
 };

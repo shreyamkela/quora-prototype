@@ -683,6 +683,11 @@ db.getQuestionByEmail = function (email_id, successCallback, failureCallback) {
     })
         .then(async doc => {
             if (doc !== null) {
+
+                console.log("CHECK THIS");
+                console.log(doc);
+                console.log("CHECK THIS");
+
                 let final_doc = await {
                     ques_id: doc._id,
                     // question: doc.question,
