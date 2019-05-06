@@ -13,12 +13,12 @@
 }
 
 .side-menu-fixed {
-  height: 70%;
+  height: 74%;
   background: white;
   box-shadow: 1px 0px 4px rgba(0, 0, 0, 0.5);
   position: fixed;
-  top: 85px;
-  left: 270px;
+  top: 87px;
+  left: 250px;
   width: 50%;
   max-width: 160px;
   z-index: 200;

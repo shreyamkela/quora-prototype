@@ -10,7 +10,6 @@ import axios from 'axios';
 import API from "../../utils/API";
 import { Row, Col, message } from "antd";
 
-const ROOT_URL = "http://localhost:3001";
 
 class Profile extends Component {
     
@@ -47,7 +46,7 @@ response = await  API.get('profile/pic/?email_id='+this.props.match.params.user_
 }
 catch (error) {
   console.log(error);
-  message.error("Unable to get followers list")
+  message.error("Unable to get photo")
 }
 
 }

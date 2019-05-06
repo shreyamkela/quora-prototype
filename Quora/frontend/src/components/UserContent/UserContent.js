@@ -239,7 +239,7 @@ details = this.state.activities.map(act => {
           
               </ul>
             </nav>
-            <div style={{"margin-left":"100px"}}>
+            <div style={{"margin-left":"140px"}}>
             {redirectVar}
             <font size="4">
             <b>Your Content</b>
