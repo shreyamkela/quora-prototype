@@ -24,7 +24,9 @@ class FetchQuestionsList extends Component {
         // GET topicsFollowed backend route is being used here to follow if not already followed. GET topicsFollowed backend route is being used in the Topics.js frontend to GET all topics followed by this user. They type property in data determines which frontend component is calling /topicsFollowed
         let response = null;
         try {
-            response = await API.post("fetchQuestions", data);
+            response = await API.get("fetchQuestions");
+            console.log("Response questionByMeArr");
+            console.log(response);
             console.log("Response on fetchQuestions: " + JSON.stringify(response.data))
             if(response.data.success) {
                 console.log("@@@@@@@@@@@@@");
