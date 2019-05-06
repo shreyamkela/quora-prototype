@@ -113,10 +113,13 @@ class UserContent extends Component {
 let details = [];
 
 details=_.map(this.props.userActivities, activity => {
+    let d = new Date(activity.timestamp)
     return {
         type: activity.type,
         question: activity.question,
         timestamp: activity.timestamp,
+        date: d.toLocaleDateString(),
+        time: d.toLocaleTimeString(),
         year: activity.year
     }
 })
@@ -243,8 +246,8 @@ details=_.map(this.props.userActivities, activity => {
                 <List.Item>
                 {item.type} <b>{item.question}</b>
                   <List.Item.Meta
-                    
-                    description= {item.timestamp}
+             
+                    description= {item.date + " " + item.time}
                     
                   />
                  
