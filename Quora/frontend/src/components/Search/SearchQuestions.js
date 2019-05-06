@@ -49,7 +49,7 @@ class SearchQuestions extends Component {
             // Passed data can be accessed in the child component through this.props.history.location.state.
             // To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
             // pathname: `/main/questions/${key.question}/questions`,
-            pathname: `/main/questions/${key.question}`,
+            pathname: `/main/${key._id}`,
             state: {
                 selectedQuestion: key
             }
