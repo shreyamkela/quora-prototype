@@ -7,31 +7,52 @@ import {fetchQuestions, fetchUserAnswers,displayAddAnswerForm } from "../../acti
 import QuoraButton from "../QuoraButton"
 import AddEditAnswer from '../Answers/AddEditAnswer';
 import NoData from '../Answers/NoData';
+import axios from "axios/index";
 const {Meta} = Card;
 
-
-
-
 class MyQuestions extends Component {
-
 
     constructor(props) {
         super(props);
         this.state = {
+            questionArray:[],
             currentAnswer:''
         }
     }
 
     componentDidMount() {
-        console.log("Mounting")
-        this.props.fetchQuestions()
+        console.log("My QUESTIONS");
+        // this.props.fetchQuestions()
+        axios.defaults.withCredentials = true;
+        //make a post request with the user data
+        axios.get("http://localhost:3001/fetchQuestions")
+            .then(response =>{
+                console.log(response.data);
+
+                this.setState({
+                    questionArray: response.data
+                });
+
+            })
+            .catch(error => { return error.response })
+
+    }
+
+    editAnswerClick = (a_id) => {
+        this.setState({
+            currentAnswer:a_id
+        })
+        this.props.displayAddAnswerForm(true)
     }
 
 
     renderQuestion = () => {
-        if(this.props.userAnswers.length>0)
-            return _.map(this.props.userAnswers, question => {
-                let addForm = null
+
+        const { questionArray } = this.state;
+
+        if(questionArray.length>0)
+            return _.map(questionArray, question => {
+                let addForm = null;
 
                 if (this.props.displayAddAnswer === true && this.state.currentAnswer === question.answers[0]._id)
                     addForm = <AddEditAnswer answer_id={this.state.currentAnswer} content={question.answers[0].content}></AddEditAnswer>
@@ -64,10 +85,10 @@ class MyQuestions extends Component {
             if (answer.content !== undefined) {
                 content = content = <div dangerouslySetInnerHTML={{__html: answer.content}} />
             }
-            let photo = answer.profile.photo
-            let firstname = answer.profile.firstname
-            let lastname = answer.profile.lastname
-            let credentials = answer.profile.credentials
+            let photo = answer.profile.photo;
+            let firstname = answer.profile.firstname;
+            let lastname = answer.profile.lastname;
+            let credentials = answer.profile.credentials;
             return (
                 <>
                     <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
@@ -100,26 +121,7 @@ class MyQuestions extends Component {
         })
     }
 
-
-    // async fetchMyQuestions(key) {
-    //     //console.log(key)
-    //     try {
-    //         let data = { email: cookie.load("cookie_user"),  questionId: key }
-    //         let response = null;
-    //         response = await API.get("fetchQuestions", { params: data });
-    //         console.log(response);
-    //         if (response.data.toLowerCase().includes(null)) {
-    //             message.warning("No question added")
-    //         } else {
-    //             message.success("You have added Questions: ")
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //         message.error("Unablefetch your Questions. Please refresh the page and try again.")
-    //     }
-    //
-    // }
-
+    
     render() {
         if(!cookie.load('cookie_user')){
             this.props.history.push("/login");

@@ -1,4 +1,4 @@
-import { FETCH_ANSWERS, ADD_ANSWER, DISPLAY_ADD_ANSWER, TOP__UP_ANSWERS, TOP__DOWN_ANSWERS, USER_ANSWERS, FETCH_COMMENTS, COMMENT_ON_ANSWER, BOOKMARK_ANSWER, FETCH_BOOKMARKS} from "../actions";
+import { FETCH_ANSWERS,FETCH_QUESTIONS, ADD_ANSWER, DISPLAY_ADD_ANSWER, TOP__UP_ANSWERS, TOP__DOWN_ANSWERS, USER_ANSWERS, FETCH_COMMENTS, COMMENT_ON_ANSWER, BOOKMARK_ANSWER, FETCH_BOOKMARKS} from "../actions";
 //import cookie from 'react-cookies';
 
 
@@ -47,13 +47,23 @@ export function fetchTopDownAnswersReducer(state = [], action) {
 }
 
 export function fetchUserAnswersReducer(state = [], action) {
-  switch (action.type) {
-    //target 
-    case USER_ANSWERS:
-      return action.payload.data
-    default:
-      return state
-  }
+    switch (action.type) {
+        //target
+        case USER_ANSWERS:
+            return action.payload.data
+        default:
+            return state
+    }
+}
+
+export function fetchUserQuestionsReducer(state = [], action) {
+    switch (action.type) {
+        //target
+        case FETCH_QUESTIONS:
+            return action.payload.data
+        default:
+            return state
+    }
 }
 
 export function fetchBookmarksReducer(state = [], action) {

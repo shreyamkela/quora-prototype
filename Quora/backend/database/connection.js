@@ -78,7 +78,10 @@ QuestionSchema.plugin(AutoIncrement, { id: "ques_seq", inc_field: "ID" });
 var Questions = mongoose.model("Questions", QuestionSchema, "Questions");
 
 let fetchProfileById = function (email_id) {
-    console.log(email_id)
+    console.log("-------------FIND ME");
+    console.log(email_id);
+    console.log("-------------FIND ME");
+
     return profile.findOne({
         email: email_id
     }, 'firstname lastname credentials photo').then((docs) => {
@@ -104,21 +107,31 @@ let fetchProfileById = function (email_id) {
 
 
 getQuestionByEmail = function (email_id, successCallback, failureCallback) {
-    console.log("M HERE:"  + email_id);
+
     Questions.find({
         author: email_id
     })
         .then(async questionByMeArr => {
-            if (questionByMeArr !== null) {
+            let final_doc = await Promise.all(questionByMeArr.map(async doc => {
 
-                console.log("CHECK THIS");
-                console.log(questionByMeArr);
-                console.log("CHECK THIS");
+                return {
+                    question: doc.question,
+                    profile: await fetchProfileById(doc.author),
+                    answers: await Promise.all(
+                        doc.answers.map(async ans => {
+                            // console.log(ans);
+                            // ans = ans.toJSON();
+                            ans.profile = await fetchProfileById(ans.author);
+                            return await ans;
+                        })
+                    )
+                }
+            }));
 
-
-                successCallback(questionByMeArr);
-            }
-            else successCallback(null);
+            console.log("FIND ME");
+            console.log(final_doc);
+            console.log("FIND ME");
+            successCallback(final_doc);
         })
         .catch(err => {
             console.log(err);
