@@ -11,7 +11,7 @@ function handle_request(msg, callback) {
                 firstname: msg.firstname,
                 lastname: msg.lastname,
                 email: msg.email_id,
-                photo:'http://localhost:3001/profile_uploads/default_profile.png'
+                photo:'https://firebasestorage.googleapis.com/v0/b/quora-c0359.appspot.com/o/images%2Fdefault_profile.png?alt=media&token=5f27f99d-60ec-48f5-86f9-3dda0931b27c'
             })
             
             console.log("mongo update")

@@ -435,7 +435,7 @@ let fetchProfileById = function (email_id) {
             docs.firstname = "Quora"
             docs.lastname = "User"
             docs.credentials = ""
-            docs.photo = "http://localhost:3001/profile_uploads/default_profile.png"
+            docs.photo = "https://firebasestorage.googleapis.com/v0/b/quora-c0359.appspot.com/o/images%2Fdefault_profile.png?alt=media&token=5f27f99d-60ec-48f5-86f9-3dda0931b27c"
             docs.deactivated = true
         }
         else {
