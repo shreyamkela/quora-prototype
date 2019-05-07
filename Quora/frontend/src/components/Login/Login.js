@@ -3,7 +3,7 @@ import "../../App.css";
 import cookie from "react-cookies";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import {checkValid, fetchProfile} from "../../actions";
+import { checkValid, fetchProfile } from "../../actions";
 
 import quoraLogo from "../../utils/documents/images/quora_logo_light.jpg";
 
@@ -46,16 +46,17 @@ class Login extends Component {
     return (
       <div>
         <div className="container">
-          <div className="login-form">
-            <div className="main-div">
-              <div className="panel">
+          <div className="login-form " style={{ marginTop: "8%" }}>
+            <div className="main-div ">
+              <div className="panel ">
                 <div>
                   <img src={quoraLogo} style={{ width: 100 }} />
                 </div>
                 <br />
                 <br />
-                <p>Please enter your username and password</p>
-                <p id="msg">{this.props.login_msg}</p>
+                <div style={{ textAlign: "center" }}>
+                  <div >Please enter your username and password</div>
+                  <div id="msg"><font color="#B92b27"><b>{this.props.login_msg}</b></font></div></div>
               </div>
               <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field label="User ID" name="email_id" type="text" component={this.renderField} />
@@ -104,6 +105,6 @@ export default reduxForm({
 })(
   connect(
     mapStateToProps,
-    { checkValid,fetchProfile }
+    { checkValid, fetchProfile }
   )(Login)
 );
