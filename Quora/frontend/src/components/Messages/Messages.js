@@ -76,7 +76,7 @@ class Messages extends Component {
         this.setState({ messageList: response.data });
         }catch(error){
             console.log(error.response);
-            message.error("Unable to show followed topics. Please refresh the page.");
+         //   message.error("Unable to show followed topics. Please refresh the page.");
         }
     }
 
@@ -142,7 +142,8 @@ class Messages extends Component {
         console.log("this.state.inputValue: "+this.state.inputValue);
         
         }catch(error){
-            message.error("Unable to send message. Please refresh the page.");
+            console.log(error);
+          //  message.error("Unable to send message. Please refresh the page.");
         }
     }
                 
