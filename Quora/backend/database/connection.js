@@ -64,6 +64,16 @@ var profile = mongoose.model("profile", {
     questionAdded: Array
 });
 
+var ActivitySchema = new mongoose.Schema({
+  user_id:  { type: String },
+  type : { type: String },
+  timestamp: { type: Date, default: Date.now },
+  question: { type: String },
+  year: Number
+})
+
+var Activity = mongoose.model('Activity', ActivitySchema,'activities');
+
 
 
 var QuestionSchema = new mongoose.Schema({
@@ -141,5 +151,6 @@ module.exports = {
   topics,
   Questions,
     getQuestionByEmail,
-  profile
+  profile,
+  Activity
 };

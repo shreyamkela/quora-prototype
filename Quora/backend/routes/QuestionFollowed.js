@@ -6,6 +6,15 @@ router.get("/", function (req, res) {
     console.log("GET /questionsFollowed");
     console.log("Req: ", req.query);
 
+    let addActivityRecord = (type, q_id, user_id) => {
+        Model.Activity.create({
+          type: type,
+          question: q_id,
+          user_id:user_id,
+          year: new Date().getFullYear()
+        }).then(() =>{return})
+      }
+
     Model.profile.findOne({ email: req.query.email }, (err, results) => {
         if (err) {
             console.log("Unable to fetch user profile", err);
@@ -50,6 +59,8 @@ router.get("/", function (req, res) {
                                             results_questions.save().then(
                                                 doc_1 => {
                                                     console.log("New details added ");
+                                                    addActivityRecord('You followed',req.query.questionId,req.query.email)
+                                                    console.log("Activity added ");
                                                     // Only send success if both the collections have been updated
                                                     res.status(200).send("Question followed!");
                                                 },
