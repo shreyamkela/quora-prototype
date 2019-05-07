@@ -24,7 +24,8 @@ console.log(new Date((new Date().getTime() - (parseInt(req.body.day, 10) * 24 * 
           console.log("Unable to fetch user profile", err);
           return response.status(400).json({ success: false, message: "Unable to FetchViews" });
       } else {
-          if(results) {
+         console.log("Views:"+results)
+          if(results.length > 0) {
              console.log("Results :"+JSON.stringify(results));
             if(results[0].total === null || results[0].total === undefined || results[0].total.length === 0 ) {
                       
