@@ -25,8 +25,15 @@ const storage = firebase.storage();
 upload=multer()
 
 router.get('/', function (req, res) {
-    console.log('in Get profile before kafka: ',req.query.email_id);
-    kafka.make_request('profile',{email:req.query.email_id}, function(err,results){
+    console.log('in Get profile before kafka Email: ',req.query.email_id);
+    console.log('in Get profile before kafka User: ',req.session.user);
+    var self = false;
+    if(req.query.email_id === req.session.user) {
+        self = true;
+        console.log("Setting self to TRUE")
+    }
+
+    kafka.make_request('profile',{email:req.query.email_id, self: self}, function(err,results){
     
         console.log('in Get profile Details request: ',req.query.email_id);
         console.log("results" + JSON.stringify(results));
