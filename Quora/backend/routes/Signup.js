@@ -11,7 +11,7 @@ router.post('/', function (req, response) {
         } else {
             response.cookie('cookie_user', req.body.email_id, { maxAge: 900000, httpOnly: false, path: '/' });
             response.cookie('auth_token', msg.token, { httpOnly: false, path: '/' });
-            req.session.user = req.body.user_id;
+      //      req.session.user = req.body.user_id;
             response.status(200).json({success: true,message:msg.msg});
         }
     })

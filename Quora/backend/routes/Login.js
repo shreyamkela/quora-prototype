@@ -9,7 +9,7 @@ router.post('/', function (req, response) {
         } else {
             response.cookie('cookie_user', req.body.email_id, {httpOnly: false, path: '/' });
             response.cookie('auth_token', msg.token, { httpOnly: false, path: '/' });
-            req.session.user = req.body.email_id;
+       //     req.session.user = req.body.email_id;
             response.status(200).json({success: true,message:req.body.email_id});
         }
     })

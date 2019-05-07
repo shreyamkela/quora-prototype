@@ -26,9 +26,9 @@ upload=multer()
 
 router.get('/', function (req, res) {
     console.log('in Get profile before kafka Email: ',req.query.email_id);
-    console.log('in Get profile before kafka User: ',req.session.user);
+    console.log('in Get profile before kafka User: ',req.cookies.cookie_user);
     var self = false;
-    if(req.query.email_id === req.session.user) {
+    if(req.query.email_id === req.cookies.cookie_user) {
         self = true;
         console.log("Setting self to TRUE")
     }
@@ -56,10 +56,10 @@ router.get('/', function (req, res) {
 
 
 router.post('/', function (req, res) {
-    console.log("in profile update: " + req.session.user);
+    console.log("in profile update: " + req.cookies.cookie_user);
 
    var varObj= {
-    email :req.session.user,
+    email :req.cookies.cookie_user,
         firstname: req.body.firstname, 
         lastname: req.body.lastname, city: req.body.city,
         state: req.body.state, zipcode: req.body.zipcode,
@@ -159,9 +159,9 @@ router.get('/pic',function (req, res) {
 )
 
 router.post('/delete', function (req, response) {
-    console.log("in user-profile delete: " + req.session.user);
+    console.log("in user-profile delete: " + req.cookies.cookie_user);
 
-    kafka.make_request('delete_user', {email:req.session.user}, function (err, msg) {
+    kafka.make_request('delete_user', {email:req.cookies.cookie_user}, function (err, msg) {
         if (err) {
             console.log("response status: 401")
             response.status(401).json({success: false,message:msg});
