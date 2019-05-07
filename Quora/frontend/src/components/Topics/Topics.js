@@ -20,7 +20,7 @@ class Topics extends Component {
       }
     } catch (error) {
       console.log(error.response);
-      message.error("Unable to show followed topics. Please refresh the page.");
+      //message.error("Unable to show followed topics. Please refresh the page.");
     }
   }
 
