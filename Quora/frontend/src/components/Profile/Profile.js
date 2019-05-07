@@ -105,7 +105,8 @@ catch (error) {
           console.log("printing delete response" + JSON.stringify(response))
           cookie.remove('cookie_user', { path: '/' })
           cookie.remove('auth_token', { path: '/' })
-        this.props.history.push('/login')
+        //this.props.history.push('/login')
+        window.location.reload();
         }
         catch(err)  {
             console.log(err)
