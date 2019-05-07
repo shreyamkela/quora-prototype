@@ -4,7 +4,7 @@ var db = require('../../Kafka/app/db');
 var kafka = require('../kafka/client');
 
 router.get('/', function (req, response) {
-    console.log('in Get activity before kafka: ', req.cookies.cookie_user,);
+    console.log('in Get activity before kafka: ', req.cookies.cookie_user);
     kafka.make_request('activity',{email:req.cookies.cookie_user}, function(err,results){
     
         if (err) {
