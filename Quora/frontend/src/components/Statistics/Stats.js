@@ -114,7 +114,7 @@ class Stats extends Component {
     }
 
     profileviewchart = () => {
-        return <ColumnChart data={this.getViewsData()} width="400px" height="300px" label='Votes' xtitle='Last 30 Days (Day0 is today)' ytitle="Profile View Count"/>
+        return <ColumnChart data={this.getViewsData()} width="400px" height="300px" label='Views' xtitle='Last 30 Days (Day0 is today)' ytitle="Profile View Count"/>
     }
     render() {
         if(!cookie.load('cookie_user')){

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Layout, Menu, Select, message, Badge, Icon, Button,notification } from "antd";
+import { Input, Layout, Menu, Select, message, Badge, Icon, Button, notification, Card, Avatar } from "antd";
 import { Link } from "react-router-dom";
 import { Router, Route, Switch } from "react-router-dom";
 import Questions from "../Question/Questions";
@@ -24,20 +24,21 @@ import FollowingList from "../Following/FollowingList";
 import FollowersList from "../Followers/FollowersList";
 import MyQuestions from "../Question/MyQuestions";
 import Messages from "../Messages/Messages";
+const { Meta } = Card;
 
 
-const { Header, Content,  Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 const Search = Input.Search;
 const Option = Select.Option;
 
 const openNotification = () => {
-    notification.open({
-        message: 'Notification Title',
-        description: 'A Quora user just answered a question you followed',
-        onClick: () => {
-            console.log('Notification Clicked!');
-        },
-    });
+  notification.open({
+    message: 'Notification Title',
+    description: 'A Quora user just answered a question you followed',
+    onClick: () => {
+      console.log('Notification Clicked!');
+    },
+  });
 };
 
 
@@ -46,10 +47,32 @@ class Sidebar extends Component {
     collapsed: false,
     // NOTE - searchType is for the dropdown of the search bar - "Q" is for questions, "T" is for topics, and "P" is for people. Default is "Q"
     searchType: "Q",
-    messages : false
+    messages: false,
+    pic: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
   };
 
+  async componentWillMount() {
+    //call to action
+    console.log("USER: "+cookie.load("cookie_user"))
 
+    try {
+      let response = null;
+
+      response = await API.get('profile/pic/?email_id=' + cookie.load("cookie_user"))
+
+      console.log("printing response" + JSON.stringify(response.data))
+      this.setState({
+        pic : response.data.photo,
+      });
+      console.log("userdata:" + JSON.stringify(this.state.user_data))
+
+    }
+    catch (error) {
+      console.log(error);
+      message.error("Unable to get photo")
+    }
+
+  }
 
   onCollapse = collapsed => {
     console.log(collapsed);
@@ -122,9 +145,9 @@ class Sidebar extends Component {
     this.setState({ searchType: value });
   };
 
-  navigateMessage = () =>{
-    this.setState({messages : true})
-    console.log("message: "+this.state.messages);
+  navigateMessage = () => {
+    this.setState({ messages: true })
+    console.log("message: " + this.state.messages);
   }
 
   render() {
@@ -156,7 +179,7 @@ class Sidebar extends Component {
                 window.location.pathname.includes("/main/bookmarks") ? "7" :
                   window.location.pathname.includes("/main/stats") ? "8" :
                     window.location.pathname.includes("/main/yourcontent") ? "9" :
-                      window.location.pathname.includes("/main/message") ? "10" : "1";                 
+                      window.location.pathname.includes("/main/message") ? "10" : "1";
 
     return (
       <Layout>
@@ -169,7 +192,7 @@ class Sidebar extends Component {
               <Link to="/main/home">Home</Link>
             </Menu.Item>
 
-            <Menu.Item key="4" style={{ marginLeft: 80, width: 500 }}>
+            <Menu.Item key="4" style={{ marginLeft: 80, width: 485 }}>
               <Search
                 className="Search-Button"
                 style={{ marginTop: 18 }}
@@ -182,14 +205,16 @@ class Sidebar extends Component {
                 addonBefore={selectBefore}
               />
             </Menu.Item>
-              <Menu.Item key="5" >
-                  <Badge count={5}>
-                      <a href="#" className="head-example" />  <Button type="primary" onClick={openNotification}><Icon type="bell" /></Button>
+            <Menu.Item key="5" >
+              <Badge count={5}>
+                <a href="#" className="head-example" />  <Button type="primary" onClick={openNotification}><Icon type="bell" /></Button>
 
-                  </Badge>
-              </Menu.Item>
-
-            <Menu.Item key="1" style={{ marginLeft: 30 }}>
+              </Badge>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <Avatar src={this.state.pic} /> 
+            </Menu.Item>
+            <Menu.Item key="1">
               <Link to={"/main/profile/" + cookie.load('cookie_user')}> Profile</Link>
             </Menu.Item>
             <Menu.Item key="3">
@@ -232,8 +257,8 @@ class Sidebar extends Component {
                 <Link to="/main/yourcontent">Your Content</Link>
               </Menu.Item>
               <Menu.Item key="10">
-                    <Link to="/main/message" onClick={this.navigateMessage}>Messages</Link>
-                  </Menu.Item>
+                <Link to="/main/message" onClick={this.navigateMessage}>Messages</Link>
+              </Menu.Item>
             </Menu>
           </Sider>
           <Content style={{ padding: "0 24px", minHeight: 280 }}>
@@ -257,16 +282,16 @@ class Sidebar extends Component {
                 <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
                 <Route exact path="/main/people/search" render={(props) => <SearchPeople {...props} />} />
                 <Route exact path="/main/topics/:topic/questions" render={(props) => <QuestionsInTopic {...props} />} />
- 
+
                 <Route exact path="/main/:question_id" component={Answers} />
-                
-               
+
+
               </Switch>
             </div>
           </Content>
         </Layout>
         {/* Display Message Component */}
-        {this.state.messages && <Messages visible="true"/>}
+        {this.state.messages && <Messages visible="true" />}
       </Layout>
     );
   }
