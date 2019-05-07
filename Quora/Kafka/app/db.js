@@ -664,6 +664,8 @@ db.addQuestion = function(questionInfo, successCallback, failureCallback) {
       console.log("Saved questions details: ", questions._id);
       result.code = 200;
       callback(null, result);
+        addActivityRecord('You asked',questionInfo._id,questionInfo.email_id)
+
     },
     err => {
       if (err) {

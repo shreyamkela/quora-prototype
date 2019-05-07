@@ -17,8 +17,8 @@
       <file leaf-file-name="db.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/db.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8157">
-              <caret line="388" column="29" lean-forward="false" selection-start-line="388" selection-start-column="29" selection-end-line="388" selection-end-column="29" />
+            <state relative-caret-position="373">
+              <caret line="670" column="16" lean-forward="true" selection-start-line="670" selection-start-column="16" selection-end-line="670" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -134,7 +134,6 @@
       <find>my_email</find>
       <find>indAndModify</find>
       <find>followers</find>
-      <find>activi</find>
       <find>getQuestionByEmail</find>
       <find>searchPeople</find>
       <find>fetchProfileById</find>
@@ -142,6 +141,10 @@
       <find>fetch_questions</find>
       <find>doc.question.map</find>
       <find>user_answers</find>
+      <find>activi</find>
+      <find>addActivityRecord('You answered',values.q_id,values.email_id)</find>
+      <find>follow</find>
+      <find>You</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -176,7 +179,7 @@
     <handled-path value="$PROJECT_DIR$/node_modules" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="width" value="388" />
+    <option name="width" value="993" />
     <option name="height" value="900" />
   </component>
   <component name="ProjectView">
@@ -194,8 +197,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -227,11 +228,13 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
-    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
+    <property name="settings.editor.selected.configurable" value="watcher.settings" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
   </component>
@@ -266,17 +269,18 @@
       <workItem from="1556867515866" duration="5713000" />
       <workItem from="1557029114547" duration="14558000" />
       <workItem from="1557173116139" duration="4661000" />
+      <workItem from="1557195512834" duration="2807000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="58519000" />
+    <option name="totallyTimeSpent" value="61326000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="388" height="900" extended-state="6" />
+    <frame x="0" y="0" width="993" height="900" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.7057221" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22633745" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -694,8 +698,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/db.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8157">
-          <caret line="388" column="29" lean-forward="false" selection-start-line="388" selection-start-column="29" selection-end-line="388" selection-end-column="29" />
+        <state relative-caret-position="373">
+          <caret line="670" column="16" lean-forward="true" selection-start-line="670" selection-start-column="16" selection-end-line="670" selection-end-column="16" />
           <folding />
         </state>
       </provider>
