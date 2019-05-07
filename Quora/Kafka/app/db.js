@@ -12,7 +12,7 @@ let con = mysql.createPool({
 });
 const mongoose = require("mongoose");
 //"mongodb://localhost:27017/CanvasApp"
-let uri =  "mongodb+srv://canvas_user:2407Rakhee%21@cluster0-jjkgt.mongodb.net/quoradb?poolSize=10?retryWrites=true"
+let uri =  "mongodb+srv://canvas_user:2407Rakhee%21@cluster0-jjkgt.mongodb.net/quoradb?poolSize=5?retryWrites=true"
 mongoose.connect(uri, { useNewUrlParser: true, poolSize: 5, useCreateIndex: true });
 let con1 = mongoose.connection;
 con1.on("error", console.error.bind(console, "connection error:"));

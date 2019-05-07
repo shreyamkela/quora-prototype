@@ -11,6 +11,16 @@ router.post('/', function (req, res) {
     // First add the question into the questions collection
     // Then add the topics to this question document
 
+    //function for creating activity records for User Content
+    let addActivityRecord = (type, q_id, user_id) => {
+        Model.Activity.create({
+          type: type,
+          question: q_id,
+          user_id:user_id,
+          year: new Date().getFullYear()
+        }).then(() =>{return})
+      }
+
     // Adding the question
     Model.Questions.create({
         author: req.body.email,
@@ -25,6 +35,8 @@ router.post('/', function (req, res) {
             res.status(400).send("Unable to insert question!");
         } else {
             let questionId = results._id
+            addActivityRecord('You asked',questionId,req.body.email)
+            console.log("Activity added for Question asked");
             // Add the topics to this question document
             Model.topics.find({
                 'title': { $in: results.topics }

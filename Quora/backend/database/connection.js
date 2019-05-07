@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 var db = {};
 //mongoose.Promise = global.Promise;
-let uri = "mongodb+srv://canvas_user:2407Rakhee%21@cluster0-jjkgt.mongodb.net/quoradb?poolSize=10?retryWrites=true";
+let uri = "mongodb+srv://canvas_user:2407Rakhee%21@cluster0-jjkgt.mongodb.net/quoradb?poolSize=5?retryWrites=true";
 mongoose.Promise = global.Promise;
 mongoose.connect(uri, { useNewUrlParser: true, poolSize: 5, useCreateIndex: true });
 // NOTE - useCreateIndex is important otherwise it causes this error - https://www.opentechguides.com/askotg/question/16/mongodb-create-unique-index-e11000-duplicate-key-error-collection-dup-keynull
