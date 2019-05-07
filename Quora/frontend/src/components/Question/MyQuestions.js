@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
-import {Card,Avatar} from 'antd';
+import {Card, Avatar} from 'antd';
 import {connect} from 'react-redux';
 import cookie from 'react-cookies';
 import _ from "lodash";
-import {fetchQuestions, fetchUserAnswers,displayAddAnswerForm } from "../../actions";
+import {fetchQuestions, fetchUserAnswers, displayAddAnswerForm, fetchProfile} from "../../actions";
 import QuoraButton from "../QuoraButton"
 import AddEditAnswer from '../Answers/AddEditAnswer';
 import NoData from '../Answers/NoData';
 import axios from "axios/index";
+
 const {Meta} = Card;
 
 class MyQuestions extends Component {
@@ -15,8 +16,8 @@ class MyQuestions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            questionArray:[],
-            currentAnswer:''
+            questionArray: [],
+            currentAnswer: ''
         }
     }
 
@@ -26,7 +27,7 @@ class MyQuestions extends Component {
         axios.defaults.withCredentials = true;
         //make a post request with the user data
         axios.get("http://localhost:3001/fetchQuestions")
-            .then(response =>{
+            .then(response => {
                 console.log(response.data);
 
                 this.setState({
@@ -34,7 +35,9 @@ class MyQuestions extends Component {
                 });
 
             })
-            .catch(error => { return error.response })
+            .catch(error => {
+                return error.response
+            })
 
     }
 
@@ -51,47 +54,49 @@ class MyQuestions extends Component {
     }
 
     renderQuestion = () => {
-        const { questionArray } = this.state;
-    if(questionArray !== undefined) {
-        if (questionArray.length > 0)
-            return _.map(questionArray, question => {
-                let addForm = null;
-
-                if (this.props.displayAddAnswer === true && this.state.currentAnswer === question.answers[0]._id)
-                    addForm = <AddEditAnswer answer_id={this.state.currentAnswer}
-                                             content={question.answers[0].content}></AddEditAnswer>
-                else addForm = null
-                return (
-                    <Card>
-                        <div>
-                            <h3><b> {question.question}</b></h3>
-                            <href to="#" onClick={() => {
-                                this.handleQuestionLinkClick(question)
-                            }}>
-                                <QuoraButton value="answer" text="Add Answer"> </QuoraButton>
-                            </href>
-                        </div>
-                        {addForm}
-                        {this.renderAnswers(question.answers)}
-                    </Card>
-                )
-            })
-    }
-    else {
-            return(
-                <NoData image="https://qsf.fs.quoracdn.net/-3-images.question_prompt.answer.svg-26-c8e51e98fe29ee96.svg" description="You haven't answered any questions yet" left='300px' />
+        const {questionArray} = this.state;
+        if (questionArray !== undefined) {
+            if (questionArray.length > 0)
+                return _.map(questionArray, question => {
+                    let addForm = null;
+                    if (question.answers[0] !== undefined) {
+                        if (this.props.displayAddAnswer === true && this.state.currentAnswer === question.answers[0]._id)
+                            addForm = <AddEditAnswer answer_id={this.state.currentAnswer}
+                                                     content={question.answers[0].content}></AddEditAnswer>
+                        else addForm = null
+                    }
+                    return (
+                        <Card>
+                            <div>
+                                <h3><b> {question.question}</b></h3>
+                                <href to="#" onClick={() => {
+                                    this.handleQuestionLinkClick(question)
+                                }}>
+                                    <QuoraButton value="answer" text="Add Answer"> </QuoraButton>
+                                </href>
+                            </div>
+                            {addForm}
+                            {this.renderAnswers(question.answers)}
+                        </Card>
+                    )
+                })
+        }
+        else {
+            return (
+                <NoData image="https://qsf.fs.quoracdn.net/-3-images.question_prompt.answer.svg-26-c8e51e98fe29ee96.svg"
+                        description="You haven't answered any questions yet" left='300px'/>
             )
         }
     }
 
 
-    renderAnswers=(answers)=> {
+    renderAnswers = (answers) => {
 
         return _.map(answers, answer => {
             let d = new Date(answer.answered_on)
             let content = ''
             if (answer.content !== undefined) {
-                content = content = <div dangerouslySetInnerHTML={{__html: answer.content}} />
+                content = content = <div dangerouslySetInnerHTML={{__html: answer.content}}/>
             }
             let photo = answer.profile.photo;
             let firstname = answer.profile.firstname;
@@ -99,13 +104,13 @@ class MyQuestions extends Component {
             let credentials = answer.profile.credentials;
             return (
                 <>
-                    <Card bordered={false} style={{borderTop:"1px solid #e2e2e2"}}>
+                    <Card bordered={false} style={{borderTop: "1px solid #e2e2e2"}}>
 
                         <div>
                             <Meta
                                 avatar={<Avatar
-                                    src={photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                                title={firstname+"  "+lastname}//"User's name goes here"ok
+                                    src={photo}/>}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
+                                title={firstname + "  " + lastname}//"User's name goes here"ok
                                 description={<div>{credentials}
                                     <div>
                                         {d.toLocaleDateString()}&nbsp;&nbsp;
@@ -117,7 +122,8 @@ class MyQuestions extends Component {
                             <div className='answer_content'>
 
                                 {content}
-                            </div>  <br></br><br></br>
+                            </div>
+                            <br></br><br></br>
                         </div>
 
                     </Card>
@@ -130,9 +136,9 @@ class MyQuestions extends Component {
         })
     }
 
-    
+
     render() {
-        if(!cookie.load('cookie_user')){
+        if (!cookie.load('cookie_user')) {
             this.props.history.push("/login");
         }
         return (
@@ -154,9 +160,15 @@ function mapStateToProps(state) {
     return {
         authFlag: state.authFlag,
         userAnswers: state.userAnswers,
-        displayAddAnswer:state.displayAddAnswer,
-        fetchQuestion:state.fetchQuestion
+        displayAddAnswer: state.displayAddAnswer,
+        fetchQuestion: state.fetchQuestion
 
     };
 }
-export default connect(mapStateToProps,{fetchQuestions,fetchUserAnswers,displayAddAnswerForm})(MyQuestions);
+
+export default connect(mapStateToProps, {
+    fetchQuestions,
+    fetchUserAnswers,
+    displayAddAnswerForm,
+    fetchProfile
+})(MyQuestions);

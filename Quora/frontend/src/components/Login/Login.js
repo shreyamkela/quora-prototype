@@ -3,7 +3,7 @@ import "../../App.css";
 import cookie from "react-cookies";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { checkValid } from "../../actions";
+import {checkValid, fetchProfile} from "../../actions";
 
 import quoraLogo from "../../utils/documents/images/quora_logo_light.jpg";
 
@@ -104,6 +104,6 @@ export default reduxForm({
 })(
   connect(
     mapStateToProps,
-    { checkValid }
+    { checkValid,fetchProfile }
   )(Login)
 );
