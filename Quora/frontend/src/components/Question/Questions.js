@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Modal, Button, Icon, Card, Comment, Avatar, Form, List, Input, AutoComplete, Select, message } from 'antd';
+import { Modal, Button, Icon, Card, Comment, Avatar, Form, List, Input, AutoComplete, Select, message, Pagination } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -60,9 +60,54 @@ class Questions extends Component {
         submitting: false,
         value: '',
         allTopics: "",
-        selectedTopics: ""
+        selectedTopics: "",
+        topicsFollowed: "",
+        allQuestions: "",
+        pagenumber: 1
 
     }
+
+    async componentDidMount() {
+        let data = { email: cookie.load("cookie_user"), type: 1 }
+        // GET all the topics followed by the user and then GET all the questions in these topics. The final object is rendered onto the page
+        try {
+            let response = await API.get("topicsFollowed", { params: data });
+            if (typeof (response.data) === "object") {
+                let allQuestionsInTopics = [];
+                for (const obj of response.data) {
+                    if (obj._id !== undefined) {
+                        let data_1 = { topicId: obj._id }
+                        let response_1 = null;
+                        response_1 = await API.get("questionsInTopic", { params: data_1 });
+
+                        if (typeof (response_1.data) === "object") {
+                            for (const obj_1 of response_1.data) {
+                                allQuestionsInTopics.push(obj_1);
+                            }
+                        }
+
+                    }
+                }
+                let sourceArray = allQuestionsInTopics
+
+                // Shuffling all the question objects
+                for (var i = 0; i < sourceArray.length - 1; i++) {
+                    var j = i + Math.floor(Math.random() * (sourceArray.length - i));
+
+                    var temp = sourceArray[j];
+                    sourceArray[j] = sourceArray[i];
+                    sourceArray[i] = temp;
+                }
+
+                this.setState({ allQuestions: sourceArray });
+            }
+        } catch (error) {
+            console.log(error.response);
+            message.error("Unable to show followed topics. Please refresh the page.");
+        }
+    }
+
+
 
     handleSubmit = () => {
         if (!this.state.value) {
@@ -155,8 +200,25 @@ class Questions extends Component {
         this.setState({ selectedTopics: value })
     }
 
+    handleQuestionLinkClick = (key) => {
+        this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />
+            pathname: `/main/${key._id}`,
+            state: {
+                selectedQuestion: key
+            }
+        }) // TODO - Complete the page `/main/${key._id}`
+    }
+
+    handlePageNumberClick = e => {
+        console.log("Page number changed!", e);
+        this.setState({ pagenumber: e });
+    };
+
+
 
     render() {
+
+        console.log("All questions from followed topics: ", this.state.allQuestions)
         // For autocomplete and multiple select for topics in modal of add question
         const Option = Select.Option;
         const children = [];
@@ -166,13 +228,76 @@ class Questions extends Component {
         }
 
         const { comments, submitting, value } = this.state;
+
+        let displayHeading = null;
+
+        let displayedResults = null;
+        if (this.state.allQuestions === "" || this.state.allQuestions === undefined) {
+            displayedResults = (<div><div style={{ textAlign: "center", fontSize: 15 }}>Follow your first topic to start using Quora!</div><br /><br /></div>);
+        } else {
+            if (this.state.allQuestions[0] === undefined) {
+                displayedResults = <div style={{ textAlign: "center", fontSize: 15 }}>Follow your first topic to start using Quora!</div>;
+
+            } else {
+                var pagination = null;
+                let allQuestions = null;
+                let pageQuestions = []; // questions to show on this page number
+
+                let pageNumbers = Math.floor(this.state.allQuestions.length / 5) + 1;
+                pagination = <Pagination defaultPageSize={1} defaultCurrent={1} total={pageNumbers} onChange={this.handlePageNumberClick} />;
+                allQuestions = this.state.allQuestions;
+                let thisPageLast = this.state.pagenumber * 5;
+                for (var i = thisPageLast - 5; i < thisPageLast; i++) {
+                    if (allQuestions[i] !== undefined) {
+                        pageQuestions[i] = allQuestions[i];
+                    }
+                }
+
+
+
+                displayedResults = pageQuestions.map(key => (
+                    <div style={{ textAlign: "center" }}>
+                        <div className="card" style={{ width: "70%", height: "auto", textAlign: "center" }}>
+                            <div className="card-body">
+                                <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
+                                    <href to="#" onClick={() => { this.handleQuestionLinkClick(key) }}><font color="#6495ED">{key.question}</font></href>
+                                </h5>
+                                <br />
+
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                    </div>
+                ));
+                displayHeading = (<h5>Questions from the topics that you follow:</h5>)
+            }
+
+        }
+
+
+
+
+
+
         return (
-            <div>
-                <Button className="add-button" type="primary" onClick={this.showModal}>
-                    Add Question
-                </Button>
+            <Card>
+                <div style={{ textAlign: "right" }}>
+                    <Button className="add-button" type="primary" onClick={this.showModal}>
+                        Ask a Question
+                    </Button>
+                </div>
+                <br />
+                <div style={{ marginLeft: "15%" }}>
+                    {displayHeading}
+                    <br />
+                </div>
+                {displayedResults}
+
+                <div style={{ textAlign: "center" }}>{pagination}</div>
+
                 <Modal
-                    title="Add a Question"
+                    title="Ask a Question"
                     visible={this.state.visible}
                     onOk={this.handleOk}
                     onCancel={this.handleCancel}
@@ -211,57 +336,7 @@ class Questions extends Component {
 
                     </div>
                 </Modal>
-
-
-
-                <br /><br />
-                <div>
-                    <div>
-                        <Card
-                            type="inner"
-                            title="Question goes here"
-                            extra={<a className="Bookmark" href="#">Bookmark</a>}
-                        >
-                            <Meta
-                                avatar={<Avatar
-                                    src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title="User's name goes here"
-                                description="User credentials goes here"
-
-                            />
-                            <br />
-
-                            <div>
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum
-                                has been the industry's standard dummy text ever since the 1500s, when an unknown
-                                printer took a galley of type and scrambled it to make a type specimen book. It has
-                                survived not only five centuries, but also the leap into electronic typesetting,
-                                remaining essentially unchanged. It was popularised in the 1960s with the release of
-                                Letraset sheets containing Lorem Ipsum passages, and more recently with desktop
-                                publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                            </div>
-                            <div>
-                                {comments.length > 0 && <CommentList comments={comments} />}
-                                <Comment
-                                    avatar={(
-                                        <Avatar
-                                            src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                            // alt="Han Solo"
-                                        />
-                                    )}
-                                    content={(
-                                        <Editor
-                                            onChange={this.handleChange}
-                                            onSubmit={this.handleSubmit}
-                                            submitting={submitting}
-                                            value={value}
-                                        />
-                                    )}
-                                />
-                            </div>
-                        </Card></div>
-                </div>
-            </div>
+            </Card>
         )
     }
 }
