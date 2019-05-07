@@ -482,10 +482,12 @@ db.getNotifications = function(email, successCallback, failureCallback) {
             .then( async ques =>{
             console.log("ques: "+JSON.stringify(ques.question));
             noOfNotifications = qf.actualAnswers - qf.initialAnswers;
+            if(noOfNotifications > 0){
             console.log("noOfNotifications: "+noOfNotifications)
             resultNotification.push({qid:qf.qid,question:ques.question,notifications:noOfNotifications});
             console.log("resultNotification: "+JSON.stringify(resultNotification))
             return await resultNotification;
+            }
             
             })
             .catch(err => {
