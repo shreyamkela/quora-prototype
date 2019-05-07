@@ -9,10 +9,7 @@ router.get("/", function (req, res) {
 
   let searchValue = req.query[0].toLowerCase();
   let searchedTopics = [];
-  console.log("searchValue###" + searchValue);
-  console.log("searchedQuestions###" + searchedTopics);
   Model.topics.find({}, (err, results) => {
-    console.log("sea######e###");
 
     if (err) {
       console.log("Unable to fetch topics", err);
