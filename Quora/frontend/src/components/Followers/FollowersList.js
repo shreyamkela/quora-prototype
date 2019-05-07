@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Card, Row, Col, message } from "antd";
+import { Button, Card, Row, Col, message, Avatar} from "antd";
 import cookie from "react-cookies";
 import Pagination from 'react-bootstrap/Pagination'
 import API from "../../utils/API";
@@ -96,7 +96,8 @@ class FollowersList extends Component {
               <div className="card" style={{ width: "70%", height: 100, textAlign: "center" }}>
                 <div className="card-body">
                   <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
-                    <href to="#" onClick={() => { this.handleProfileLinkClick(key) }}><font color="#6495ED">{key.firstname} {key.lastname}</font></href>
+                    <Avatar src={key.photo} /> 
+                    <href to="#" onClick={() => { this.handleProfileLinkClick(key) }}><font color="#6495ED">{" "} {key.firstname} {key.lastname}</font></href>
 
                   </h5>
                   <Button size="small" icon="check-circle" shape="round" onClick={() => this.handleFollow(key.email)} >
