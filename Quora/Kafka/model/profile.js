@@ -39,7 +39,7 @@ views : [Date],
 followers : [String],
 following : [String],
 topicsFollowed : Array,
-questionsFollowed : Array
+questionsFollowed: [{qid : mongoose.Schema.Types.ObjectId, actualAnswers: Number, initialAnswers: Number}]
 });
 
 Profile = module.exports = mongoose.model('profile',profileSchema,'profiles');

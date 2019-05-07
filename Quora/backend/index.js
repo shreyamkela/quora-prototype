@@ -37,6 +37,7 @@ var FetchFollowers = require('./routes/FetchFollowers');
 var FetchFollowing = require('./routes/FetchFollowing');
 var Activity = require('./routes/Activity');
 var FetchViews = require('./routes/FetchViews');
+var Notifications = require('./routes/Notifications');
 
 var passport = require("passport");
 // Set up middleware
@@ -110,6 +111,7 @@ app.use('/fetchfollowers', FetchFollowers);
 app.use('/fetchfollowing', FetchFollowing);
 app.use('/activity', Activity);
 app.use('/fetchviews', FetchViews);
+app.use('/notifications',Notifications);
 
 module.exports = app;
 //start your server on port 3001

@@ -24,6 +24,7 @@ import FollowingList from "../Following/FollowingList";
 import FollowersList from "../Followers/FollowersList";
 import MyQuestions from "../Question/MyQuestions";
 import Messages from "../Messages/Messages";
+import Notifications from "../Notifications/Notifications"; //------> NEW
 const { Meta } = Card;
 
 
@@ -31,15 +32,7 @@ const { Header, Content, Sider } = Layout;
 const Search = Input.Search;
 const Option = Select.Option;
 
-const openNotification = () => {
-  notification.open({
-    message: 'Notification Title',
-    description: 'A Quora user just answered a question you followed',
-    onClick: () => {
-      console.log('Notification Clicked!');
-    },
-  });
-};
+
 
 
 class Sidebar extends Component {
@@ -48,7 +41,28 @@ class Sidebar extends Component {
     // NOTE - searchType is for the dropdown of the search bar - "Q" is for questions, "T" is for topics, and "P" is for people. Default is "Q"
     searchType: "Q",
     messages: false,
-    pic: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+    pic: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+    notifications: [],
+    noNotifications:""
+  };
+
+  openNotification = () => {
+    // notification.open({
+    //   message: 'Notification Title',
+    //   description: 'A Quora user just answered a question you followed',
+    //   onClick: () => {
+    //     console.log('Notification Clicked!');
+    //   },
+    // });
+
+    if(this.state.noNotifications > 0){
+      this.props.history.push({ // This is how we pass data from this component to a child component i.e searchTopics, using the history.push. This will change the route, render new component, and also pass data into the component. Passed data can be accessed in the child component through this.props.history.location.state. To pass these props into the child component we have used <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
+          pathname: "/main/notifications",
+          state: {
+            notifications: this.state.notifications
+          }
+        })
+    }
   };
 
   async componentWillMount() {
@@ -64,7 +78,8 @@ class Sidebar extends Component {
       this.setState({
         pic : response.data.photo,
       });
-      console.log("userdata:" + JSON.stringify(this.state.user_data))
+      console.log("userdata:" + JSON.stringify(this.state.user_data));
+      
 
     }
     catch (error) {
@@ -72,6 +87,25 @@ class Sidebar extends Component {
       message.error("Unable to get photo")
     }
 
+  }
+
+  // For Notifications---------NEW
+  async componentDidMount (){ //---------------------------->NEW
+    let response = null;
+    let email_id = cookie.load('cookie_user');
+        try{
+        response = await API.get("notifications",{params : {email_id:email_id}})
+        console.log("Response: "+JSON.stringify(response.data));
+        let no = 0;
+        response.data.map(d =>{
+          no = no + d.notifications;
+        })
+        this.setState({notifications:response.data,noNotifications:no});
+        
+        }catch(error){
+            console.log(error.response);
+            message.error("Unable to show followed topics. Please refresh the page.");
+        }
   }
 
   onCollapse = collapsed => {
@@ -206,8 +240,8 @@ class Sidebar extends Component {
               />
             </Menu.Item>
             <Menu.Item key="5" >
-              <Badge count={5}>
-                <a href="#" className="head-example" />  <Button type="primary" onClick={openNotification}><Icon type="bell" /></Button>
+              <Badge count={this.state.noNotifications}>
+                <a href="#" className="head-example" />  <Button type="primary" onClick={this.openNotification}><Icon type="bell" /></Button>
 
               </Badge>
             </Menu.Item>
@@ -277,6 +311,8 @@ class Sidebar extends Component {
                 <Route exact path="/main/following" component={FollowingList} />
                 <Route exact path="/main/questions" component={MyQuestions} />
                 <Route exact path="/main/message" component={Messages} />
+                {/* NEWWWWWWWWWWWWWWWWW */}
+                <Route exact path="/main/notifications" render={(props) => <Notifications {...props} />} /> 
                 {/* <Route exact path="/main/topics" component={Topics} /> This doesnt work therefore added a /followed infront*/}
                 <Route exact path="/main/topics/search" render={(props) => <SearchTopics {...props} />} />
                 <Route exact path="/main/questions/search" render={(props) => <SearchQuestions {...props} />} />

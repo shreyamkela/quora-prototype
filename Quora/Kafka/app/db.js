@@ -45,7 +45,7 @@ var AnswerSchema = new mongoose.Schema({
 
 var QuestionSchema = new mongoose.Schema({
   ID: { type: Number, unique: true },
-  // followers: [UserSchema],
+  followers: [String],
   topic: { type: String },
   timestamp: { type: Date, default: Date.now },
   question: { type: String },
@@ -260,23 +260,87 @@ db.addFollower = function(values, successCallback, failureCallback) {
     });
 };
 
-//add an answer to a question
+//add an answer to a question------ORIGINAL-------------
+// db.addAnswer = function (values, successCallback, failureCallback) {
+//    console.log(values)
+//     Questions.findOneAndUpdate({
+//         _id:mongoose.Types.ObjectId(values.q_id)
+//     }, {
+//             $push: { answers: {content:values.answer,author:values.email_id,isAnonymous:values.isanonymous} } 
+//         }
+//     ).then(() => { 
+// 	addActivityRecord('You answered',values.q_id,values.email_id)
+// 	successCallback()
+// 	})
+//         .catch((error) => {
+//             failureCallback(error)
+//             return
+//         })
+// }
+
+//add an answer to a question ------------ modifications for NOTIFICATIONS
+//step 1: update the answer content to Question schema
+// step 2: Record the activity
+// step 3: count the number of answers for that question
+// step 4: get the followers of the questions and update the 'actualAnswer' count for each follower of that question
 db.addAnswer = function (values, successCallback, failureCallback) {
-   console.log(values)
-    Questions.findOneAndUpdate({
-        _id:mongoose.Types.ObjectId(values.q_id)
-    }, {
-            $push: { answers: {content:values.answer,author:values.email_id,isAnonymous:values.isanonymous} } 
-        }
-    ).then(() => { 
-	addActivityRecord('You answered',values.q_id,values.email_id)
-	successCallback()
-	})
-        .catch((error) => {
-            failureCallback(error)
-            return
-        })
-}
+  //  console.log(values)
+     Questions.findOneAndUpdate({_id:mongoose.Types.ObjectId(values.q_id)}, {$push: { answers: {content:values.answer,author:values.email_id,isAnonymous:values.isanonymous} } },
+       function(error, result){
+       //  console.log("Questions findOneAndUpdate================: "+JSON.stringify(result))
+         if(error){
+           failureCallback(error);
+ 
+         }
+         else{
+           addActivityRecord('You answered',values.q_id,values.email_id)
+           Questions.findOne({_id:values.q_id},function(err,size){
+             if(err){
+               failureCallback(err);
+             }
+             else {
+             //  console.log("print size(result): "+JSON.stringify(size))
+             let noOfAnswers = size.answers.length;
+             let noOfFollowers = size.followers.length;
+           //  console.log("No. of Answers: "+noOfAnswers);
+           //  console.log("No. of followers: "+noOfFollowers);
+             let updateProfiles = size.followers.map(follower =>{
+               Profile.findOne({email:follower},function(err, update){
+                   if(err){
+                     console.log("error::::::::::"+err);
+                     failureCallback(err);
+                   }
+                   else
+                   {
+                     //  console.log("length of questions: "+update.questionsFollowed.length);
+                       var noOfQuestions = update.questionsFollowed.length;
+                       for (var i=0; i < noOfQuestions; i++){
+                       //  console.log("Inside for. update.questionsFollowed[i].qid:"+ mongoose.Types.ObjectId(update.questionsFollowed[i].qid)+":::");
+                       //  console.log("values.q_id:"+mongoose.Types.ObjectId(values.q_id)+":::");
+                         let update_qid = mongoose.Types.ObjectId(update.questionsFollowed[i].qid);
+                         let values_qid = mongoose.Types.ObjectId(values.q_id);
+                           if(update_qid.equals(values_qid)){
+                           //  console.log("Inside if");
+                           //  console.log("before:" +update.questionsFollowed[i].actualAnswers);
+                             update.questionsFollowed[i].actualAnswers = noOfAnswers;
+                           //  console.log("after1:" +update.questionsFollowed[i].actualAnswers);
+                             update.save();
+                           //  console.log("after2:" +update.questionsFollowed[i].actualAnswers);
+                           }
+                       }
+                       successCallback();
+                   }
+   
+                 })
+             })
+           }
+         })
+           
+         }
+       }
+     )
+ }
+ 
 
 //update  an answer
 db.updateAnswer = function (values, successCallback, failureCallback) {
@@ -403,6 +467,60 @@ db.getAnswersByUserId= function (email_id, successCallback, failureCallback) {
       failureCallback(err);
     });
 };
+
+
+// ---------------NEWWWWWW-------------------
+db.getNotifications = function(email, successCallback, failureCallback) {
+  Profile.findOne({email:email})
+  .then(async result => {
+    resultNotification = [];
+    console.log(JSON.stringify(result));
+    let final_doc = await Promise.all(result.questionsFollowed.map(async qf =>{
+      console.log("qf :"+JSON.stringify(qf));
+      return{
+        qu : await Questions.findOne({_id:mongoose.Types.ObjectId(qf.qid)})
+            .then( async ques =>{
+            console.log("ques: "+JSON.stringify(ques.question));
+            noOfNotifications = qf.actualAnswers - qf.initialAnswers;
+            console.log("noOfNotifications: "+noOfNotifications)
+            resultNotification.push({qid:qf.qid,question:ques.question,notifications:noOfNotifications});
+            console.log("resultNotification: "+JSON.stringify(resultNotification))
+            return await resultNotification;
+            
+            })
+            .catch(err => {
+              console.log("some error: "+err);
+            })
+      }
+      }))
+    console.log("resultNotification: "+JSON.stringify(resultNotification))
+    successCallback(resultNotification)
+
+  })
+  .catch(err => 
+    {
+      failureCallback(err);
+      return;
+    })
+}
+
+//-----------NEEWWWWWWWWW-------------
+db.updateNotifications = function(values, successCallBack, failureCallback){
+  Profile.findOne({email:values.email},{questionsFollowed:{$elemMatch:{qid:values.qid}}})
+  .then(result => {
+    console.log("qid: "+JSON.stringify(result.questionsFollowed[0]));
+    result.questionsFollowed[0].initialAnswers = result.questionsFollowed[0].initialAnswers + values.notifications;
+    result.save();
+    console.log("result updated::::: "+JSON.stringify(result));
+    successCallBack();
+  })
+  .catch(err => {
+    console.log(err);
+    failureCallback(err);
+    }
+  );
+}
+
 
 //bookmark an answer
 db.bookmark = function (values, successCallback, failureCallback) {

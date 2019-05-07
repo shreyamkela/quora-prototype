@@ -60,8 +60,9 @@ var profile = mongoose.model("profile", {
   followers: [String],
   following: [String],
   topicsFollowed: Array,
-  questionsFollowed: Array,
-    questionAdded: Array
+  //questionsFollowed: Array,   ---CHANGED BELOW
+  questionsFollowed: [{qid : mongoose.Schema.Types.ObjectId, actualAnswers: Number, initialAnswers: Number}],
+  questionAdded: Array
 });
 
 var ActivitySchema = new mongoose.Schema({
