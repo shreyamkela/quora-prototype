@@ -115,7 +115,7 @@ class SearchPeople extends Component {
               <div className="card-body">
                 <h5 className="card-title" style={{ fontSize: 15, marginLeft: 20, marginTop: 20 }}>
                   <Avatar src={key.photo} />
-                  <href to="#" onClick={() => { this.handleProfileLinkClick(key) }}><font color="#6495ED">{key.firstname} {key.lastname}</font></href>
+                  <href to="#" onClick={() => { this.handleProfileLinkClick(key) }}><font color="#6495ED">{"  "} {key.firstname} {key.lastname}</font></href>
                 </h5>
                 {options}
 
