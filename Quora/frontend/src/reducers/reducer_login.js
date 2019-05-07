@@ -9,6 +9,8 @@ export function loginReducer(state = '', action) {
     case CHECK_VALID:
     if (action.payload === undefined || action.payload.data === undefined)
       return state
+    if (action.payload.status === 200)
+      cookie.save('cookie_user',decodeURIComponent(action.payload.data.message), { path: '/' })
       return action.payload.data.message;
     case LOGOUT:
       return ''
