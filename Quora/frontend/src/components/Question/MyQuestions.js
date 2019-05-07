@@ -105,7 +105,7 @@ class MyQuestions extends Component {
                             <Meta
                                 avatar={<Avatar
                                     src={photo} />}//"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"/>}
-                                title={firstname+"  "+lastname}//"User's name goes here"
+                                title={firstname+"  "+lastname}//"User's name goes here"ok
                                 description={<div>{credentials}
                                     <div>
                                         {d.toLocaleDateString()}&nbsp;&nbsp;
