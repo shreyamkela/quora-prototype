@@ -29,7 +29,7 @@ class Notifications extends Component {
         }
         try{
         response = await API.post("notifications",data);
-        message.success("Data updated successfully!");
+        //message.success("Data updated successfully!");
         this.props.history.push({ // This is how we pass data from this component to a child component i.e searchQuestions, using the history.push.
             // This will change the route, render new component, and also pass data into the component.
             // Passed data can be accessed in the child component through this.props.history.location.state.
