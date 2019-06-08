@@ -17,7 +17,7 @@ The application is an open-source question-and-answer platform, inspired by Quor
 
 
 ### Technologies utilized
-React, Node.js, Express.js, Kafka, Zookeeper, JavaScript, HTML5, CSS3, Bootstrap, Ant Design, AWS EC2 ELB RDS, Firebase, MySQL, MongoDB, Redis, Mongoose, ORM, Bcrypt, JWT, REST
+React, Redux, Node.js, Express.js, Kafka, Zookeeper, JavaScript, HTML5, CSS3, Bootstrap, Ant Design, AWS EC2 ELB RDS, Firebase, MySQL, MongoDB, Redis, Mongoose, ORM, Bcrypt, JWT, REST
 
 ### Build instructions to run the project on localhost:  
 1) Install Kafka and Zookeeper. Create the below topics in Kafka:
