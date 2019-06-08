@@ -2,7 +2,7 @@
 Project for CmpE 273 Course Lab in the Spring 19 semester at San Jose State University
 
 ## Project Description
-The application is an open-source question-and-answer platform, inspired by Quora. It supports majority of functionalities presented by the actual website such as, asking a question, answering a question, following & unfollowing users-topics-questions, a 'Your content' page that shows various interesting analytics about the users' posts and interactions with the platform, P2P messaging, real-time notifications, and so on. The application is developed majorly using the MERN stack technologies (MongoDB, ExpressJS, ReactJS and NodeJS) and is made highly scalable and available using the 3-tier distributed system paradigm with fault tolerance and load balancing using the AWS EC2 and ELB, with real-time data pipelining and streaming on Kafka middleware.
+The application is an open-source question-and-answer platform, inspired by Quora (www.quora.com). It supports majority of functionalities presented by the actual website such as, asking a question, answering a question, following & unfollowing users-topics-questions, a 'Your content' page that shows various interesting analytics about the users' posts and interactions with the platform, P2P messaging, real-time notifications, and so on. The application is developed majorly using the MERN stack technologies (MongoDB, ExpressJS, ReactJS and NodeJS) and is made highly scalable and available using the 3-tier distributed system paradigm with fault tolerance and load balancing using the AWS EC2 and ELB, with real-time data pipelining and streaming on Kafka middleware.
 
 <p align="middle">
   <img src="/app-screenshots/quora_1-thumbnail.PNG" width="400" />
