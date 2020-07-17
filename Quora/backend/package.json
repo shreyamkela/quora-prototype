@@ -19,7 +19,7 @@
     "express-session": "^1.15.6",
     "firebase": "^5.11.1",
     "kafka-node": "^2.5.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.19",
     "mongodb": "^3.2.2",
     "mongoose": "^5.4.20",
     "mongoose-sequence": "^5.0.1",
