@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "antd": "^3.16.5",
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^5.0.0",
     "bcrypt-nodejs": "0.0.3",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
