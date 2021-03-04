@@ -12,7 +12,7 @@ The application is an open-source question-and-answer platform, inspired by Quor
 </p>
  
  
-### System Architechture
+### System Architecture
 ![](https://github.com/shreyamkela/quora-app/blob/master/system_architechture-thumbnail.JPG)
 
 
